@@ -9,12 +9,12 @@ import SwiftUI
 
 struct AllCasesView: View {
     var body: some View {
-		GeometryReader { geo in
 			VStack {
 				// MARK: Title - Cases
 				HStack {
 					Text("Cases")
 						.titleStyle(40)
+						.foregroundColor(.black)
 					Spacer()
 				}
 
@@ -23,23 +23,21 @@ struct AllCasesView: View {
 					// MARK: TabView
 					TabView {
 						AddCaseOnTabView()
-						Text("First")
-						Text("Second")
-						Text("Third")
-						Text("Fourth")
+						SingleCaseView(statusColor: Color.processing, statusText: "Processing")
+						SingleCaseView(statusColor: Color.approved, statusText: "Approved")
+						SingleCaseView(statusColor: Color.completed, statusText: "Completed")
 					}
 					.tabViewStyle(.page)
 					.indexViewStyle(.page(backgroundDisplayMode: .always))
 					.background(.white)
 				}
 				.frame(maxWidth: .infinity)
-				.frame(height: 200)
+				.frame(height: 220)
 				.clipShape(RoundedRectangle(cornerRadius: 20))
 				.shadow(color: .gray.opacity(0.3), radius: 10, x: 0, y: 4)
 			}
 			.padding()
-			.padding(.horizontal, 15)
-		}
+			.padding(.horizontal, 7)
     }
 }
 
