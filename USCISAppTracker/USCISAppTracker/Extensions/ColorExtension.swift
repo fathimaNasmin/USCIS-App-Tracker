@@ -17,4 +17,6 @@ extension Color {
 	static let pendingStatusColor = Color("pending")
 	static let processingStatusColor = Color("processing")
 	static let rejectedStatusColor = Color("rejected")
+	static let textGrayColor = Color("textGray")
+	static let darkGrayColor = Color("darkGray")
 }
