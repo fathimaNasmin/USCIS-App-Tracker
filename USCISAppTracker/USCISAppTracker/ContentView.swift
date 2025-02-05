@@ -14,10 +14,16 @@ struct ContentView: View {
 				// MARK: Header
 				HeaderView()
 				
-				// MARK: All Cases
-				AllCasesView()
+				ScrollView{
+					// MARK: All Cases
+					AllCasesView()
+					
+					// MARK: News
+					NewsView()
+				}
+
 				
-				Spacer()
+//				Spacer()
 			}
         }
 		.background(Color.antiFlashWhiteBaseColor)
