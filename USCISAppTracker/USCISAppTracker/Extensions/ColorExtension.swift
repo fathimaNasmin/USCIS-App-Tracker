@@ -9,8 +9,8 @@ import Foundation
 import SwiftUI
 
 extension Color {
-	static let antiFlashWhite = Color("antiflashwhite")
-	static let blue = Color("blue")
+	static let antiFlashWhiteBaseColor = Color("antiflashwhite")
+	static let blueMainColor = Color("blue")
 	static let approvedStatusColor = Color("approved")
 	static let completedStatusColor = Color("completed")
 	static let delayedStatusColor = Color("delayed")
