@@ -9,10 +9,18 @@ import SwiftUI
 
 struct ContentView: View {
     var body: some View {
-        VStack {
-			HeaderView()
-			Spacer()
+        ZStack {
+			VStack {
+				// MARK: Header
+				HeaderView()
+				
+				// MARK: All Cases
+				AllCasesView()
+				
+				Spacer()
+			}
         }
+		.background(Color.antiFlashWhiteBaseColor)
     }
 }
 
