@@ -60,3 +60,10 @@ fastlane/report.xml
 fastlane/Preview.html
 fastlane/screenshots/**/*.png
 fastlane/test_output
+
+
+#Ignore the below files
+**/project.pbxproj
+*.pbxproj
+USCISAppTracker/USCISAppTracker.xcodeproj/project.pbxproj
+USCISAppTracker.xcodeproj/project.pbxproj
