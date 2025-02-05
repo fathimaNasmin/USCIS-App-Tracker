@@ -10,13 +10,15 @@ import SwiftUI
 
 extension Color {
 	static let antiFlashWhiteBaseColor = Color("antiflashwhite")
-	static let blueMainColor = Color("blue")
+	static let blueMainColor = Color("bluePrimary")
+	static let textGrayColor = Color("textGray")
+	static let darkGrayColor = Color("darkGray")
+	
+	// Case Status Color
 	static let approvedStatusColor = Color("approved")
 	static let completedStatusColor = Color("completed")
 	static let delayedStatusColor = Color("delayed")
 	static let pendingStatusColor = Color("pending")
 	static let processingStatusColor = Color("processing")
 	static let rejectedStatusColor = Color("rejected")
-	static let textGrayColor = Color("textGray")
-	static let darkGrayColor = Color("darkGray")
 }
