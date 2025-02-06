@@ -8,6 +8,8 @@
 import SwiftUI
 
 struct AllCasesView: View {
+	@State var isAddNewCaseTabTapped: Bool = false
+	
     var body: some View {
 			VStack {
 				// MARK: Title - Cases
@@ -23,8 +25,14 @@ struct AllCasesView: View {
 					// MARK: TabView
 					TabView {
 						AddCaseOnTabView()
+							.onTapGesture {
+								isAddNewCaseTabTapped = true
+							}
+						
 						SingleCaseView(statusColor: Color.processing, statusText: "Processing")
+						
 						SingleCaseView(statusColor: Color.approved, statusText: "Approved")
+						
 						SingleCaseView(statusColor: Color.completed, statusText: "Completed")
 					}
 					.tabViewStyle(.page)
@@ -35,6 +43,9 @@ struct AllCasesView: View {
 				.frame(height: 220)
 				.clipShape(RoundedRectangle(cornerRadius: 20))
 				.shadow(color: .gray.opacity(0.3), radius: 10, x: 0, y: 4)
+				.sheet(isPresented: $isAddNewCaseTabTapped) {
+					NewCaseAddView()
+				}
 			}
 			.padding()
 			.padding(.horizontal, 7)
@@ -56,7 +67,7 @@ struct AddCaseOnTabView: View {
 					.subTitleStyle(20)
 			}
 			.fontWeight(.bold)
-			.foregroundColor(Color.darkGrayColor)
+			.foregroundColor(Color.tungstenGray)
 			.padding(.bottom, 5)
 			
 			Text("Tap to add a new case")
