@@ -12,7 +12,7 @@ extension Color {
 	static let antiFlashWhiteBaseColor = Color("antiflashwhite")
 	static let blueMainColor = Color("bluePrimary")
 	static let textGrayColor = Color("textGray")
-	static let darkGrayColor = Color("darkGray")
+	static let tungstenGrayColor = Color("tungstenGray")
 	
 	// Case Status Color
 	static let approvedStatusColor = Color("approved")
