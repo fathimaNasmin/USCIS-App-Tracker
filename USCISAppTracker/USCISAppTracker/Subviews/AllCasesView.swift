@@ -13,13 +13,7 @@ struct AllCasesView: View {
     var body: some View {
 			VStack {
 				// MARK: Title - Cases
-				HStack {
-					Text("Cases")
-						.titleStyle(40)
-						.foregroundColor(.black)
-					Spacer()
-				}
-
+				HeadingView(headingText: "Cases")
 				
 				VStack {
 					// MARK: TabView

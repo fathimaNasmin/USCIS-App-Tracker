@@ -11,12 +11,7 @@ struct NewsView: View {
     var body: some View {
 		VStack {
 			// MARK: Title - News
-			HStack {
-				Text("News")
-					.titleStyle(40)
-					.foregroundColor(.black)
-				Spacer()
-			}
+			HeadingView(headingText: "News")
 			
 			ScrollView {
 				ForEach(1...10, id: \.self) { view in
