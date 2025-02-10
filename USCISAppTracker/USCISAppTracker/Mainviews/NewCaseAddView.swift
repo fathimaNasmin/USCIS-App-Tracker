@@ -58,7 +58,7 @@ struct NewCaseAddView: View {
 						}
 				}
 				
-				TextField("", text: $nickName, prompt: Text("Receipt Number").foregroundColor(Color.textGray))
+				TextField("", text: $nickName, prompt: Text("Nick Name").foregroundColor(Color.textGray))
 					.textFieldStyle(RoundedRectangleTextFieldStyle())
 					.padding(.vertical, 10)
 				
@@ -76,11 +76,7 @@ struct NewCaseAddView: View {
 				}
 				.padding(.vertical, 10)
 			}
-			.padding(15)
-			.padding(.vertical, 15)
-			.background(.white)
-			.clipShape(RoundedRectangle(cornerRadius: 15))
-			.shadow(color: .gray.opacity(0.5), radius: 15, x: 5, y: 5)
+			.customBoxModifier(radius:15, x: 5, y: 5)
 			.padding()
 			.padding(.top)
 			.overlay(alignment:.trailing) {

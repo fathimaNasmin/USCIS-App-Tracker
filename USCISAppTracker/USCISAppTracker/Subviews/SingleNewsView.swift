@@ -41,10 +41,7 @@ struct SingleNewsView: View {
 				.background(Color.blueMainColor)
 				.clipShape(RoundedRectangle(cornerRadius: 20))
 		}
-		.padding()
-		.background(.white)
-		.clipShape(RoundedRectangle(cornerRadius: 20))
-		.shadow(color: .gray.opacity(0.2), radius: 3, x: 0, y: 2)
+		.customBoxModifier(opacity:0.2, radius:3, x: 0, y: 2)
 	}
 }
 

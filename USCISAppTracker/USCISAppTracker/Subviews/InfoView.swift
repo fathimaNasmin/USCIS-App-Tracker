@@ -39,11 +39,7 @@ struct InfoView: View {
 			.subTitleStyle(15)
 			.frame(height: 190)
 			.frame(maxWidth: .infinity, alignment: .leading)
-			.padding(15)
-			.padding(.vertical, 8)
-			.background(.white)
-			.clipShape(RoundedRectangle(cornerRadius: 15))
-			.shadow(color: .gray.opacity(0.5), radius: 15, x: 5, y: 5)
+			.customBoxModifier(radius:15, x: 5, y: 5)
 			.padding(.top, 50)
 			.padding(.horizontal, 20)
 		}
