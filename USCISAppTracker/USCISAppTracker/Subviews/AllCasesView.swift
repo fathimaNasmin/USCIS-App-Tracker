@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct AllCasesView: View {
+	@Environment(\.isAddPage) var isAddPage
 	@State var isAddNewCaseTabTapped: Bool = false
 	@Binding var selectedCase: String?
 	
@@ -22,7 +23,9 @@ struct AllCasesView: View {
 						AddCaseOnTabView()
 							.onTapGesture {
 								isAddNewCaseTabTapped = true
+								print(isAddPage)
 							}
+							.environment(\.isAddPage, true)
 						
 						SingleCaseView(statusColor: Color.processing, statusText: "Processing")
 							.onTapGesture {
@@ -43,7 +46,7 @@ struct AllCasesView: View {
 				.clipShape(RoundedRectangle(cornerRadius: 20))
 				.shadow(color: .gray.opacity(0.3), radius: 10, x: 0, y: 4)
 				.sheet(isPresented: $isAddNewCaseTabTapped) {
-					NewCaseAddView()
+					NewCaseAddAndEditCaseView()
 				}
 			}
 			.padding()

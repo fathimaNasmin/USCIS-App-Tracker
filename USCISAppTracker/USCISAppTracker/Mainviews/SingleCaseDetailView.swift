@@ -9,6 +9,9 @@ import SwiftUI
 
 struct SingleCaseDetailView: View {
 	@Environment(\.dismiss) var goBack
+	@Environment(\.dismiss) var dismissEditPage
+	@Environment(\.isAddPage) var isAddPage
+	@State private var isEditCaseTapped: Bool = false
 
 	let singleBoxDivision: CGFloat = 4
 	
@@ -36,6 +39,10 @@ struct SingleCaseDetailView: View {
 				// Edit Button
 				Button {
 					print("Edit action")
+					print(isAddPage)
+					isEditCaseTapped = true
+					
+					
 				} label: {
 					Image(systemName: "pencil")
 						.titleStyle(20)
@@ -154,6 +161,9 @@ struct SingleCaseDetailView: View {
 			}
 		}
 		.background(Color.antiFlashWhiteBaseColor)
+		.sheet(isPresented: $isEditCaseTapped) {
+			NewCaseAddAndEditCaseView()
+		}
 	}
 }
 }

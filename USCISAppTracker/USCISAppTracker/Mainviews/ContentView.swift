@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct ContentView: View {
+	@Environment(\.isAddPage) var isAddPage
 	@State var selectedCase: String?
 	
     var body: some View {
@@ -29,6 +30,7 @@ struct ContentView: View {
 					SingleCaseDetailView()
 						.toolbar(.hidden, for: .navigationBar)
 						.transition(.move(edge: .trailing)) // Moves from right
+						.environment(\.isAddPage, false) // changing the environment value to false
 				}
 			}
         }
