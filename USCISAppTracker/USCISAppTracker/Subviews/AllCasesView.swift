@@ -9,6 +9,7 @@ import SwiftUI
 
 struct AllCasesView: View {
 	@State var isAddNewCaseTabTapped: Bool = false
+	@Binding var selectedCase: String?
 	
     var body: some View {
 			VStack {
@@ -24,6 +25,9 @@ struct AllCasesView: View {
 							}
 						
 						SingleCaseView(statusColor: Color.processing, statusText: "Processing")
+							.onTapGesture {
+								selectedCase = "Processing"
+							}
 						
 						SingleCaseView(statusColor: Color.approved, statusText: "Approved")
 						
@@ -32,6 +36,7 @@ struct AllCasesView: View {
 					.tabViewStyle(.page)
 					.indexViewStyle(.page(backgroundDisplayMode: .always))
 					.background(.white)
+					
 				}
 				.frame(maxWidth: .infinity)
 				.frame(height: 220)
@@ -46,9 +51,9 @@ struct AllCasesView: View {
     }
 }
 
-#Preview {
-    AllCasesView()
-}
+//#Preview {
+//    AllCasesView()
+//}
 
 struct AddCaseOnTabView: View {
 	var body: some View {

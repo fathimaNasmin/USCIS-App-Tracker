@@ -8,22 +8,28 @@
 import SwiftUI
 
 struct ContentView: View {
+	@State var selectedCase: String?
+	
     var body: some View {
         ZStack {
-			VStack {
-				// MARK: Header
-				HeaderView()
-				
-				ScrollView{
-					// MARK: All Cases
-					AllCasesView()
+			NavigationStack {
+				VStack {
+					// MARK: Header
+					HeaderView()
 					
-					// MARK: News
-					NewsView()
+					ScrollView{
+						// MARK: All Cases
+						AllCasesView(selectedCase: $selectedCase)
+						
+						// MARK: News
+						NewsView()
+					}
 				}
-
-				
-//				Spacer()
+				.navigationDestination(item: $selectedCase) { caseName in
+					SingleCaseDetailView()
+						.toolbar(.hidden, for: .navigationBar)
+						.transition(.move(edge: .trailing)) // Moves from right
+				}
 			}
         }
 		.background(Color.antiFlashWhiteBaseColor)

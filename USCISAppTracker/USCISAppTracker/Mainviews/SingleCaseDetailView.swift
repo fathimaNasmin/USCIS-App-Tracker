@@ -8,7 +8,8 @@
 import SwiftUI
 
 struct SingleCaseDetailView: View {
-	
+	@Environment(\.dismiss) var goBack
+
 	let singleBoxDivision: CGFloat = 4
 	
 	var body: some View {
@@ -16,6 +17,14 @@ struct SingleCaseDetailView: View {
 		VStack {
 			// MARK: Header
 			HStack {
+				Button(action: {
+					goBack()
+				}) {
+					Image(systemName: "arrow.left")
+						.titleStyle(20)
+						.fontWeight(.bold)
+				}
+				
 				Spacer()
 				
 				// Nick Name
