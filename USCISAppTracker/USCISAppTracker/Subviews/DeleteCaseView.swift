@@ -8,10 +8,12 @@
 import SwiftUI
 
 struct DeleteCaseView: View {
+	@State private var showDeleteAlert: Bool = false
+	
     var body: some View {
 		VStack {
 			Button {
-				print("delete the case")
+				showDeleteAlert = true
 			} label: {
 				Text("Delete Case".uppercased())
 					.titleStyle(20)
@@ -23,6 +25,14 @@ struct DeleteCaseView: View {
 					.background(Color.textGray.opacity(0.3))
 					.clipShape(RoundedRectangle(cornerRadius: 10))
 			}
+			.alert("Are you sure you want to delete this case", isPresented: $showDeleteAlert) {
+				Button("Delete", role: .destructive) {
+					print("Deleted")
+				}
+				Button("Cancel", role: .cancel) {
+					print("Cancelled")
+				}
+			}
 
 		}
     }
@@ -30,4 +40,8 @@ struct DeleteCaseView: View {
 
 #Preview {
     DeleteCaseView()
+}
+
+func message(msg: String) {
+	
 }
