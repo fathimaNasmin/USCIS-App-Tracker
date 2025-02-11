@@ -7,8 +7,9 @@
 
 import SwiftUI
 
-struct NewCaseAddView: View {
+struct NewCaseAddAndEditCaseView: View {
 	@Environment(\.dismiss) var dismissAddCaseSheet
+	@Environment(\.isAddPage) var isAddPage
 	@State private var receiptNumber: String = ""
 	@State private var nickName: String = ""
 	@State var isInfoButtonTapped: Bool = false
@@ -24,7 +25,7 @@ struct NewCaseAddView: View {
 				
 				Spacer()
 				
-				Text("Add Case")
+				Text(isAddPage ? "Add Case" : "Edit Case")
 					.titleStyle(20)
 				
 				Spacer()
@@ -41,18 +42,20 @@ struct NewCaseAddView: View {
 						.textFieldStyle(RoundedRectangleTextFieldStyle())
 						.padding(.vertical, 10)
 						.overlay(alignment: .trailing) {
-							HStack {
-								Spacer()
-								Button(action: {
-									withAnimation(.snappy(duration: 0.3)) {
-										if isInfoButtonTapped { isInfoButtonTapped = false }
-										else { isInfoButtonTapped = true }
+							if isAddPage {
+								HStack {
+									Spacer()
+									Button(action: {
+										withAnimation(.snappy(duration: 0.3)) {
+											if isInfoButtonTapped { isInfoButtonTapped = false }
+											else { isInfoButtonTapped = true }
+										}
+									}) {
+										Image(systemName: "info.circle")
+											.foregroundColor(.blue)
+											.imageScale(.medium)
+											.padding(.trailing, 10)
 									}
-								}) {
-									Image(systemName: "info.circle")
-										.foregroundColor(.blue)
-										.imageScale(.medium)
-										.padding(.trailing, 10)
 								}
 							}
 						}
@@ -102,7 +105,7 @@ struct NewCaseAddView: View {
 }
 
 #Preview {
-	NewCaseAddView()
+	NewCaseAddAndEditCaseView()
 }
 
 
