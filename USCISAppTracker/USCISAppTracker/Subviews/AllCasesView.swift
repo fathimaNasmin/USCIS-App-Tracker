@@ -31,10 +31,6 @@ struct AllCasesView: View {
 							.onTapGesture {
 								selectedCase = "Processing"
 							}
-						
-						SingleCaseView(statusColor: Color.approved, statusText: "Approved")
-						
-						SingleCaseView(statusColor: Color.completed, statusText: "Completed")
 					}
 					.tabViewStyle(.page)
 					.indexViewStyle(.page(backgroundDisplayMode: .always))
