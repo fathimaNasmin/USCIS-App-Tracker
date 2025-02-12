@@ -12,7 +12,7 @@ struct NewCaseAddAndEditCaseView: View {
 	@Environment(\.isAddPage) var isAddPage
 	@State private var receiptNumber: String = ""
 	@State private var nickName: String = ""
-	@State var isInfoButtonTapped: Bool = false
+	@State private var isInfoButtonTapped: Bool = false
 	
 	
     var body: some View {

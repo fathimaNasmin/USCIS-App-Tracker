@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct NewsView: View {
-	@State var newsId: Int?
+	@State private var newsId: Int?
 	
     var body: some View {
 		NavigationStack {

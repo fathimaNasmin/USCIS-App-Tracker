@@ -9,7 +9,7 @@ import SwiftUI
 
 struct AllCasesView: View {
 	@Environment(\.isAddPage) var isAddPage
-	@State var isAddNewCaseTabTapped: Bool = false
+	@State private var isAddNewCaseTabTapped: Bool = false
 	@Binding var selectedCase: String?
 	
     var body: some View {
