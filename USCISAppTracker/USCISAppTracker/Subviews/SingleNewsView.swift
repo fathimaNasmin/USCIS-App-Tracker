@@ -8,6 +8,8 @@
 import SwiftUI
 
 struct SingleNewsView: View {
+	@Binding var selectedNewsId: Int?
+	
 	var body: some View {
 		VStack{
 			HStack {
@@ -40,11 +42,14 @@ struct SingleNewsView: View {
 				.foregroundColor(.white)
 				.background(Color.blueMainColor)
 				.clipShape(RoundedRectangle(cornerRadius: 20))
+				.onTapGesture {
+					selectedNewsId = 1
+				}
 		}
 		.customBoxModifier(opacity:0.2, radius:3, x: 0, y: 2)
 	}
 }
 
-#Preview {
-    SingleNewsView()
-}
+//#Preview {
+//    SingleNewsView()
+//}

@@ -12,8 +12,8 @@ struct ContentView: View {
 	@State var selectedCase: String?
 	
     var body: some View {
+		NavigationStack {
         ZStack {
-			NavigationStack {
 				VStack {
 					// MARK: Header
 					HeaderView()
@@ -33,8 +33,8 @@ struct ContentView: View {
 						.environment(\.isAddPage, false) // changing the environment value to false
 				}
 			}
+			.background(Color.antiFlashWhiteBaseColor)
         }
-		.background(Color.antiFlashWhiteBaseColor)
     }
 }
 

@@ -8,23 +8,33 @@
 import SwiftUI
 
 struct NewsView: View {
+	@State var newsId: Int?
+	
     var body: some View {
-		VStack {
-			// MARK: Title - News
-			HeadingView(headingText: "News")
-			
-			ScrollView {
-				ForEach(1...10, id: \.self) { view in
-					SingleNewsView()
-						.padding(.bottom, 20)
+		NavigationStack {
+			VStack {
+				// MARK: Title - News
+				HeadingView(headingText: "News")
+				
+				ScrollView {
+					ForEach(1...5, id: \.self) { view in
+						SingleNewsView(selectedNewsId: $newsId)
+							.padding(.bottom, 20)
+					}
 				}
+				.padding(5)
+				.background(.clear)
+				
 			}
-			.padding(5)
-			.background(.clear)
-
+			.padding()
+			.padding(.horizontal, 7)
+			// navigation modifier'
+			.navigationDestination(item: $newsId) { id in
+				NewsDetailView()
+					.toolbar(.hidden, for: .navigationBar)
+					.transition(.move(edge: .trailing)) // Moves from right
+			}
 		}
-		.padding()
-		.padding(.horizontal, 7)
     }
 }
 
