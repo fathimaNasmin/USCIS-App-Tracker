@@ -9,14 +9,15 @@ import SwiftUI
 
 struct ContentView: View {
 	@Environment(\.isAddPage) var isAddPage
-	@State var selectedCase: String?
+	@State private var selectedCase: String?
+	@State private var notificationBellTapped: Bool?
 	
     var body: some View {
 		NavigationStack {
         ZStack {
 				VStack {
 					// MARK: Header
-					HeaderView()
+					HeaderView(notificationBellTapped: $notificationBellTapped)
 					
 					ScrollView{
 						// MARK: All Cases
@@ -31,6 +32,11 @@ struct ContentView: View {
 						.toolbar(.hidden, for: .navigationBar)
 						.transition(.move(edge: .trailing)) // Moves from right
 						.environment(\.isAddPage, false) // changing the environment value to false
+				}
+				.navigationDestination(item: $notificationBellTapped) { caseName in
+					NotificationDetailView()
+						.toolbar(.hidden, for: .navigationBar)
+						.transition(.move(edge: .trailing)) // Moves from right
 				}
 			}
 			.background(Color.antiFlashWhiteBaseColor)

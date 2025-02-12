@@ -8,6 +8,8 @@
 import SwiftUI
 
 struct HeaderView: View {
+	@Binding var notificationBellTapped: Bool?
+	
     var body: some View {
 		HStack {
 			Image("uscis_logo")
@@ -17,8 +19,21 @@ struct HeaderView: View {
 			Spacer()
 			
 			Group {
-				Image(systemName: "gear")
-				Image(systemName: "bell")
+				// MARK: Settings button
+				Button {
+					print("Settings tapped")
+				} label: {
+					Image(systemName: "gear")
+				}
+				
+				// MARK: Notification button
+				Button {
+					print("Notification button")
+					notificationBellTapped = true
+				} label: {
+					Image(systemName: "bell")
+				}
+
 			}
 			.font(.title)
 			.foregroundColor(.white)
@@ -30,6 +45,6 @@ struct HeaderView: View {
     }
 }
 
-#Preview {
-    HeaderView()
-}
+//#Preview {
+//    HeaderView()
+//}
