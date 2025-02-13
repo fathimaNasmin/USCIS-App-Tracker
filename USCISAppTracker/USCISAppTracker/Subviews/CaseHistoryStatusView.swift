@@ -8,6 +8,8 @@
 import SwiftUI
 
 struct CaseHistoryStatusView: View {
+	let caseStatusHistories: [CaseHistory]
+	
 	@State private var circlePositions: [CGPoint] = []
 	private let width: CGFloat = 12
 	private let height: CGFloat = 12
@@ -17,8 +19,8 @@ struct CaseHistoryStatusView: View {
 		HeadingView(headingText: "Case History & Status", fontSize: 25)
 		
 
-		VStack {
-			ForEach(0..<5) { index in
+		VStack(alignment: .leading) {
+			ForEach(caseStatusHistories) { history in
 				HStack(alignment: .top){
 					Text("Approved")
 						.captionStyle(12)
@@ -32,12 +34,12 @@ struct CaseHistoryStatusView: View {
 					
 					HStack(alignment: .center) {
 						VStack(alignment: .leading){
-							Text("Oct 2024")
+							Text(formatDate(date: history.date))
 								.paragraphStyle(14)
 								.fontWeight(.bold)
 								.padding(.bottom, 2)
 							
-							Text("We approved your Form I-130, Petition for Alien Relative.")
+							Text(history.completedDateEn)
 								.paragraphStyle(16)
 							
 						}
@@ -75,9 +77,9 @@ struct CaseHistoryStatusView: View {
     }
 }
 
-#Preview {
-    CaseHistoryStatusView()
-}
+//#Preview {
+//    CaseHistoryStatusView()
+//}
 
 
 struct Line: Shape{

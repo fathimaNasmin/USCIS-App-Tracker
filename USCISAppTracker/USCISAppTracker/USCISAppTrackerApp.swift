@@ -9,9 +9,12 @@ import SwiftUI
 
 @main
 struct USCISAppTrackerApp: App {
+	@StateObject private var caseVm = CaseViewModel()
+	
     var body: some Scene {
         WindowGroup {
             ContentView()
+				.environmentObject(caseVm)
         }
     }
 }

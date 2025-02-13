@@ -9,8 +9,12 @@ import SwiftUI
 
 struct ContentView: View {
 	@Environment(\.isAddPage) var isAddPage
+	
+	@EnvironmentObject var caseVm: CaseViewModel
+	
 	@State private var selectedCase: String?
 	@State private var notificationBellTapped: Bool?
+	
 	
     var body: some View {
 		NavigationStack {
@@ -28,7 +32,7 @@ struct ContentView: View {
 					}
 				}
 				.navigationDestination(item: $selectedCase) { caseName in
-					SingleCaseDetailView()
+					SingleCaseDetailView(caseVm: caseVm)
 						.toolbar(.hidden, for: .navigationBar)
 						.transition(.move(edge: .trailing)) // Moves from right
 						.environment(\.isAddPage, false) // changing the environment value to false
