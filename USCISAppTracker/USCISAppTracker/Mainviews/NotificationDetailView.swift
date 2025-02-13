@@ -14,28 +14,7 @@ struct NotificationDetailView: View {
 		VStack {
 			
 			// MARK: Header
-			HStack {
-				Button(action: {
-					goBack()
-				}) {
-					Image(systemName: "arrow.left")
-						.titleStyle(20)
-						.fontWeight(.bold)
-				}
-				
-				Spacer()
-				
-				// MARK: News
-				Text("Notification")
-					.titleStyle(20)
-				
-				Spacer()
-
-			}
-			.padding()
-			.padding(.vertical, 5)
-			.background(Color.blueMainColor)
-			.foregroundColor(.white)
+			SubHeaderView(title: "Notification", iconName: nil, iconAction: nil)
 			
 			//MARK: Contents
 			

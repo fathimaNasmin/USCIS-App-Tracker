@@ -14,38 +14,8 @@ struct NewsDetailView: View {
 		VStack{
 			
 			// MARK: Header
-			HStack {
-				Button(action: {
-					goBack()
-				}) {
-					Image(systemName: "arrow.left")
-						.titleStyle(20)
-						.fontWeight(.bold)
-				}
-				
-				Spacer()
-				
-				// MARK: News
-				Text("News")
-					.titleStyle(20)
-				
-				Spacer()
-				
-				// MARK: Bookmark
-				Button {
-					print("Bookmarked")
-				} label: {
-					Image(systemName: "bookmark")
-						.titleStyle(20)
-						.fontWeight(.bold)
-				}
-				
-				
-			}
-			.padding()
-			.padding(.vertical, 5)
-			.background(Color.blueMainColor)
-			.foregroundColor(.white)
+			
+			SubHeaderView(title: "News", iconName: "bookmark", iconAction: nil)
 			
 //			 MARK: Contents
 			

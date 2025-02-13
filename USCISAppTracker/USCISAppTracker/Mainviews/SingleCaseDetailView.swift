@@ -19,42 +19,11 @@ struct SingleCaseDetailView: View {
 		GeometryReader { geo in
 		VStack {
 			// MARK: Header
-			HStack {
-				Button(action: {
-					goBack()
-				}) {
-					Image(systemName: "arrow.left")
-						.titleStyle(20)
-						.fontWeight(.bold)
-				}
-				
-				Spacer()
-				
-				// Nick Name
-				Text("John Doe")
-					.titleStyle(20)
-				
-				Spacer()
-				
-				// Edit Button
-				Button {
-					print("Edit action")
-					print(isAddPage)
-					isEditCaseTapped = true
-					
-					
-				} label: {
-					Image(systemName: "pencil")
-						.titleStyle(20)
-						.fontWeight(.bold)
-				}
-				
+			SubHeaderView(title: "John Doe", iconName: "pencil") {
+				isEditCaseTapped = true
 			}
-			.padding()
-			.padding(.vertical, 5)
-			.background(Color.blueMainColor)
-			.foregroundColor(.white)
 			
+			// MARK: Contents
 			ScrollView {
 				VStack {
 					// MARK: Receipt Number
