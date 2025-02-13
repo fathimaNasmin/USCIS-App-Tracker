@@ -65,3 +65,22 @@ func formatDate(date: String) -> String {
 	
 	return "\(day)\(suffix) \(outputFormatter.string(from: parsedDate))"
 }
+
+func daysFromNow(to dateString: String) -> Int? {
+	let dateFormatter = DateFormatter()
+	dateFormatter.dateFormat = "MM-dd-yyyy HH:mm:ss" // Match your date format
+	dateFormatter.timeZone = TimeZone.current
+	dateFormatter.locale = Locale.current
+	
+	// Convert string to Date
+	guard let targetDate = dateFormatter.date(from: dateString) else { return nil }
+	
+	// Get current date without time
+	let today = Calendar.current.startOfDay(for: Date())
+	let targetDay = Calendar.current.startOfDay(for: targetDate)
+	
+	// Calculate difference in days
+	let daysDifference = Calendar.current.dateComponents([.day], from: targetDay, to: today).day
+	
+	return daysDifference
+}
