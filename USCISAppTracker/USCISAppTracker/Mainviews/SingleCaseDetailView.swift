@@ -44,6 +44,7 @@ struct SingleCaseDetailView: View {
 					}
 					.padding(.bottom, 20)
 					
+					
 					// MARK: Latest Update on Case
 					VStack {
 						HStack{
@@ -68,7 +69,8 @@ struct SingleCaseDetailView: View {
 								Text("Submitted")
 									.padding(.bottom, 5)
 									.subTitleStyle(16)
-								Text("450")
+								Text("\(String(describing: daysFromNow(to: caseVm.caseStatusResponse.caseStatus.submittedDate)!))")
+
 									.subTitleStyle(20)
 									.fontWeight(.bold)
 								Text("days ago")
@@ -87,7 +89,8 @@ struct SingleCaseDetailView: View {
 								Text("Updated")
 									.padding(.bottom, 5)
 									.subTitleStyle(16)
-								Text("4")
+								Text("\(String(describing: daysFromNow(to: caseVm.caseStatusResponse.caseStatus.modifiedDate)!))")
+
 									.subTitleStyle(20)
 									.fontWeight(.bold)
 								Text("days ago")
