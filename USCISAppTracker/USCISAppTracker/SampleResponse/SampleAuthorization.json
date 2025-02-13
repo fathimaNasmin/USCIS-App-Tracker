@@ -1,0 +1,19 @@
+{
+	"refresh_token_expires_in": "0",
+	"api_product_list": "[Case Status API - Sandbox, first-case-sbox]",
+	"api_product_list_json": [
+		"Case Status API - Sandbox",
+		"first-case-sbox"
+	],
+	"organization_name": "uscis",
+	"developer.email": "fathimanesmi@gmail.com",
+	"token_type": "Bearer",
+	"issued_at": "1739451767715",
+	"client_id": "KuOw6BdkydJlDjfrDoiVbaS9onXm1gr0",
+	"access_token": "oAoAYntMQq4rqRAv3GUSjKGsAGPi",
+	"application_name": "011d02af-4097-470e-abd8-e620d1dfc2cc",
+	"scope": "",
+	"expires_in": "1799",
+	"refresh_count": "0",
+	"status": "approved"
+}

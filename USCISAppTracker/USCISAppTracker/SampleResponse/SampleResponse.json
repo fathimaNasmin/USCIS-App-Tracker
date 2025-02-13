@@ -1,0 +1,14 @@
+{
+	"case_status" : {
+		"receiptNumber" : "EAC9999103402",
+		"formType" : "I-130",
+		"submittedDate" : "09-05-2023 14:28:46",
+		"modifiedDate" : "09-05-2023 14:28:46",
+		"current_case_status_text_en" : "Case Approval Was Affirmed",
+		"current_case_status_desc_en" : "The approval of your case, Receipt Number EAC9999103402, was affirmed and your case is in final review. You will be notified by mail when we have completed working on your case. If you move, go to <a href=\"https://www.uscis.gov/addresschange\" target=\"_blank\">www.uscis.gov/addresschange</a> to give us your new mailing address.",
+		"current_case_status_text_es" : "Aprobación De Caso Reafirmada",
+		"current_case_status_desc_es" : "Se ratific\u00F3 la aprobaci\u00F3n del caso para su N\u00FAmero de Recibo EAC9999103402, y se encuentra en la instancia final de revisi\u00F3n. Se le notificar\u00E1 por correo cuando se hayan tomado todas las medidas en su caso. Si cambia de domicilio, visite <a href=\"https://www.uscis.gov/addresschange\" target=\"_blank\">www.uscis.gov/addresschange</a> para notificarnos su nueva direcci\u00F3n postal.",
+		"hist_case_status" : null
+	},
+	"message" : "Query was successful for payload {'receipt_number': 'EAC9999103402'}"
+}
