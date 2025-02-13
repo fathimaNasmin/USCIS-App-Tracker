@@ -7,10 +7,14 @@
 
 import Foundation
 
-struct CaseResponseModel: Codable {
+struct CaseResponseModel: Decodable {
 	let caseStatus: CaseStatus
 	
-	struct CaseStatus: Codable {
+	enum CodingKeys: String, CodingKey{
+		case caseStatus = "case_status"
+	}
+	
+	struct CaseStatus: Decodable {
 		let receiptNumber: String
 		let formType: String
 		let submittedDate: String
@@ -29,14 +33,16 @@ struct CaseResponseModel: Codable {
 			case caseHistoryStatus = "hist_case_status"
 		}
 		
-		struct CaseHistory: Codable {
-			let date: String
-			let completedDateEn: String
-			
-			enum CodingKeys: String, CodingKey {
-				case date
-				case completedDateEn = "completed_text_en"
-			}
-		}
+	}
+}
+
+struct CaseHistory: Decodable, Identifiable {
+	let id:UUID = UUID()
+	let date: String
+	let completedDateEn: String
+	
+	enum CodingKeys: String, CodingKey {
+		case date
+		case completedDateEn = "completed_text_en"
 	}
 }

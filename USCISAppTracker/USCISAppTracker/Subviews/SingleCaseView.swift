@@ -8,6 +8,8 @@
 import SwiftUI
 
 struct SingleCaseView: View {
+	@EnvironmentObject var caseVm: CaseViewModel
+	
 	let statusColor: Color
 	let statusText: String
 	
@@ -35,21 +37,21 @@ struct SingleCaseView: View {
 			.padding(.bottom, 3)
 			
 			HStack {
-				Text("EAC9999103410")
+				Text(caseVm.caseStatusResponse.caseStatus.receiptNumber)
 					.titleStyle(22)
 					.fontWeight(.bold)
 					.foregroundColor(Color.blueMainColor)
 				
 				Spacer()
 				
-				Text("15th December 2024")
+				Text(formatDateTime(date: caseVm.caseStatusResponse.caseStatus.submittedDate))
 					.captionStyle(12)
 					.foregroundColor(.black)
 			}
 			.padding(.bottom, -2)
 			
 			HStack {
-				Text("Case is being actively reviewed by USCIS")
+				Text(caseVm.caseStatusResponse.caseStatus.currentCaseStatusText)
 					.subTitleStyle(16)
 					.fontWeight(.regular)
 					.foregroundColor(.black)
@@ -63,7 +65,7 @@ struct SingleCaseView: View {
 				
 				Spacer()
 				
-				Text("I-799")
+				Text(caseVm.caseStatusResponse.caseStatus.formType)
 			}
 			.captionStyle(12)
 			.fontWeight(.regular)

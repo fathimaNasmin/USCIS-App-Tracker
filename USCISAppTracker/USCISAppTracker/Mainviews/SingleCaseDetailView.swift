@@ -15,6 +15,8 @@ struct SingleCaseDetailView: View {
 
 	let singleBoxDivision: CGFloat = 4
 	
+	let caseVm: CaseViewModel
+	
 	var body: some View {
 		GeometryReader { geo in
 		VStack {
@@ -32,7 +34,7 @@ struct SingleCaseDetailView: View {
 							Text("Receipt Number")
 								.captionStyle(12)
 								.foregroundColor(Color.tungstenGray)
-							Text("EAC9999103410")
+							Text(caseVm.caseStatusResponse.caseStatus.receiptNumber)
 								.titleStyle(24)
 								.fontWeight(.heavy)
 								.foregroundColor(Color.blueMainColor)
@@ -49,7 +51,7 @@ struct SingleCaseDetailView: View {
 								Text("Form")
 									.padding(.bottom, 5)
 									.subTitleStyle(16)
-								Text("I-795")
+								Text(caseVm.caseStatusResponse.caseStatus.formType)
 									.subTitleStyle(20)
 									.fontWeight(.bold)
 							}
@@ -104,11 +106,11 @@ struct SingleCaseDetailView: View {
 						
 						HStack{
 							VStack(alignment: .leading){
-								Text("Case Was Approved")
+								Text(caseVm.caseStatusResponse.caseStatus.currentCaseStatusText)
 									.titleStyle(22)
 									.padding(.bottom, 10)
 								
-								Text("On September 5, 2023, we approved your Form I-130, Petition for Alien Relative, Receipt Number EAC9999103403. We sent you an approval notice. Please follow the instructions in the notice.")
+								Text(caseVm.caseStatusResponse.caseStatus.currentCaseStatusDescription)
 									.captionStyle(18)
 									.lineSpacing(8)
 									.foregroundColor(Color.tungstenGray)
@@ -120,9 +122,10 @@ struct SingleCaseDetailView: View {
 					.padding(.bottom, 20)
 					
 					// MARK: Case history
-
-					CaseHistoryStatusView()
-
+					if let caseStatusHistories = caseVm.caseStatusResponse.caseStatus.caseHistoryStatus {
+						CaseHistoryStatusView(caseStatusHistories: caseStatusHistories)
+					}
+					
 					DeleteCaseView()
 						.padding(.top, 40)
 				}
@@ -138,5 +141,5 @@ struct SingleCaseDetailView: View {
 }
 
 #Preview {
-    SingleCaseDetailView()
+	SingleCaseDetailView(caseVm: CaseViewModel())
 }
