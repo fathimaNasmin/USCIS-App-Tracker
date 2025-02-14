@@ -112,12 +112,8 @@ struct SingleCaseDetailView: View {
 								Text(caseVm.caseStatusResponse.caseStatus.currentCaseStatusText)
 									.titleStyle(22)
 									.padding(.bottom, 10)
-								
-								Text(caseVm.caseStatusResponse.caseStatus.currentCaseStatusDescription)
-									.captionStyle(18)
-									.lineSpacing(8)
-									.foregroundColor(Color.tungstenGray)
-									.padding(.bottom)
+								// Formatting the HTML contents in response
+								HTMLFormattedText(caseVm.caseStatusResponse.caseStatus.currentCaseStatusDescription)
 							}
 						}
 					}
