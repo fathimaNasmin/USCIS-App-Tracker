@@ -10,15 +10,14 @@ import SwiftUI
 struct SingleCaseView: View {
 	@EnvironmentObject var caseVm: CaseViewModel
 	
-	let statusColor: Color
-	let statusText: String
+	let caseStatusText: String
 	
     var body: some View {
 		VStack {
 			HStack{
-				CircleStatusView(width: 13, height: 13, circleColor: statusColor)
+				CircleStatusView(width: 13, height: 13, circleColor: getStatusStyle(for: caseStatusText).color)
 				
-				Text(statusText)
+				Text(getStatusStyle(for: caseStatusText).text)
 					.subTitleStyle(15)
 					.foregroundColor(.black)
 				
@@ -61,7 +60,7 @@ struct SingleCaseView: View {
 			.padding(.bottom, 10)
 			
 			HStack{
-				Text("Last status change: 6 days ago")
+				Text("Last status change: \(String(describing: daysFromNow(to: caseVm.caseStatusResponse.caseStatus.modifiedDate)!)) days ago")
 				
 				Spacer()
 				
@@ -78,6 +77,3 @@ struct SingleCaseView: View {
     }
 }
 
-#Preview {
-	SingleCaseView(statusColor: Color.approved, statusText: "Approved")
-}
