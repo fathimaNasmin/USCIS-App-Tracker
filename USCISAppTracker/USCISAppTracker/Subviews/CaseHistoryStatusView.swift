@@ -22,11 +22,8 @@ struct CaseHistoryStatusView: View {
 		VStack(alignment: .leading) {
 			ForEach(caseStatusHistories) { history in
 				HStack(alignment: .top){
-					Text("Approved")
-						.captionStyle(12)
-						.foregroundColor(.gray)
 					
-					CircleStatusView(width: width, height: height, circleColor: Color.approved)
+					CircleStatusView(width: width, height: height, circleColor: getStatusStyle(for: history.completedDateEn).color)
 						.background(GeometryReader { proxy in
 							Color.clear
 								.preference(key: PositionPreferenceKey.self, value: [proxy.frame(in: .named("statusLineSpace")).midPoint])
