@@ -15,7 +15,7 @@ struct SingleCaseDetailView: View {
 
 	let singleBoxDivision: CGFloat = 4
 	
-	let caseVm: CaseViewModel
+	let vm: CaseViewModel
 	
 	var body: some View {
 		GeometryReader { geo in
@@ -34,7 +34,7 @@ struct SingleCaseDetailView: View {
 							Text("Receipt Number")
 								.captionStyle(12)
 								.foregroundColor(Color.tungstenGray)
-							Text(caseVm.caseStatusResponse.caseStatus.receiptNumber)
+							Text(vm.caseStatusResponse.caseStatus.receiptNumber)
 								.titleStyle(24)
 								.fontWeight(.heavy)
 								.foregroundColor(Color.blueMainColor)
@@ -52,7 +52,7 @@ struct SingleCaseDetailView: View {
 								Text("Form")
 									.padding(.bottom, 5)
 									.subTitleStyle(16)
-								Text(caseVm.caseStatusResponse.caseStatus.formType)
+								Text(vm.caseStatusResponse.caseStatus.formType)
 									.subTitleStyle(20)
 									.fontWeight(.bold)
 							}
@@ -69,7 +69,7 @@ struct SingleCaseDetailView: View {
 								Text("Submitted")
 									.padding(.bottom, 5)
 									.subTitleStyle(16)
-								Text("\(String(describing: daysFromNow(to: caseVm.caseStatusResponse.caseStatus.submittedDate)!))")
+								Text("\(String(describing: daysFromNow(to: vm.caseStatusResponse.caseStatus.submittedDate)!))")
 
 									.subTitleStyle(20)
 									.fontWeight(.bold)
@@ -89,7 +89,7 @@ struct SingleCaseDetailView: View {
 								Text("Updated")
 									.padding(.bottom, 5)
 									.subTitleStyle(16)
-								Text("\(String(describing: daysFromNow(to: caseVm.caseStatusResponse.caseStatus.modifiedDate)!))")
+								Text("\(String(describing: daysFromNow(to: vm.caseStatusResponse.caseStatus.modifiedDate)!))")
 
 									.subTitleStyle(20)
 									.fontWeight(.bold)
@@ -109,11 +109,11 @@ struct SingleCaseDetailView: View {
 						
 						HStack{
 							VStack(alignment: .leading){
-								Text(caseVm.caseStatusResponse.caseStatus.currentCaseStatusText)
+								Text(vm.caseStatusResponse.caseStatus.currentCaseStatusText)
 									.titleStyle(22)
 									.padding(.bottom, 10)
 								// Formatting the HTML contents in response
-								HTMLFormattedText(caseVm.caseStatusResponse.caseStatus.currentCaseStatusDescription)
+								HTMLFormattedText(vm.caseStatusResponse.caseStatus.currentCaseStatusDescription)
 							}
 						}
 					}
@@ -121,7 +121,7 @@ struct SingleCaseDetailView: View {
 					.padding(.bottom, 20)
 					
 					// MARK: Case history
-					if let caseStatusHistories = caseVm.caseStatusResponse.caseStatus.caseHistoryStatus {
+					if let caseStatusHistories = vm.caseStatusResponse.caseStatus.caseHistoryStatus {
 						CaseHistoryStatusView(caseStatusHistories: caseStatusHistories)
 					}
 					
@@ -140,5 +140,5 @@ struct SingleCaseDetailView: View {
 }
 
 #Preview {
-	SingleCaseDetailView(caseVm: CaseViewModel())
+	SingleCaseDetailView(vm: CaseViewModel())
 }
