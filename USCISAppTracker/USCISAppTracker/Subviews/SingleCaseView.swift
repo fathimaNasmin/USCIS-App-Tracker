@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct SingleCaseView: View {
-	@EnvironmentObject var caseVm: CaseViewModel
+	@EnvironmentObject var vm: CaseViewModel
 	
 	let caseStatusText: String
 	
@@ -36,21 +36,21 @@ struct SingleCaseView: View {
 			.padding(.bottom, 3)
 			
 			HStack {
-				Text(caseVm.caseStatusResponse.caseStatus.receiptNumber)
+				Text(vm.caseStatusResponse.caseStatus.receiptNumber)
 					.titleStyle(22)
 					.fontWeight(.bold)
 					.foregroundColor(Color.blueMainColor)
 				
 				Spacer()
 				
-				Text(formatDateTime(date: caseVm.caseStatusResponse.caseStatus.submittedDate))
+				Text(formatDateTime(date: vm.caseStatusResponse.caseStatus.submittedDate))
 					.captionStyle(12)
 					.foregroundColor(.black)
 			}
 			.padding(.bottom, -2)
 			
 			HStack {
-				Text(caseVm.caseStatusResponse.caseStatus.currentCaseStatusText)
+				Text(vm.caseStatusResponse.caseStatus.currentCaseStatusText)
 					.subTitleStyle(16)
 					.fontWeight(.regular)
 					.foregroundColor(.black)
@@ -60,11 +60,11 @@ struct SingleCaseView: View {
 			.padding(.bottom, 10)
 			
 			HStack{
-				Text("Last status change: \(String(describing: daysFromNow(to: caseVm.caseStatusResponse.caseStatus.modifiedDate)!)) days ago")
+				Text("Last status change: \(String(describing: daysFromNow(to: vm.caseStatusResponse.caseStatus.modifiedDate)!)) days ago")
 				
 				Spacer()
 				
-				Text(caseVm.caseStatusResponse.caseStatus.formType)
+				Text(vm.caseStatusResponse.caseStatus.formType)
 			}
 			.captionStyle(12)
 			.fontWeight(.regular)
