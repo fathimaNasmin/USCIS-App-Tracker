@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct CaseHistoryStatusView: View {
-	let caseStatusHistories: [CaseHistory]
+	let caseStatusHistories: [History]
 	
 	@State private var circlePositions: [CGPoint] = []
 	private let width: CGFloat = 12
@@ -23,7 +23,7 @@ struct CaseHistoryStatusView: View {
 			ForEach(caseStatusHistories) { history in
 				HStack(alignment: .top){
 					
-					CircleStatusView(width: width, height: height, circleColor: getStatusStyle(for: history.completedDateEn).color)
+					CircleStatusView(width: width, height: height, circleColor: history.color)
 						.background(GeometryReader { proxy in
 							Color.clear
 								.preference(key: PositionPreferenceKey.self, value: [proxy.frame(in: .named("statusLineSpace")).midPoint])
@@ -31,12 +31,12 @@ struct CaseHistoryStatusView: View {
 					
 					HStack(alignment: .center) {
 						VStack(alignment: .leading){
-							Text(formatDate(date: history.date))
+							Text(history.formattedDate)
 								.paragraphStyle(14)
 								.fontWeight(.bold)
 								.padding(.bottom, 2)
 							
-							Text(history.completedDateEn)
+							Text(history.text)
 								.paragraphStyle(16)
 							
 						}

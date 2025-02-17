@@ -7,10 +7,9 @@
 
 import SwiftUI
 
-struct ContentView: View {
+struct USCISPageView: View {
+	@StateObject private var vm = CaseViewModel()
 	@Environment(\.isAddPage) var isAddPage
-	
-	@EnvironmentObject var vm: CaseViewModel
 	
 	@State private var selectedCase: String?
 	@State private var notificationBellTapped: Bool?
@@ -22,17 +21,24 @@ struct ContentView: View {
 				VStack {
 					// MARK: Header
 					HeaderView(notificationBellTapped: $notificationBellTapped)
-					
+					let _ = print("Update Vstack")
+
 					ScrollView{
 						// MARK: All Cases
-						AllCasesView(selectedCase: $selectedCase)
+						if let normalCase = vm.USCISCase {
+							let _ = print("Update SpyView")
+
+							AllCasesView(selectedCase: $selectedCase, oneCase: normalCase)
+						}
 						
+						let _ = print("Update outside")
+
 						// MARK: News
 						NewsView()
 					}
 				}
 				.navigationDestination(item: $selectedCase) { caseName in
-					SingleCaseDetailView(vm: vm)
+					SingleCaseDetailView(singleCase: vm.USCISCase!)
 						.toolbar(.hidden, for: .navigationBar)
 						.transition(.move(edge: .trailing)) // Moves from right
 						.environment(\.isAddPage, false) // changing the environment value to false
@@ -45,9 +51,10 @@ struct ContentView: View {
 			}
 			.background(Color.antiFlashWhiteBaseColor)
         }
+		.onAppear {
+			vm.fetchCaseInfo()
+		}
+
     }
 }
 
-#Preview {
-    ContentView()
-}
