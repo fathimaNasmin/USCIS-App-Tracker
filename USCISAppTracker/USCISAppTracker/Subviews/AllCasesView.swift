@@ -9,9 +9,10 @@ import SwiftUI
 
 struct AllCasesView: View {
 	@Environment(\.isAddPage) var isAddPage
-	@EnvironmentObject var vm: CaseViewModel
 	@State private var isAddNewCaseTabTapped: Bool = false
 	@Binding var selectedCase: String?
+	
+	var oneCase: Case
 	
     var body: some View {
 			VStack {
@@ -28,7 +29,7 @@ struct AllCasesView: View {
 							}
 							.environment(\.isAddPage, true)
 						
-						SingleCaseView(caseStatusText: vm.caseStatusResponse.caseStatus.currentCaseStatusText)
+						SingleCaseView(singleCase: oneCase)
 							.onTapGesture {
 								selectedCase = "Processing"
 							}

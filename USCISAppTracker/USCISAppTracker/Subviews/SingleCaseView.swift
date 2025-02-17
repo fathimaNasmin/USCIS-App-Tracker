@@ -8,16 +8,14 @@
 import SwiftUI
 
 struct SingleCaseView: View {
-	@EnvironmentObject var vm: CaseViewModel
-	
-	let caseStatusText: String
+	let singleCase: Case
 	
     var body: some View {
 		VStack {
 			HStack{
-				CircleStatusView(width: 13, height: 13, circleColor: getStatusStyle(for: caseStatusText).color)
+				CircleStatusView(width: 13, height: 13, circleColor: singleCase.color)
 				
-				Text(getStatusStyle(for: caseStatusText).text)
+				Text(singleCase.text)
 					.subTitleStyle(15)
 					.foregroundColor(.black)
 				
@@ -36,21 +34,21 @@ struct SingleCaseView: View {
 			.padding(.bottom, 3)
 			
 			HStack {
-				Text(vm.caseStatusResponse.caseStatus.receiptNumber)
+				Text(singleCase.receiptNo)
 					.titleStyle(22)
 					.fontWeight(.bold)
 					.foregroundColor(Color.blueMainColor)
 				
 				Spacer()
 				
-				Text(formatDateTime(date: vm.caseStatusResponse.caseStatus.submittedDate))
+				Text(singleCase.formattedSubmitDate)
 					.captionStyle(12)
 					.foregroundColor(.black)
 			}
 			.padding(.bottom, -2)
 			
 			HStack {
-				Text(vm.caseStatusResponse.caseStatus.currentCaseStatusText)
+				Text(singleCase.statusText)
 					.subTitleStyle(16)
 					.fontWeight(.regular)
 					.foregroundColor(.black)
@@ -60,11 +58,12 @@ struct SingleCaseView: View {
 			.padding(.bottom, 10)
 			
 			HStack{
-				Text("Last status change: \(String(describing: daysFromNow(to: vm.caseStatusResponse.caseStatus.modifiedDate)!)) days ago")
-				
+//				if let date = vm.USCISCase {
+					Text("Last status change: \(String(describing: singleCase.daysFromNow!)) days ago")
+//				}
 				Spacer()
 				
-				Text(vm.caseStatusResponse.caseStatus.formType)
+				Text(singleCase.formType)
 			}
 			.captionStyle(12)
 			.fontWeight(.regular)
