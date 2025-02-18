@@ -8,19 +8,14 @@
 import Foundation
 import SwiftUI
 
-class CaseViewModel: ObservableObject {
-	@Published var USCISCase: Case?
+@Observable class CaseViewModel {
+	var USCISCase: Case?
 
 	init() {
-//		fetchCaseInfo()
-//		print("FEtched the Info")
 	}
 	
 	func fetchCaseInfo() {
-		let decoder = JSONDecoder()
-		decoder.keyDecodingStrategy = .convertFromSnakeCase
-		
-		guard let url = Bundle.main.url(forResource: "SampleResponse2", withExtension: "json") else {
+		guard let url = Bundle.main.url(forResource: "SampleResponseWithHistory", withExtension: "json") else {
 			fatalError("\'SampleResponse.json\' file not found in the bundle.")
 		}
 		
