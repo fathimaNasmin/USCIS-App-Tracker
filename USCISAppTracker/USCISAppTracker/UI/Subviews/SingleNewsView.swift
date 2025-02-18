@@ -40,7 +40,7 @@ struct SingleNewsView: View {
 				.frame(height: 35)
 				.frame(maxWidth: .infinity)
 				.foregroundColor(.white)
-				.background(Color.blueMainColor)
+				.background(.bluePrimary)
 				.clipShape(RoundedRectangle(cornerRadius: 20))
 				.onTapGesture {
 					selectedNewsId = 1

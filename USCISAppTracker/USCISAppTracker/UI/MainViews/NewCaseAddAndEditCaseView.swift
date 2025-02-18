@@ -32,7 +32,7 @@ struct NewCaseAddAndEditCaseView: View {
 			}
 			.padding()
 			.padding(.vertical, 5)
-			.background(Color.blueMainColor)
+			.background(.bluePrimary)
 			.foregroundColor(.white)
 			
 			// MARK: New Case Form
@@ -74,7 +74,7 @@ struct NewCaseAddAndEditCaseView: View {
 						.padding(.vertical, -1)
 						.frame(maxWidth: .infinity)
 						.foregroundColor(.white)
-						.background(Color.blueMainColor)
+						.background(.bluePrimary)
 						.clipShape(RoundedRectangle(cornerRadius: 15))
 				}
 				.padding(.vertical, 10)

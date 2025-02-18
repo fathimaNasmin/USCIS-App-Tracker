@@ -41,7 +41,7 @@ struct HeaderView: View {
 		}
 		.frame(maxWidth: .infinity)
 		.padding()
-		.background(Color.blueMainColor)
+		.background(.bluePrimary)
     }
 }
 

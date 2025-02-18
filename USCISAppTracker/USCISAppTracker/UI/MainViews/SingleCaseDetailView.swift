@@ -37,7 +37,7 @@ struct SingleCaseDetailView: View {
 							Text(singleCase.receiptNo)
 								.titleStyle(24)
 								.fontWeight(.heavy)
-								.foregroundColor(Color.blueMainColor)
+								.foregroundColor(.bluePrimary)
 						}
 						
 						Spacer()
@@ -133,7 +133,7 @@ struct SingleCaseDetailView: View {
 				.padding()
 			}
 		}
-		.background(Color.antiFlashWhiteBaseColor)
+		.background(.antiflashwhite)
 		.sheet(isPresented: $isEditCaseTapped) {
 			NewCaseAddAndEditCaseView()
 		}
