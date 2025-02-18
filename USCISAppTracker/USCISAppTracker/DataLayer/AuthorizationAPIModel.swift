@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct AuthorizationModel: Codable {
+struct AuthorizationAPIModel: Codable {
 	let accessToken: String
 	let status: String
 }
