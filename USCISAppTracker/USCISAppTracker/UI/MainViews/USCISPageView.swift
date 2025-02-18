@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct USCISPageView: View {
-	@StateObject private var vm = CaseViewModel()
+	@State private var vm = CaseViewModel()
 	@Environment(\.isAddPage) var isAddPage
 	
 	@State private var selectedCase: String?
@@ -38,10 +38,12 @@ struct USCISPageView: View {
 					}
 				}
 				.navigationDestination(item: $selectedCase) { caseName in
-					SingleCaseDetailView(singleCase: vm.USCISCase!)
-						.toolbar(.hidden, for: .navigationBar)
-						.transition(.move(edge: .trailing)) // Moves from right
-						.environment(\.isAddPage, false) // changing the environment value to false
+					if let casedetail = vm.USCISCase {
+						SingleCaseDetailView(singleCase: casedetail)
+							.toolbar(.hidden, for: .navigationBar)
+							.transition(.move(edge: .trailing)) // Moves from right
+							.environment(\.isAddPage, false) // changing the environment value to false
+					}
 				}
 				.navigationDestination(item: $notificationBellTapped) { caseName in
 					NotificationDetailView()
@@ -49,7 +51,7 @@ struct USCISPageView: View {
 						.transition(.move(edge: .trailing)) // Moves from right
 				}
 			}
-			.background(Color.antiFlashWhiteBaseColor)
+			.background(.antiflashwhite)
         }
 		.onAppear {
 			vm.fetchCaseInfo()

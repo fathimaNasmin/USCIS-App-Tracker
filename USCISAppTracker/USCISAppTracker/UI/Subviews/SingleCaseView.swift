@@ -13,9 +13,9 @@ struct SingleCaseView: View {
     var body: some View {
 		VStack {
 			HStack{
-				CircleStatusView(width: 13, height: 13, circleColor: singleCase.color)
+				CircleStatusView(width: 13, height: 13, circleColor: singleCase.status.color)
 				
-				Text(singleCase.text)
+				Text(singleCase.status.text)
 					.subTitleStyle(15)
 					.foregroundColor(.black)
 				
@@ -37,7 +37,7 @@ struct SingleCaseView: View {
 				Text(singleCase.receiptNo)
 					.titleStyle(22)
 					.fontWeight(.bold)
-					.foregroundColor(Color.blueMainColor)
+					.foregroundColor(.bluePrimary)
 				
 				Spacer()
 				

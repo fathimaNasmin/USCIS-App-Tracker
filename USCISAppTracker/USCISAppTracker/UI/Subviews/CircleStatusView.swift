@@ -19,6 +19,3 @@ struct CircleStatusView: View {
 	}
 }
 
-#Preview {
-	CircleStatusView(width: 12, height: 12, circleColor: Color.approvedStatusColor)
-}

@@ -46,7 +46,7 @@ struct SubHeaderView: View {
 		}
 		.padding()
 		.padding(.vertical, 5)
-		.background(Color.blueMainColor)
+		.background(.bluePrimary)
 		.foregroundColor(.white)
 
     }
