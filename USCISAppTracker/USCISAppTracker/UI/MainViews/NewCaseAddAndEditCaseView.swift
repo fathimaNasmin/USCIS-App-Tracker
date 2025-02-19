@@ -38,7 +38,6 @@ struct NewCaseAddAndEditCaseView: View {
 			let regExp = try Regex("[a-zA-Z]{3}[0-9]{10}")
 			return try regExp.wholeMatch(in: receiptNumber) != nil
 		} catch {
-			print("Invalid Receipt number")
 			return false
 		}
 	}
@@ -153,7 +152,6 @@ struct NewCaseAddAndEditCaseView: View {
 				
 				
 				Button {
-					print("Save button pressed")
 					// Call Save Function
 					saveNewCaseEntry()
 				} label: {

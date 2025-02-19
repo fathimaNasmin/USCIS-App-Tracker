@@ -21,18 +21,13 @@ struct USCISPageView: View {
 				VStack {
 					// MARK: Header
 					HeaderView(notificationBellTapped: $notificationBellTapped)
-					let _ = print("Update Vstack")
 
 					ScrollView{
 						// MARK: All Cases
 						if let normalCase = vm.USCISCase {
-							let _ = print("Update SpyView")
 
 							AllCasesView(selectedCase: $selectedCase, oneCase: normalCase)
 						}
-						
-						let _ = print("Update outside")
-
 						// MARK: News
 						NewsView()
 					}
