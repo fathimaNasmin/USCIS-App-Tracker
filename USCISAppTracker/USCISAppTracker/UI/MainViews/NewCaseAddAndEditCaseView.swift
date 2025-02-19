@@ -15,8 +15,10 @@ struct NewCaseAddAndEditCaseView: View {
 	
 	@State private var receiptNumber: String = ""
 	@State private var nickName: String = ""
+	@State private var alertMessage: String = ""
 	
 	@State private var isInfoButtonTapped: Bool = false
+	@State private var showingAlert: Bool = false
 	
 	private var isAddFieldValid: Bool {
 		isReceiptNumberValid && isNameValid
@@ -41,14 +43,35 @@ struct NewCaseAddAndEditCaseView: View {
 		}
 	}
 	
-	private func saveNewCaseEntry() {
-		let newCase = CaseEntry(receiptNo: receiptNumber, name: nickName)
-		context.insert(newCase)
+	private func receiptNumberExists(number: String, context: ModelContext) -> Bool {
+		let fetchDescriptor = FetchDescriptor<CaseEntry>(predicate: #Predicate { $0.receiptNo == number })
+		
 		do {
-			try context.save()
-		} catch {
-			print(error.localizedDescription)
+			let results = try context.fetch(fetchDescriptor)
+			return !results.isEmpty // It means exists
+		}catch {
+			print("Error on fetching: \(error.localizedDescription)")
+			return false
 		}
+	}
+	
+	private func saveNewCaseEntry() {
+		if !receiptNumberExists(number: receiptNumber, context: context) {
+			let newCase = CaseEntry(receiptNo: receiptNumber, name: nickName)
+			context.insert(newCase)
+			do {
+				try context.save()
+			} catch {
+				print(error.localizedDescription)
+			}
+		}
+		// If receipt number exists
+		// show some error : alert
+		else {
+			showingAlert = true
+			alertMessage = "Receipt Number already Exists"
+		}
+		
 	}
 	
     var body: some View {
@@ -146,7 +169,9 @@ struct NewCaseAddAndEditCaseView: View {
 				}
 				.padding(.vertical, 10)
 				.disabled(!isAddFieldValid)
-				
+				.alert(alertMessage, isPresented: $showingAlert) {
+					Button("OK", role: .cancel) { }
+				}
 			}
 			.customBoxModifier(radius:15, x: 5, y: 5)
 			.padding()
