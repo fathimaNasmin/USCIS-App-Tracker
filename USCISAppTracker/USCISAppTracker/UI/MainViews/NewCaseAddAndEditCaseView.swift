@@ -6,14 +6,40 @@
 //
 
 import SwiftUI
+import SwiftData
 
 struct NewCaseAddAndEditCaseView: View {
 	@Environment(\.dismiss) var dismissAddCaseSheet
 	@Environment(\.isAddPage) var isAddPage
+	@Environment(\.modelContext) var context
+	
 	@State private var receiptNumber: String = ""
 	@State private var nickName: String = ""
+	
 	@State private var isInfoButtonTapped: Bool = false
 	
+	private var isAddFieldValid: Bool {
+		isReceiptNumberValid && isNameValid
+	}
+	
+	private var isReceiptNumberValid: Bool {
+		receiptNumber.count == 13 && checkReceiptNoPatternValid
+	}
+	
+	private var isNameValid: Bool {
+		!nickName.isEmpty && nickName.count > 3 ? true : false
+	}
+	
+	// Computed Property for checking the Receipt Number Pattern
+	private var checkReceiptNoPatternValid: Bool {
+		do {
+			let regExp = try Regex("[a-zA-Z]{3}[0-9]{10}")
+			return try regExp.wholeMatch(in: receiptNumber) != nil
+		} catch {
+			print("Invalid Receipt number")
+			return false
+		}
+	}
 	
     var body: some View {
 		VStack {
@@ -38,6 +64,7 @@ struct NewCaseAddAndEditCaseView: View {
 			// MARK: New Case Form
 			VStack {
 				HStack {
+					// MARK: TextField - Receipt Number
 					TextField("", text: $receiptNumber, prompt: Text("Receipt Number").foregroundColor(Color.textGray))
 						.textFieldStyle(RoundedRectangleTextFieldStyle())
 						.padding(.vertical, 10)
@@ -61,6 +88,7 @@ struct NewCaseAddAndEditCaseView: View {
 						}
 				}
 				
+				// MARK: TextField - Nick Name
 				TextField("", text: $nickName, prompt: Text("Nick Name").foregroundColor(Color.textGray))
 					.textFieldStyle(RoundedRectangleTextFieldStyle())
 					.padding(.vertical, 10)
@@ -78,6 +106,8 @@ struct NewCaseAddAndEditCaseView: View {
 						.clipShape(RoundedRectangle(cornerRadius: 15))
 				}
 				.padding(.vertical, 10)
+				.disabled(!isAddFieldValid)
+				
 			}
 			.customBoxModifier(radius:15, x: 5, y: 5)
 			.padding()
@@ -104,9 +134,9 @@ struct NewCaseAddAndEditCaseView: View {
     }
 }
 
-#Preview {
-	NewCaseAddAndEditCaseView()
-}
+//#Preview {
+//	NewCaseAddAndEditCaseView()
+//}
 
 
 
