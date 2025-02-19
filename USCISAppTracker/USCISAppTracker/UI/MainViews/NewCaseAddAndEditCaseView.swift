@@ -61,13 +61,13 @@ struct NewCaseAddAndEditCaseView: View {
 			context.insert(newCase)
 			do {
 				try context.save()
+				dismissAddCaseSheet()
 			} catch {
 				print(error.localizedDescription)
+				showingAlert = true
+				alertMessage = error.localizedDescription
 			}
-		}
-		// If receipt number exists
-		// show some error : alert
-		else {
+		}else {
 			showingAlert = true
 			alertMessage = "Receipt Number already Exists. Try different number."
 		}
@@ -156,7 +156,6 @@ struct NewCaseAddAndEditCaseView: View {
 					print("Save button pressed")
 					// Call Save Function
 					saveNewCaseEntry()
-					dismissAddCaseSheet()
 				} label: {
 					Text("Save")
 						.titleStyle(20)
