@@ -41,6 +41,16 @@ struct NewCaseAddAndEditCaseView: View {
 		}
 	}
 	
+	private func saveNewCaseEntry() {
+		let newCase = CaseEntry(receiptNo: receiptNumber, name: nickName)
+		context.insert(newCase)
+		do {
+			try context.save()
+		} catch {
+			print(error.localizedDescription)
+		}
+	}
+	
     var body: some View {
 		VStack {
 			HStack {
@@ -121,6 +131,9 @@ struct NewCaseAddAndEditCaseView: View {
 				
 				Button {
 					print("Save button pressed")
+					// Call Save Function
+					saveNewCaseEntry()
+					dismissAddCaseSheet()
 				} label: {
 					Text("Save")
 						.titleStyle(20)
