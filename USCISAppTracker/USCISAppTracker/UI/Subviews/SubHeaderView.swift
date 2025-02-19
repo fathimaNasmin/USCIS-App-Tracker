@@ -12,7 +12,6 @@ struct SubHeaderView: View {
 	
 	let title: String
 	let iconName: String?
-//	let goBack: (() -> Void)?
 	let iconAction: (() -> Void)?
 	
     var body: some View {

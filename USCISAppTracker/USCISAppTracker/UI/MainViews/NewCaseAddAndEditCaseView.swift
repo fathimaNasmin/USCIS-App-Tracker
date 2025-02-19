@@ -20,6 +20,9 @@ struct NewCaseAddAndEditCaseView: View {
 	@State private var isInfoButtonTapped: Bool = false
 	@State private var showingAlert: Bool = false
 	
+	@State var currentReceiptNo: String = ""
+	@State var currentName: String = ""
+	
 	private var isAddFieldValid: Bool {
 		isReceiptNumberValid && isNameValid
 	}
@@ -97,7 +100,7 @@ struct NewCaseAddAndEditCaseView: View {
 			VStack {
 				HStack {
 					// MARK: TextField - Receipt Number
-					TextField("", text: $receiptNumber, prompt: Text("Receipt Number")
+					TextField("", text: isAddPage ? $receiptNumber : $currentReceiptNo, prompt: Text("Receipt Number")
 						.foregroundColor(Color.textGray))
 						.textFieldStyle(RoundedRectangleTextFieldStyle())
 						.textInputAutocapitalization(.characters)
@@ -124,27 +127,41 @@ struct NewCaseAddAndEditCaseView: View {
 				
 				// Receipt Number: Error message
 				HStack {
-					Text(receiptNumber.count != 13 ? "Receipt Number should be exactly 13 characters" : "")
-						.foregroundColor(.textGray)
-						.captionStyle(10)
-						.fontWeight(.bold)
+					Group{
+						if isAddPage {
+							Text(receiptNumber.count != 13 ? "Receipt Number should be exactly 13 characters" : "")
+						}else {
+							Text(currentReceiptNo.count != 13 ? "Receipt Number should be exactly 13 characters" : "")
+						}
+					}
+					.foregroundColor(.textGray)
+					.captionStyle(10)
+					.fontWeight(.bold)
+					
 					Spacer()
 				}
 				.padding(.top, -12)
 				.padding(.leading, 5)
 				
 				// MARK: TextField - Nick Name
-				TextField("", text: $nickName, prompt: Text("Nick Name").foregroundColor(Color.textGray))
+				TextField("", text: isAddPage ? $nickName : $currentName, prompt: Text("Nick Name").foregroundColor(Color.textGray))
 					.textFieldStyle(RoundedRectangleTextFieldStyle())
 					.padding(.vertical, 10)
 					.autocorrectionDisabled(true)
 				
 				// Nick Name: Error message
 				HStack {
-					Text(nickName.count < 3 ? "Name should have atleast 3 characters" : "")
-						.foregroundColor(.textGray)
-						.captionStyle(10)
-						.fontWeight(.bold)
+					Group {
+						if isAddPage {
+							Text(nickName.count < 3 ? "Name should have atleast 3 characters" : "")
+						}else {
+							Text(currentName.count < 3 ? "Name should have atleast 3 characters" : "")
+						}
+					}
+					.foregroundColor(.textGray)
+					.captionStyle(10)
+					.fontWeight(.bold)
+					
 					Spacer()
 				}
 				.padding(.top, -12)
