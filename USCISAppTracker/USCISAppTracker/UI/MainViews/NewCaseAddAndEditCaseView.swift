@@ -105,6 +105,7 @@ struct NewCaseAddAndEditCaseView: View {
 				TextField("", text: $nickName, prompt: Text("Nick Name").foregroundColor(Color.textGray))
 					.textFieldStyle(RoundedRectangleTextFieldStyle())
 					.padding(.vertical, 10)
+					.autocorrectionDisabled(true)
 				
 				// Nick Name: Error message
 				HStack {
