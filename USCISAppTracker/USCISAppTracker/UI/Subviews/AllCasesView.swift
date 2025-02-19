@@ -30,7 +30,6 @@ struct AllCasesView: View {
 						AddCaseOnTabView()
 							.onTapGesture {
 								isAddNewCaseTabTapped = true
-								print(isAddPage)
 								print("Stored Cases: \(storedCases)")
 							}
 							.environment(\.isAddPage, true)
