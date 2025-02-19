@@ -65,8 +65,10 @@ struct NewCaseAddAndEditCaseView: View {
 			VStack {
 				HStack {
 					// MARK: TextField - Receipt Number
-					TextField("", text: $receiptNumber, prompt: Text("Receipt Number").foregroundColor(Color.textGray))
+					TextField("", text: $receiptNumber, prompt: Text("Receipt Number")
+						.foregroundColor(Color.textGray))
 						.textFieldStyle(RoundedRectangleTextFieldStyle())
+						.textInputAutocapitalization(.characters)
 						.padding(.vertical, 10)
 						.overlay(alignment: .trailing) {
 							if isAddPage {
@@ -88,10 +90,33 @@ struct NewCaseAddAndEditCaseView: View {
 						}
 				}
 				
+				// Receipt Number: Error message
+				HStack {
+					Text(receiptNumber.count != 13 ? "Receipt Number should be exactly 13 characters" : "")
+						.foregroundColor(.textGray)
+						.captionStyle(10)
+						.fontWeight(.bold)
+					Spacer()
+				}
+				.padding(.top, -12)
+				.padding(.leading, 5)
+				
 				// MARK: TextField - Nick Name
 				TextField("", text: $nickName, prompt: Text("Nick Name").foregroundColor(Color.textGray))
 					.textFieldStyle(RoundedRectangleTextFieldStyle())
 					.padding(.vertical, 10)
+				
+				// Nick Name: Error message
+				HStack {
+					Text(nickName.count < 3 ? "Name should have atleast 3 characters" : "")
+						.foregroundColor(.textGray)
+						.captionStyle(10)
+						.fontWeight(.bold)
+					Spacer()
+				}
+				.padding(.top, -12)
+				.padding(.leading, 5)
+				
 				
 				Button {
 					print("Save button pressed")
