@@ -11,12 +11,13 @@ import SwiftData
 struct AllCasesView: View {
 	@Environment(\.isAddPage) var isAddPage
 	@State private var isAddNewCaseTabTapped: Bool = false
-	@Binding var selectedCase: String?
+	@State var selectedCase: CaseEntry?
 	
 	@Environment(\.modelContext) var context
 	@Query private var storedCases: [CaseEntry]
 	
 	var oneCase: Case
+	let vm: CaseViewModel
 	
     var body: some View {
 		
@@ -35,9 +36,9 @@ struct AllCasesView: View {
 							.environment(\.isAddPage, true)
 						
 						ForEach(storedCases) { _case in
-							SingleCaseView(singleCase: oneCase, caseEntry: _case)
+							SingleCaseView(singleCase: vm.USCISCase!, caseEntry: _case)
 								.onTapGesture {
-									selectedCase = "Processing"
+									selectedCase = _case
 								}
 						}
 					}
@@ -56,6 +57,14 @@ struct AllCasesView: View {
 			}
 			.padding()
 			.padding(.horizontal, 7)
+			.navigationDestination(item: $selectedCase) { caseDetail in
+				if let casedetail = vm.USCISCase {
+					SingleCaseDetailView(singleCase: casedetail, caseEntry: caseDetail)
+						.toolbar(.hidden, for: .navigationBar)
+						.transition(.move(edge: .trailing)) // Moves from right
+						.environment(\.isAddPage, false) // changing the environment value to false
+				}
+			}
     }
 }
 
