@@ -9,6 +9,7 @@ import SwiftUI
 
 struct SingleCaseView: View {
 	let singleCase: Case
+	let caseEntry: CaseEntry
 	
     var body: some View {
 		VStack {
@@ -25,7 +26,7 @@ struct SingleCaseView: View {
 			.padding(.top, 5)
 			
 			HStack {
-				Text("John Doe")
+				Text(caseEntry.name)
 					.titleStyle(18)
 					.foregroundColor(.black)
 				
@@ -34,7 +35,7 @@ struct SingleCaseView: View {
 			.padding(.bottom, 3)
 			
 			HStack {
-				Text(singleCase.receiptNo)
+				Text(caseEntry.receiptNo)
 					.titleStyle(22)
 					.fontWeight(.bold)
 					.foregroundColor(.bluePrimary)

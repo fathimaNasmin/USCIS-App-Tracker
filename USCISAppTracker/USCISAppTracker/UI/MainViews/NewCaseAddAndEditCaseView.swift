@@ -69,7 +69,7 @@ struct NewCaseAddAndEditCaseView: View {
 		// show some error : alert
 		else {
 			showingAlert = true
-			alertMessage = "Receipt Number already Exists"
+			alertMessage = "Receipt Number already Exists. Try different number."
 		}
 		
 	}

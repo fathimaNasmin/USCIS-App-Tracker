@@ -6,15 +6,20 @@
 //
 
 import SwiftUI
+import SwiftData
 
 struct AllCasesView: View {
 	@Environment(\.isAddPage) var isAddPage
 	@State private var isAddNewCaseTabTapped: Bool = false
 	@Binding var selectedCase: String?
 	
+	@Environment(\.modelContext) var context
+	@Query private var storedCases: [CaseEntry]
+	
 	var oneCase: Case
 	
     var body: some View {
+		
 			VStack {
 				// MARK: Title - Cases
 				HeadingView(headingText: "Cases")
@@ -26,13 +31,16 @@ struct AllCasesView: View {
 							.onTapGesture {
 								isAddNewCaseTabTapped = true
 								print(isAddPage)
+								print("Stored Cases: \(storedCases)")
 							}
 							.environment(\.isAddPage, true)
 						
-						SingleCaseView(singleCase: oneCase)
-							.onTapGesture {
-								selectedCase = "Processing"
-							}
+						ForEach(storedCases) { _case in
+							SingleCaseView(singleCase: oneCase, caseEntry: _case)
+								.onTapGesture {
+									selectedCase = "Processing"
+								}
+						}
 					}
 					.tabViewStyle(.page)
 					.indexViewStyle(.page(backgroundDisplayMode: .always))
