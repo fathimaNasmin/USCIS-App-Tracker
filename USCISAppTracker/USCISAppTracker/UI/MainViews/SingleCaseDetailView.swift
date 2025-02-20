@@ -128,7 +128,7 @@ struct SingleCaseDetailView: View {
 					// MARK: Case history
 					CaseHistoryStatusView(caseStatusHistories: singleCase.history)
 					
-					DeleteCaseView()
+					DeleteCaseView(receiptNo: caseEntry.receiptNo, name: caseEntry.name)
 						.padding(.top, 40)
 				}
 				.padding()
