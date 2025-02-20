@@ -6,9 +6,44 @@
 //
 
 import SwiftUI
+import SwiftData
 
 struct DeleteCaseView: View {
+	@Environment(\.dismiss) private var dismiss
+	@Environment(\.modelContext) var context
 	@State private var showDeleteAlert: Bool = false
+
+	let receiptNo: String
+	let name: String
+	
+	// Get Instance from the store
+	private func getCaseEntryInstance() -> CaseEntry? {
+		let fetchDescriptor = FetchDescriptor<CaseEntry>(predicate: #Predicate { $0.receiptNo == receiptNo })
+		
+		do {
+			let results = try context.fetch(fetchDescriptor)
+			print("Results: \(results)")
+			return results.first
+		}catch {
+			print("Error on fetching: \(error.localizedDescription)")
+			return nil
+		}
+	}
+	
+	private func deleteCase() {
+		if let instance = getCaseEntryInstance() {
+			context.delete(instance)
+			do {
+				try context.save()
+				dismiss()
+				print("Case entry deleted successfully.")
+			} catch {
+				print("Error saving context after deletion: \(error.localizedDescription)")
+			}
+		} else {
+			print("No matching case entry found to delete.")
+		}
+	}
 	
     var body: some View {
 		VStack {
@@ -27,7 +62,8 @@ struct DeleteCaseView: View {
 			}
 			.alert("Are you sure you want to delete this case", isPresented: $showDeleteAlert) {
 				Button("Delete", role: .destructive) {
-					print("Deleted")
+					// Call delete function
+					deleteCase()
 				}
 				Button("Cancel", role: .cancel) {
 					print("Cancelled")
@@ -38,10 +74,4 @@ struct DeleteCaseView: View {
     }
 }
 
-#Preview {
-    DeleteCaseView()
-}
 
-func message(msg: String) {
-	
-}
