@@ -13,15 +13,15 @@ struct NewCaseAddAndEditCaseView: View {
 	@Environment(\.isAddPage) var isAddPage
 	@Environment(\.modelContext) var context
 	
-	@State private var receiptNumber: String = ""
-	@State private var nickName: String = ""
+	@State var receiptNumber: String = ""
+	@State var nickName: String = ""
 	@State private var alertMessage: String = ""
 	
 	@State private var isInfoButtonTapped: Bool = false
 	@State private var showingAlert: Bool = false
 	
-	@State var currentReceiptNo: String = ""
-	@State var currentName: String = ""
+	@State private var oldReceiptNo: String = ""
+	@State private var oldName: String = ""
 	
 	private var isAddFieldValid: Bool {
 		isReceiptNumberValid && isNameValid
@@ -57,9 +57,24 @@ struct NewCaseAddAndEditCaseView: View {
 		}
 	}
 	
+	// Get Instance from the store
+	private func getCaseEntryInstance() -> CaseEntry? {
+		print(oldReceiptNo)
+		let fetchDescriptor = FetchDescriptor<CaseEntry>(predicate: #Predicate { $0.receiptNo == oldReceiptNo })
+		
+		do {
+			let results = try context.fetch(fetchDescriptor)
+			print("Results: \(results)")
+			return results.first
+		}catch {
+			print("Error on fetching: \(error.localizedDescription)")
+			return nil
+		}
+	}
+	
 	private func saveNewCaseEntry() {
 		if !receiptNumberExists(number: receiptNumber, context: context) {
-			let newCase = CaseEntry(receiptNo: receiptNumber, name: nickName)
+			let newCase = CaseEntry(receiptNo: receiptNumber, name: nickName.capitalized)
 			context.insert(newCase)
 			do {
 				try context.save()
@@ -69,11 +84,28 @@ struct NewCaseAddAndEditCaseView: View {
 				showingAlert = true
 				alertMessage = error.localizedDescription
 			}
-		}else {
+		} else {
 			showingAlert = true
 			alertMessage = "Receipt Number already Exists. Try different number."
 		}
-		
+	}
+	
+	private func saveEditCaseEntry() {
+		if let instance = getCaseEntryInstance() {
+			instance.name = nickName.capitalized
+			instance.receiptNo = receiptNumber
+			
+			do {
+				try context.save()
+				dismissAddCaseSheet()
+			} catch {
+				print(error.localizedDescription)
+				showingAlert = true
+				alertMessage = error.localizedDescription
+			}
+		}else {
+			print("Result is nil")
+		}
 	}
 	
     var body: some View {
@@ -100,7 +132,7 @@ struct NewCaseAddAndEditCaseView: View {
 			VStack {
 				HStack {
 					// MARK: TextField - Receipt Number
-					TextField("", text: isAddPage ? $receiptNumber : $currentReceiptNo, prompt: Text("Receipt Number")
+					TextField("", text: $receiptNumber, prompt: Text("Receipt Number")
 						.foregroundColor(Color.textGray))
 						.textFieldStyle(RoundedRectangleTextFieldStyle())
 						.textInputAutocapitalization(.characters)
@@ -127,16 +159,10 @@ struct NewCaseAddAndEditCaseView: View {
 				
 				// Receipt Number: Error message
 				HStack {
-					Group{
-						if isAddPage {
-							Text(receiptNumber.count != 13 ? "Receipt Number should be exactly 13 characters" : "")
-						}else {
-							Text(currentReceiptNo.count != 13 ? "Receipt Number should be exactly 13 characters" : "")
-						}
-					}
-					.foregroundColor(.textGray)
-					.captionStyle(10)
-					.fontWeight(.bold)
+					Text(receiptNumber.count != 13 ? "Receipt Number should be exactly 13 characters" : "")
+						.foregroundColor(.textGray)
+						.captionStyle(10)
+						.fontWeight(.bold)
 					
 					Spacer()
 				}
@@ -144,23 +170,17 @@ struct NewCaseAddAndEditCaseView: View {
 				.padding(.leading, 5)
 				
 				// MARK: TextField - Nick Name
-				TextField("", text: isAddPage ? $nickName : $currentName, prompt: Text("Nick Name").foregroundColor(Color.textGray))
+				TextField("", text: $nickName, prompt: Text("Nick Name").foregroundColor(Color.textGray))
 					.textFieldStyle(RoundedRectangleTextFieldStyle())
 					.padding(.vertical, 10)
 					.autocorrectionDisabled(true)
 				
 				// Nick Name: Error message
 				HStack {
-					Group {
-						if isAddPage {
-							Text(nickName.count < 3 ? "Name should have atleast 3 characters" : "")
-						}else {
-							Text(currentName.count < 3 ? "Name should have atleast 3 characters" : "")
-						}
-					}
-					.foregroundColor(.textGray)
-					.captionStyle(10)
-					.fontWeight(.bold)
+					Text(nickName.count < 3 ? "Name should have atleast 3 characters" : "")
+						.foregroundColor(.textGray)
+						.captionStyle(10)
+						.fontWeight(.bold)
 					
 					Spacer()
 				}
@@ -169,8 +189,14 @@ struct NewCaseAddAndEditCaseView: View {
 				
 				
 				Button {
-					// Call Save Function
-					saveNewCaseEntry()
+					print("IsAddPage : \(isAddPage)")
+					if isAddPage {
+						// Call Save Function for adding new case
+						saveNewCaseEntry()
+					}else {
+						// Call Save Function for editing existing case
+						saveEditCaseEntry()
+					}
 				} label: {
 					Text("Save")
 						.titleStyle(20)
@@ -208,6 +234,10 @@ struct NewCaseAddAndEditCaseView: View {
 				}
 			}
 
+		}
+		.onAppear {
+			oldReceiptNo = receiptNumber
+			oldName = nickName
 		}
     }
 }
