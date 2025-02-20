@@ -15,33 +15,12 @@ struct DeleteCaseView: View {
 
 	let receiptNo: String
 	let name: String
-	
-	// Get Instance from the store
-	private func getCaseEntryInstance() -> CaseEntry? {
-		let fetchDescriptor = FetchDescriptor<CaseEntry>(predicate: #Predicate { $0.receiptNo == receiptNo })
-		
-		do {
-			let results = try context.fetch(fetchDescriptor)
-			print("Results: \(results)")
-			return results.first
-		}catch {
-			print("Error on fetching: \(error.localizedDescription)")
-			return nil
-		}
-	}
+	let caseEntryvm: CaseEntryViewModel
 	
 	private func deleteCase() {
-		if let instance = getCaseEntryInstance() {
-			context.delete(instance)
-			do {
-				try context.save()
-				dismiss()
-				print("Case entry deleted successfully.")
-			} catch {
-				print("Error saving context after deletion: \(error.localizedDescription)")
-			}
-		} else {
-			print("No matching case entry found to delete.")
+		let fetchDescriptor = FetchDescriptor<CaseEntry>(predicate: #Predicate { $0.receiptNo == receiptNo })
+		if caseEntryvm.deleteCase(fetchDescriptor: fetchDescriptor) {
+			dismiss()
 		}
 	}
 	

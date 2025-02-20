@@ -14,7 +14,8 @@ struct AllCasesView: View {
 	@State var selectedCase: CaseEntry?
 	
 	@Environment(\.modelContext) var context
-	@Query private var storedCases: [CaseEntry]
+//	@Query private var storedCases: [CaseEntry]
+	@State var caseEntryvm: CaseEntryViewModel = CaseEntryViewModel(dataSource: .shared)
 	
 	var oneCase: Case
 	let vm: CaseViewModel
@@ -31,11 +32,11 @@ struct AllCasesView: View {
 						AddCaseOnTabView()
 							.onTapGesture {
 								isAddNewCaseTabTapped = true
-								print("Stored Cases: \(storedCases)")
+								print("Stored Cases: \(caseEntryvm.storedCases)")
 							}
 							.environment(\.isAddPage, true)
 						
-						ForEach(storedCases) { _case in
+						ForEach(caseEntryvm.storedCases) { _case in
 							SingleCaseView(singleCase: vm.USCISCase!, caseEntry: _case)
 								.onTapGesture {
 									selectedCase = _case
@@ -52,14 +53,14 @@ struct AllCasesView: View {
 				.clipShape(RoundedRectangle(cornerRadius: 20))
 				.shadow(color: .gray.opacity(0.3), radius: 10, x: 0, y: 4)
 				.sheet(isPresented: $isAddNewCaseTabTapped) {
-					NewCaseAddAndEditCaseView()
+					NewCaseAddAndEditCaseView(caseEntryvm: caseEntryvm)
 				}
 			}
 			.padding()
 			.padding(.horizontal, 7)
 			.navigationDestination(item: $selectedCase) { caseDetail in
 				if let casedetail = vm.USCISCase {
-					SingleCaseDetailView(singleCase: casedetail, caseEntry: caseDetail)
+					SingleCaseDetailView(singleCase: casedetail, caseEntry: caseDetail, caseEntryvm: caseEntryvm )
 						.toolbar(.hidden, for: .navigationBar)
 						.transition(.move(edge: .trailing)) // Moves from right
 						.environment(\.isAddPage, false) // changing the environment value to false

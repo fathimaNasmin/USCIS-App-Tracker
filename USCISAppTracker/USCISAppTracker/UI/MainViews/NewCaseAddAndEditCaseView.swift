@@ -11,7 +11,7 @@ import SwiftData
 struct NewCaseAddAndEditCaseView: View {
 	@Environment(\.dismiss) var dismissAddCaseSheet
 	@Environment(\.isAddPage) var isAddPage
-	@Environment(\.modelContext) var context
+//	@Environment(\.modelContext) var context
 	
 	@State var receiptNumber: String = ""
 	@State var nickName: String = ""
@@ -22,6 +22,8 @@ struct NewCaseAddAndEditCaseView: View {
 	
 	@State private var oldReceiptNo: String = ""
 	@State private var oldName: String = ""
+	
+	var caseEntryvm: CaseEntryViewModel
 	
 	private var isAddFieldValid: Bool {
 		isReceiptNumberValid && isNameValid
@@ -45,66 +47,26 @@ struct NewCaseAddAndEditCaseView: View {
 		}
 	}
 	
-	private func receiptNumberExists(number: String, context: ModelContext) -> Bool {
-		let fetchDescriptor = FetchDescriptor<CaseEntry>(predicate: #Predicate { $0.receiptNo == number })
-		
-		do {
-			let results = try context.fetch(fetchDescriptor)
-			return !results.isEmpty // It means exists
-		}catch {
-			print("Error on fetching: \(error.localizedDescription)")
-			return false
-		}
-	}
-	
-	// Get Instance from the store
-	private func getCaseEntryInstance() -> CaseEntry? {
-		print(oldReceiptNo)
-		let fetchDescriptor = FetchDescriptor<CaseEntry>(predicate: #Predicate { $0.receiptNo == oldReceiptNo })
-		
-		do {
-			let results = try context.fetch(fetchDescriptor)
-			print("Results: \(results)")
-			return results.first
-		}catch {
-			print("Error on fetching: \(error.localizedDescription)")
-			return nil
-		}
-	}
-	
 	private func saveNewCaseEntry() {
-		if !receiptNumberExists(number: receiptNumber, context: context) {
-			let newCase = CaseEntry(receiptNo: receiptNumber, name: nickName.capitalized)
-			context.insert(newCase)
-			do {
-				try context.save()
-				dismissAddCaseSheet()
-			} catch {
-				print(error.localizedDescription)
-				showingAlert = true
-				alertMessage = error.localizedDescription
-			}
-		} else {
+		let fetchDescriptor = FetchDescriptor<CaseEntry>(predicate: #Predicate { $0.receiptNo == receiptNumber })
+		
+		if caseEntryvm.addCase(receiptNumber: receiptNumber, name: nickName, fetchDescriptor: fetchDescriptor) {
+			dismissAddCaseSheet()
+		}
+		else {
 			showingAlert = true
 			alertMessage = "Receipt Number already Exists. Try different number."
 		}
 	}
 	
 	private func saveEditCaseEntry() {
-		if let instance = getCaseEntryInstance() {
-			instance.name = nickName.capitalized
-			instance.receiptNo = receiptNumber
-			
-			do {
-				try context.save()
-				dismissAddCaseSheet()
-			} catch {
-				print(error.localizedDescription)
-				showingAlert = true
-				alertMessage = error.localizedDescription
-			}
+		let fetchDescriptor = FetchDescriptor<CaseEntry>(predicate: #Predicate { $0.receiptNo == oldReceiptNo })
+		
+		if caseEntryvm.updateCase(name: nickName, receiptNo: receiptNumber, fetchDescriptor: fetchDescriptor) {
+			dismissAddCaseSheet()
 		}else {
-			print("Result is nil")
+			showingAlert = true
+			alertMessage = "Updation Failed.Try Again"
 		}
 	}
 	
