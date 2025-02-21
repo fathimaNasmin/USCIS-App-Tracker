@@ -11,7 +11,6 @@ struct USCISPageView: View {
 	@State private var vm = CaseViewModel()
 	@Environment(\.isAddPage) var isAddPage
 	
-	@State private var selectedCase: String?
 	@State private var notificationBellTapped: Bool?
 	
 	
@@ -21,28 +20,15 @@ struct USCISPageView: View {
 				VStack {
 					// MARK: Header
 					HeaderView(notificationBellTapped: $notificationBellTapped)
-					let _ = print("Update Vstack")
 
 					ScrollView{
 						// MARK: All Cases
-						if let normalCase = vm.USCISCase {
-							let _ = print("Update SpyView")
+						if vm.USCISCase != nil {
 
-							AllCasesView(selectedCase: $selectedCase, oneCase: normalCase)
+							AllCasesView(vm: vm)
 						}
-						
-						let _ = print("Update outside")
-
 						// MARK: News
 						NewsView()
-					}
-				}
-				.navigationDestination(item: $selectedCase) { caseName in
-					if let casedetail = vm.USCISCase {
-						SingleCaseDetailView(singleCase: casedetail)
-							.toolbar(.hidden, for: .navigationBar)
-							.transition(.move(edge: .trailing)) // Moves from right
-							.environment(\.isAddPage, false) // changing the environment value to false
 					}
 				}
 				.navigationDestination(item: $notificationBellTapped) { caseName in

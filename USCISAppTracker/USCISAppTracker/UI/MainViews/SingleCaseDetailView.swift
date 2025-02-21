@@ -16,12 +16,14 @@ struct SingleCaseDetailView: View {
 	let singleBoxDivision: CGFloat = 4
 	
 	let singleCase: Case
+	let caseEntry: CaseEntry
+	let caseEntryvm: CaseEntryViewModel
 	
 	var body: some View {
 		GeometryReader { geo in
 		VStack {
 			// MARK: Header
-			SubHeaderView(title: "John Doe", iconName: "pencil") {
+			SubHeaderView(title: caseEntry.name, iconName: "pencil") {
 				isEditCaseTapped = true
 			}
 			
@@ -34,7 +36,7 @@ struct SingleCaseDetailView: View {
 							Text("Receipt Number")
 								.captionStyle(12)
 								.foregroundColor(Color.tungstenGray)
-							Text(singleCase.receiptNo)
+							Text(caseEntry.receiptNo)
 								.titleStyle(24)
 								.fontWeight(.heavy)
 								.foregroundColor(.bluePrimary)
@@ -127,7 +129,7 @@ struct SingleCaseDetailView: View {
 					// MARK: Case history
 					CaseHistoryStatusView(caseStatusHistories: singleCase.history)
 					
-					DeleteCaseView()
+					DeleteCaseView(receiptNo: caseEntry.receiptNo, name: caseEntry.name, caseEntryvm: caseEntryvm)
 						.padding(.top, 40)
 				}
 				.padding()
@@ -135,7 +137,7 @@ struct SingleCaseDetailView: View {
 		}
 		.background(.antiflashwhite)
 		.sheet(isPresented: $isEditCaseTapped) {
-			NewCaseAddAndEditCaseView()
+			NewCaseAddAndEditCaseView(receiptNumber: caseEntry.receiptNo, nickName: caseEntry.name, caseEntryvm: caseEntryvm)
 		}
 	}
 }
