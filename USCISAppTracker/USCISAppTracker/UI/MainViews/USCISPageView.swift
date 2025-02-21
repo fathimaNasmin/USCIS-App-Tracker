@@ -23,9 +23,9 @@ struct USCISPageView: View {
 
 					ScrollView{
 						// MARK: All Cases
-						if let normalCase = vm.USCISCase {
+						if vm.USCISCase != nil {
 
-							AllCasesView(oneCase: normalCase, vm: vm)
+							AllCasesView(vm: vm)
 						}
 						// MARK: News
 						NewsView()

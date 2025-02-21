@@ -14,10 +14,8 @@ struct AllCasesView: View {
 	@State var selectedCase: CaseEntry?
 	
 	@Environment(\.modelContext) var context
-//	@Query private var storedCases: [CaseEntry]
 	@State var caseEntryvm: CaseEntryViewModel = CaseEntryViewModel(dataSource: .shared)
 	
-	var oneCase: Case
 	let vm: CaseViewModel
 	
     var body: some View {
