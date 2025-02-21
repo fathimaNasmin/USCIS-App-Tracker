@@ -25,7 +25,8 @@ struct AuthenticationService {
 		request.setValue("application/x-www-form-urlencoded", forHTTPHeaderField: "Content-Type")
 		
 		// Set request body parameter
-		let parameters = "grant_type=client_credentials&client_id=KuOw6BdkydJlDjfrDoiVbaS9onXm1gr0&client_secret=Ib6j8cNMfdTuWALQ"
+		let parameters = "grant_type=client_credentials&client_id=\(Secrets.clientId)&client_secret=\(Secrets.clientSecret)"
+		
 		request.httpBody = parameters.data(using: .utf8)
 		
 		// Create a URLSession task

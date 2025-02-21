@@ -16,7 +16,3 @@ struct USCISAppTrackerApp: App {
         }
     }
 }
-
-
-// TODO: hide client_id and client_secret in env file
-// TODO: store the bearer token -  keychain
