@@ -8,6 +8,7 @@
 import Foundation
 
 struct AuthorizationAPIModel: Codable {
-	let accessToken: String
+	let token_type: String
+	let access_token: String
 	let status: String
 }
