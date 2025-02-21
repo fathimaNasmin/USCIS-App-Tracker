@@ -23,8 +23,11 @@ class CaseEntryViewModel {
 	
 	// Add new case
 	func addCase(receiptNumber: String, name: String, fetchDescriptor: FetchDescriptor<CaseEntry>) -> Bool {
-		storedCases = dataSource.fetchAllCases()
-		return dataSource.addNewCaseEntry(receiptNumber: receiptNumber, name: name, fetchDescriptor: fetchDescriptor)
+		if dataSource.addNewCaseEntry(receiptNumber: receiptNumber, name: name, fetchDescriptor: fetchDescriptor) {
+			storedCases = dataSource.fetchAllCases()
+			return true
+		}
+		return false
 	}
 	
 	// Edit the case
@@ -34,10 +37,10 @@ class CaseEntryViewModel {
 	
 	// Delete the case
 	func deleteCase(fetchDescriptor: FetchDescriptor<CaseEntry>) -> Bool{
-		return dataSource.deleteCaseEntry(fetchDescriptor: fetchDescriptor)
-	}	
+		if dataSource.deleteCaseEntry(fetchDescriptor: fetchDescriptor) {
+			storedCases = dataSource.fetchAllCases()
+			return true
+		}
+		return false
+	}
 }
-
-
-// TODO: after deletion the storedCases is not refreshing
-// TODO: after adding not refreshing
