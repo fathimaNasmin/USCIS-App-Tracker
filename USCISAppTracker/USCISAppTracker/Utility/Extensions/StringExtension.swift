@@ -19,6 +19,10 @@ extension String {
 		formatter.dateFormat = "yyyy-MM-dd"
 		return formatter.date(from: self)!
 	}
+	
+	var timeEpoch: Date {
+		Date(timeIntervalSince1970: TimeInterval(Double(self)!))
+	}
 }
 
 

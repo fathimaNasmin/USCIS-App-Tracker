@@ -8,6 +8,9 @@ import Foundation
 
 struct Authorization {
 	let tokenType: String
+	let issuedTime: Date
 	let accessToken: String
+	let expiresIn: Date
 	let status: String
+	let futureExpiration: Date
 }
