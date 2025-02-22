@@ -9,10 +9,6 @@ import Foundation
 
 struct FetchService {
 	
-	private enum FetchError: Error {
-		case FileNotFound
-	}
-	
 	/// Function to fetch the case status
 	func fetchCaseStatus(){
 
