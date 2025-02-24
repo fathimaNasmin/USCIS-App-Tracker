@@ -8,11 +8,11 @@
 import SwiftUI
 
 struct USCISPageView: View {
-	@State private var vm = CaseViewModel()
 	@Environment(\.isAddPage) var isAddPage
 	
 	@State private var notificationBellTapped: Bool?
-	
+	@State var caseEntryvm: CaseEntryViewModel = CaseEntryViewModel()
+
 	
     var body: some View {
 		NavigationStack {
@@ -23,10 +23,8 @@ struct USCISPageView: View {
 
 					ScrollView{
 						// MARK: All Cases
-						if vm.USCISCase != nil {
-
-							AllCasesView(vm: vm)
-						}
+						AllCasesView(caseEntryvm: caseEntryvm)
+						
 						// MARK: News
 						NewsView()
 					}
@@ -40,9 +38,10 @@ struct USCISPageView: View {
 			.background(.antiflashwhite)
         }
 		.onAppear {
-			vm.fetchCaseInfo()
+			Task {
+				await caseEntryvm.fetchAllCases()
+			}
 		}
-
     }
 }
 

@@ -10,35 +10,47 @@ import SwiftData
 
 @Observable
 class CaseEntryViewModel {
-	var storedCases: [CaseEntry] = []
+	let dataManager = DataManager.shared
 	
-	@ObservationIgnored
-	private let dataSource: SwiftDataService
+	var casesData: [FetchedCase] = []
 	
-	init(dataSource: SwiftDataService) {
-		self.dataSource = dataSource
-		
-		storedCases = dataSource.fetchAllCases()
+	/// Function in ViewModel to fetch all the Cases and corresponding status of the cases from server.
+	// Call on when onAppear
+	func fetchAllCases() async {
+		casesData = await dataManager.fetchAllCasesData()
+	}
+	
+	// Call this function on add, edit & delete
+	private func getLatestData() async {
+		await dataManager.getUpdatedDataFromStore()
+		await fetchAllCases()
 	}
 	
 	// Add new case
-	func addCase(receiptNumber: String, name: String, fetchDescriptor: FetchDescriptor<CaseEntry>) -> Bool {
-		if dataSource.addNewCaseEntry(receiptNumber: receiptNumber, name: name, fetchDescriptor: fetchDescriptor) {
-			storedCases = dataSource.fetchAllCases()
+	// Action on "Save" Button
+	func saveCase(receiptNumber: String, name: String, fetchDescriptor: FetchDescriptor<CaseEntry>) async -> String?{
+		if await dataManager.addCase(receiptNumber: receiptNumber, name: name, fetchDescriptor: fetchDescriptor) {
+			await getLatestData()
+			return nil
+		} else {
+			return "Receipt Number already Exists. Try different number."
+		}
+	}
+	
+	// Edit the case
+	// Action on "Edit" Button
+	func editCase(name: String, receiptNo: String, fetchDescriptor: FetchDescriptor<CaseEntry>) async -> Bool {
+		if await dataManager.updateCase(name: name, receiptNo: receiptNo, fetchDescriptor: fetchDescriptor) {
+			await getLatestData()
 			return true
 		}
 		return false
 	}
 	
-	// Edit the case
-	func updateCase(name: String, receiptNo: String, fetchDescriptor: FetchDescriptor<CaseEntry>) -> Bool {
-		return dataSource.updateCaseEntry(name: name, receiptNo: receiptNo, fetchDescriptor: fetchDescriptor)
-	}
-	
 	// Delete the case
-	func deleteCase(fetchDescriptor: FetchDescriptor<CaseEntry>) -> Bool{
-		if dataSource.deleteCaseEntry(fetchDescriptor: fetchDescriptor) {
-			storedCases = dataSource.fetchAllCases()
+	func deleteCase(fetchDescriptor: FetchDescriptor<CaseEntry>) async -> Bool{
+		if await dataManager.deleteCase(fetchDescriptor: fetchDescriptor) {
+			await getLatestData()
 			return true
 		}
 		return false

@@ -23,7 +23,7 @@ struct NewCaseAddAndEditCaseView: View {
 	@State private var oldReceiptNo: String = ""
 	@State private var oldName: String = ""
 	
-	var caseEntryvm: CaseEntryViewModel
+	let caseEntryvm: CaseEntryViewModel
 	
 	private var isAddFieldValid: Bool {
 		isReceiptNumberValid && isNameValid
@@ -44,29 +44,6 @@ struct NewCaseAddAndEditCaseView: View {
 			return try regExp.wholeMatch(in: receiptNumber) != nil
 		} catch {
 			return false
-		}
-	}
-	
-	private func saveNewCaseEntry() {
-		let fetchDescriptor = FetchDescriptor<CaseEntry>(predicate: #Predicate { $0.receiptNo == receiptNumber })
-		
-		if caseEntryvm.addCase(receiptNumber: receiptNumber, name: nickName, fetchDescriptor: fetchDescriptor) {
-			dismissAddCaseSheet()
-		}
-		else {
-			showingAlert = true
-			alertMessage = "Receipt Number already Exists. Try different number."
-		}
-	}
-	
-	private func saveEditCaseEntry() {
-		let fetchDescriptor = FetchDescriptor<CaseEntry>(predicate: #Predicate { $0.receiptNo == oldReceiptNo })
-		
-		if caseEntryvm.updateCase(name: nickName, receiptNo: receiptNumber, fetchDescriptor: fetchDescriptor) {
-			dismissAddCaseSheet()
-		}else {
-			showingAlert = true
-			alertMessage = "Updation Failed.Try Again"
 		}
 	}
 	
@@ -154,10 +131,27 @@ struct NewCaseAddAndEditCaseView: View {
 					print("IsAddPage : \(isAddPage)")
 					if isAddPage {
 						// Call Save Function for adding new case
-						saveNewCaseEntry()
+						let fetchDescriptor = FetchDescriptor<CaseEntry>(predicate: #Predicate { $0.receiptNo == receiptNumber })
+						Task {
+							let result = await caseEntryvm.saveCase(receiptNumber: receiptNumber, name: nickName, fetchDescriptor: fetchDescriptor)
+							if result != nil {
+								showingAlert = true
+								alertMessage = result ?? ""
+							}
+						}
+						dismissAddCaseSheet()
 					}else {
 						// Call Save Function for editing existing case
-						saveEditCaseEntry()
+						let fetchDescriptor = FetchDescriptor<CaseEntry>(predicate: #Predicate { $0.receiptNo == oldReceiptNo })
+						
+						Task {
+							if await caseEntryvm.editCase(name: nickName, receiptNo: receiptNumber, fetchDescriptor: fetchDescriptor) {
+								dismissAddCaseSheet()
+							}else {
+								showingAlert = true
+								alertMessage = "Updation Failed.Try Again"
+							}
+						}
 					}
 				} label: {
 					Text("Save")

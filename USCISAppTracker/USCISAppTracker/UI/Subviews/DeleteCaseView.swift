@@ -13,16 +13,9 @@ struct DeleteCaseView: View {
 	@Environment(\.modelContext) var context
 	@State private var showDeleteAlert: Bool = false
 
-	let receiptNo: String
-	let name: String
+	let caseEntry: FetchedCase
 	let caseEntryvm: CaseEntryViewModel
-	
-	private func deleteCase() {
-		let fetchDescriptor = FetchDescriptor<CaseEntry>(predicate: #Predicate { $0.receiptNo == receiptNo })
-		if caseEntryvm.deleteCase(fetchDescriptor: fetchDescriptor) {
-			dismiss()
-		}
-	}
+	let receiptNum: String	
 	
     var body: some View {
 		VStack {
@@ -42,7 +35,12 @@ struct DeleteCaseView: View {
 			.alert("Are you sure you want to delete this case", isPresented: $showDeleteAlert) {
 				Button("Delete", role: .destructive) {
 					// Call delete function
-					deleteCase()
+					let fetchDescriptor = FetchDescriptor<CaseEntry>(predicate: #Predicate { $0.receiptNo == receiptNum })
+					Task {
+						if await caseEntryvm.deleteCase(fetchDescriptor: fetchDescriptor) {
+							dismiss()
+						}
+					}
 				}
 				Button("Cancel", role: .cancel) {
 					print("Cancelled")
