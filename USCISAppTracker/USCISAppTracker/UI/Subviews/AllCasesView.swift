@@ -6,14 +6,12 @@
 //
 
 import SwiftUI
-import SwiftData
 
 struct AllCasesView: View {
 	@Environment(\.isAddPage) var isAddPage
 	@State private var isAddNewCaseTabTapped: Bool = false
 	@State var selectedCase: FetchedCase?
 	
-	@Environment(\.modelContext) var context
 	let caseEntryvm: CaseEntryViewModel
 	
     var body: some View {

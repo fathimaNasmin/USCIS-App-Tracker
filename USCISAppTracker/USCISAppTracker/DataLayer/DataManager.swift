@@ -6,20 +6,24 @@
 //
 
 import Foundation
-import SwiftData
 
 final class DataManager {
 	static let shared = DataManager()
 	
 	private let apiService = CaseService()
-	private let dataSource: SwiftDataService
 	
 	var storedCases: [CaseEntry] = []
 	
 	private init() {
-		self.dataSource = SwiftDataService.shared 
-		self.storedCases = dataSource.fetchAllCasesFromStore()
+		Task {
+			await loadStoredCases()
+		}
 	}
+	
+	private func loadStoredCases() async {
+		self.storedCases = await dataSource.fetchAllCasesFromStore()
+	}
+	
 	
 	actor FetchedCasesStorage {
 		private(set) var cases: [FetchedCase] = []
@@ -71,22 +75,26 @@ final class DataManager {
 	
 	/// Fetch updated data
 	func getUpdatedDataFromStore() async {
-		self.storedCases = dataSource.fetchAllCasesFromStore()
+		self.storedCases = await dataSource.fetchAllCasesFromStore()
 	}
 	
 	
 	/// Funtion to  Add a new case to the store
 	func addCase(receiptNumber: String, name: String, fetchDescriptor: FetchDescriptor<CaseEntry>) async -> Bool {
-		return dataSource.addNewCaseEntry(receiptNumber: receiptNumber, name: name, fetchDescriptor: fetchDescriptor) 
+		if await dataSource.addNewCaseEntry(receiptNumber: receiptNumber, name: name, fetchDescriptor: fetchDescriptor) {
+			await getUpdatedDataFromStore()
+			return true
+		}
+		return false
 	}
 	
 	/// Function to Edit the case in the Store
 	func updateCase(name: String, receiptNo: String, fetchDescriptor: FetchDescriptor<CaseEntry>) async -> Bool {
-		return dataSource.updateCaseEntry(name: name, receiptNo: receiptNo, fetchDescriptor: fetchDescriptor)
+		return await dataSource.updateCaseEntry(name: name, receiptNo: receiptNo, fetchDescriptor: fetchDescriptor)
 	}
 	
 	/// Function to  Delete the case from the store
 	func deleteCase(fetchDescriptor: FetchDescriptor<CaseEntry>) async -> Bool{
-		return dataSource.deleteCaseEntry(fetchDescriptor: fetchDescriptor) 
+		return await dataSource.deleteCaseEntry(fetchDescriptor: fetchDescriptor) 
 	}
 }
