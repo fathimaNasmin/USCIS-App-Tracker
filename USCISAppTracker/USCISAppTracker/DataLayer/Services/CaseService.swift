@@ -43,8 +43,6 @@ struct CaseService {
 			}
 			do {
 				let responseData = try JSONDecoder().decode(CaseAPIModel.self, from: data).domainModel
-				print(responseData)
-				print()
 				return responseData
 			}catch {
 				return nil

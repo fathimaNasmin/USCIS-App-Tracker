@@ -6,12 +6,10 @@
 //
 
 import SwiftUI
-import SwiftData
 
 struct NewCaseAddAndEditCaseView: View {
 	@Environment(\.dismiss) var dismissAddCaseSheet
 	@Environment(\.isAddPage) var isAddPage
-//	@Environment(\.modelContext) var context
 	
 	@State var receiptNumber: String = ""
 	@State var nickName: String = ""
@@ -131,27 +129,8 @@ struct NewCaseAddAndEditCaseView: View {
 					print("IsAddPage : \(isAddPage)")
 					if isAddPage {
 						// Call Save Function for adding new case
-						let fetchDescriptor = FetchDescriptor<CaseEntry>(predicate: #Predicate { $0.receiptNo == receiptNumber })
-						Task {
-							let result = await caseEntryvm.saveCase(receiptNumber: receiptNumber, name: nickName, fetchDescriptor: fetchDescriptor)
-							if result != nil {
-								showingAlert = true
-								alertMessage = result ?? ""
-							}
-						}
-						dismissAddCaseSheet()
 					}else {
 						// Call Save Function for editing existing case
-						let fetchDescriptor = FetchDescriptor<CaseEntry>(predicate: #Predicate { $0.receiptNo == oldReceiptNo })
-						
-						Task {
-							if await caseEntryvm.editCase(name: nickName, receiptNo: receiptNumber, fetchDescriptor: fetchDescriptor) {
-								dismissAddCaseSheet()
-							}else {
-								showingAlert = true
-								alertMessage = "Updation Failed.Try Again"
-							}
-						}
 					}
 				} label: {
 					Text("Save")

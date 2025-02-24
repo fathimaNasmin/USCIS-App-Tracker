@@ -6,7 +6,6 @@
 //
 
 import Foundation
-import SwiftData
 
 @Observable
 class CaseEntryViewModel {
@@ -21,38 +20,38 @@ class CaseEntryViewModel {
 	}
 	
 	// Call this function on add, edit & delete
-	private func getLatestData() async {
-		await dataManager.getUpdatedDataFromStore()
+	private func getLatestCasesData() async {
+		casesData = []
 		await fetchAllCases()
 	}
 	
 	// Add new case
 	// Action on "Save" Button
-	func saveCase(receiptNumber: String, name: String, fetchDescriptor: FetchDescriptor<CaseEntry>) async -> String?{
-		if await dataManager.addCase(receiptNumber: receiptNumber, name: name, fetchDescriptor: fetchDescriptor) {
-			await getLatestData()
-			return nil
-		} else {
-			return "Receipt Number already Exists. Try different number."
-		}
-	}
+//	func saveCase(receiptNumber: String, name: String, fetchDescriptor: FetchDescriptor<CaseEntry>) async -> String?{
+//		if await dataManager.addCase(receiptNumber: receiptNumber, name: name, fetchDescriptor: fetchDescriptor) {
+//			await getLatestCasesData()
+//			return nil
+//		} else {
+//			return "Receipt Number already Exists. Try different number."
+//		}
+//	}
 	
 	// Edit the case
 	// Action on "Edit" Button
-	func editCase(name: String, receiptNo: String, fetchDescriptor: FetchDescriptor<CaseEntry>) async -> Bool {
-		if await dataManager.updateCase(name: name, receiptNo: receiptNo, fetchDescriptor: fetchDescriptor) {
-			await getLatestData()
-			return true
-		}
-		return false
-	}
+//	func editCase(name: String, receiptNo: String, fetchDescriptor: FetchDescriptor<CaseEntry>) async -> Bool {
+//		if await dataManager.updateCase(name: name, receiptNo: receiptNo, fetchDescriptor: fetchDescriptor) {
+//			await getLatestCasesData()
+//			return true
+//		}
+//		return false
+//	}
 	
 	// Delete the case
-	func deleteCase(fetchDescriptor: FetchDescriptor<CaseEntry>) async -> Bool{
-		if await dataManager.deleteCase(fetchDescriptor: fetchDescriptor) {
-			await getLatestData()
-			return true
-		}
-		return false
-	}
+//	func deleteCase(fetchDescriptor: FetchDescriptor<CaseEntry>) async -> Bool{
+//		if await dataManager.deleteCase(fetchDescriptor: fetchDescriptor) {
+//			await getLatestCasesData()
+//			return true
+//		}
+//		return false
+//	}
 }

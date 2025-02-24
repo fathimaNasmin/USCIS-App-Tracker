@@ -6,11 +6,9 @@
 //
 
 import SwiftUI
-import SwiftData
 
 struct DeleteCaseView: View {
 	@Environment(\.dismiss) private var dismiss
-	@Environment(\.modelContext) var context
 	@State private var showDeleteAlert: Bool = false
 
 	let caseEntry: FetchedCase
@@ -35,12 +33,6 @@ struct DeleteCaseView: View {
 			.alert("Are you sure you want to delete this case", isPresented: $showDeleteAlert) {
 				Button("Delete", role: .destructive) {
 					// Call delete function
-					let fetchDescriptor = FetchDescriptor<CaseEntry>(predicate: #Predicate { $0.receiptNo == receiptNum })
-					Task {
-						if await caseEntryvm.deleteCase(fetchDescriptor: fetchDescriptor) {
-							dismiss()
-						}
-					}
 				}
 				Button("Cancel", role: .cancel) {
 					print("Cancelled")
