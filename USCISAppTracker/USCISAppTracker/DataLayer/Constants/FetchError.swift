@@ -10,5 +10,6 @@ import Foundation
 enum FetchError: Error {
 	case badResponse
 	case unAuthorized
+	case invalidCredentials
 }
 

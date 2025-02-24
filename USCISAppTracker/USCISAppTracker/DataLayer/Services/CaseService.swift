@@ -13,24 +13,21 @@ struct CaseService {
 	private func getAccessToken() async -> String? {
 		let authService = AuthenticationService.shared
 		
-		if !authService.isTokenValid() {
-			do {
-				try await authService.fetchAccessToken()
-				return authService.accessToken
-			}catch {
-				print("")
-			}
+		if authService.isTokenValid() {
+			return authService.accessToken
 		} else {
-			return authService.accessToken ?? nil
+			try! await authService.fetchAccessToken()
+			return authService.accessToken
 		}
-		return nil
 	}
 	
 	/// Function to fetch the case status
 	func fetchCaseStatus(for receiptNo: String) async throws -> Case?{
+		// check token is valid -> true .accesstoken ; false: fetchAccessToken
 		if let token = await getAccessToken() {
+			print("Token: \(token)")
 			var url = URL(string: ApiEndpoints.caseStatusEndpoint)!
-			url = url.appending(path: receiptNo)
+			url = url.appendingPathComponent(receiptNo)
 			
 			var request = URLRequest(url: url)
 			request.httpMethod = "GET"
@@ -41,11 +38,13 @@ struct CaseService {
 			
 			// Handle the response
 			guard let response = response as? HTTPURLResponse, response.statusCode == 200 else {
-				print("Fetch token: UnAuthorized")
-				throw FetchError.unAuthorized
+				print("Fetch token: Bad Response")
+				throw FetchError.badResponse
 			}
 			do {
 				let responseData = try JSONDecoder().decode(CaseAPIModel.self, from: data).domainModel
+				print(responseData)
+				print()
 				return responseData
 			}catch {
 				return nil

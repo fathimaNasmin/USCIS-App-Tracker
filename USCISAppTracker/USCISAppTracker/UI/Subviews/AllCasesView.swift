@@ -11,12 +11,10 @@ import SwiftData
 struct AllCasesView: View {
 	@Environment(\.isAddPage) var isAddPage
 	@State private var isAddNewCaseTabTapped: Bool = false
-	@State var selectedCase: CaseEntry?
+	@State var selectedCase: FetchedCase?
 	
 	@Environment(\.modelContext) var context
-	@State var caseEntryvm: CaseEntryViewModel = CaseEntryViewModel(dataSource: .shared)
-	
-	let vm: CaseViewModel
+	let caseEntryvm: CaseEntryViewModel
 	
     var body: some View {
 		
@@ -30,12 +28,11 @@ struct AllCasesView: View {
 						AddCaseOnTabView()
 							.onTapGesture {
 								isAddNewCaseTabTapped = true
-								print("Stored Cases: \(caseEntryvm.storedCases)")
 							}
 							.environment(\.isAddPage, true)
 						
-						ForEach(caseEntryvm.storedCases) { _case in
-							SingleCaseView(singleCase: vm.USCISCase!, caseEntry: _case)
+						ForEach(caseEntryvm.casesData) { _case in
+							SingleCaseView(singleCase: _case)
 								.onTapGesture {
 									selectedCase = _case
 								}
@@ -57,19 +54,15 @@ struct AllCasesView: View {
 			.padding()
 			.padding(.horizontal, 7)
 			.navigationDestination(item: $selectedCase) { caseDetail in
-				if let casedetail = vm.USCISCase {
-					SingleCaseDetailView(singleCase: casedetail, caseEntry: caseDetail, caseEntryvm: caseEntryvm )
-						.toolbar(.hidden, for: .navigationBar)
-						.transition(.move(edge: .trailing)) // Moves from right
-						.environment(\.isAddPage, false) // changing the environment value to false
-				}
+				SingleCaseDetailView(singleCaseDetail: caseDetail, caseEntryvm: caseEntryvm)
+					.toolbar(.hidden, for: .navigationBar)
+					.transition(.move(edge: .trailing)) // Moves from right
+					.environment(\.isAddPage, false) // changing the environment value to false
 			}
+
+
     }
 }
-
-//#Preview {
-//    AllCasesView()
-//}
 
 struct AddCaseOnTabView: View {
 	var body: some View {

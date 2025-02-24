@@ -63,18 +63,14 @@ class AuthenticationService{
 
 		// Handle the response
 		guard let response = response as? HTTPURLResponse, response.statusCode == 200 else {
-			print("Fetch token: UnAuthorized")
-			throw FetchError.unAuthorized
+			print("Fetch token from authaccesstoken: UnAuthorized")
+			throw FetchError.invalidCredentials
 		}
 
 		// Decode the response
-		do {
-			let authorization = try JSONDecoder().decode(AuthorizationAPIModel.self, from: data).authDomainModel
-			self.accessToken = authorization.accessToken
-			self.tokenExpiration = authorization.futureExpiration
-		}catch {
-			print("")
-		}
+		let authorization = try! JSONDecoder().decode(AuthorizationAPIModel.self, from: data).authDomainModel
+		self.accessToken = authorization.accessToken
+		self.tokenExpiration = authorization.futureExpiration
 	}
 }
 

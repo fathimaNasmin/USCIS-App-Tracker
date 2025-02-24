@@ -27,7 +27,7 @@ class SwiftDataService {
 	}
 	
 	/// Function that fetches all the cases in persistance store
-	func fetchAllCases() -> [CaseEntry] {
+	func fetchAllCasesFromStore() -> [CaseEntry] {
 		do {
 			return try modelContext.fetch(FetchDescriptor<CaseEntry>())
 		} catch {

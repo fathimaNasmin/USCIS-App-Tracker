@@ -9,7 +9,7 @@ import Foundation
 import SwiftUI
 
 // Domain Model or Business Model
-struct Case {
+struct Case: Hashable, Equatable {
 	let receiptNo: String
 	let formType: String
 	let submittedDate: Date
@@ -52,7 +52,7 @@ extension Case {
 		case rejected
 	}
 	
-	struct History: Identifiable {
+	struct History: Identifiable, Hashable, Equatable {
 		let id: UUID = UUID()
 		let date: Date
 		let text: String

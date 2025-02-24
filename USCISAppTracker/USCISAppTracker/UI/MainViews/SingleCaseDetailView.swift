@@ -14,16 +14,14 @@ struct SingleCaseDetailView: View {
 	@State private var isEditCaseTapped: Bool = false
 
 	let singleBoxDivision: CGFloat = 4
-	
-	let singleCase: Case
-	let caseEntry: CaseEntry
+	let singleCaseDetail: FetchedCase
 	let caseEntryvm: CaseEntryViewModel
 	
 	var body: some View {
 		GeometryReader { geo in
 		VStack {
 			// MARK: Header
-			SubHeaderView(title: caseEntry.name, iconName: "pencil") {
+			SubHeaderView(title: singleCaseDetail.name, iconName: "pencil") {
 				isEditCaseTapped = true
 			}
 			
@@ -36,7 +34,7 @@ struct SingleCaseDetailView: View {
 							Text("Receipt Number")
 								.captionStyle(12)
 								.foregroundColor(Color.tungstenGray)
-							Text(caseEntry.receiptNo)
+							Text(singleCaseDetail.data.receiptNo)
 								.titleStyle(24)
 								.fontWeight(.heavy)
 								.foregroundColor(.bluePrimary)
@@ -54,7 +52,7 @@ struct SingleCaseDetailView: View {
 								Text("Form")
 									.padding(.bottom, 5)
 									.subTitleStyle(16)
-								Text(singleCase.formType)
+								Text(singleCaseDetail.data.formType)
 									.subTitleStyle(20)
 									.fontWeight(.bold)
 							}
@@ -73,7 +71,7 @@ struct SingleCaseDetailView: View {
 									.subTitleStyle(16)
 								
 
-								Text("\(String(describing: singleCase.daysFromNow!))")
+								Text("\(String(describing: singleCaseDetail.data.daysFromNow!))")
 									.subTitleStyle(20)
 									.fontWeight(.bold)
 
@@ -94,7 +92,7 @@ struct SingleCaseDetailView: View {
 									.padding(.bottom, 5)
 									.subTitleStyle(16)
 								
-								Text("\(String(describing: singleCase.daysFromNow!))")
+								Text("\(String(describing: singleCaseDetail.data.daysFromNow!))")
 								.subTitleStyle(20)
 								.fontWeight(.bold)
 
@@ -115,11 +113,11 @@ struct SingleCaseDetailView: View {
 						
 						HStack{
 							VStack(alignment: .leading){
-								Text(singleCase.statusText)
+								Text(singleCaseDetail.data.statusText)
 									.titleStyle(22)
 									.padding(.bottom, 10)
 								// Formatting the HTML contents in response
-								HTMLFormattedText(singleCase.statusDescription)
+								HTMLFormattedText(singleCaseDetail.data.statusDescription)
 							}
 						}
 					}
@@ -127,9 +125,11 @@ struct SingleCaseDetailView: View {
 					.padding(.bottom, 20)
 					
 					// MARK: Case history
-					CaseHistoryStatusView(caseStatusHistories: singleCase.history)
+					if !singleCaseDetail.data.history.isEmpty {
+						CaseHistoryStatusView(caseStatusHistories: singleCaseDetail.data.history)
+					}
 					
-					DeleteCaseView(receiptNo: caseEntry.receiptNo, name: caseEntry.name, caseEntryvm: caseEntryvm)
+					DeleteCaseView(caseEntry: singleCaseDetail, caseEntryvm: caseEntryvm, receiptNum: singleCaseDetail.data.receiptNo)
 						.padding(.top, 40)
 				}
 				.padding()
@@ -137,7 +137,7 @@ struct SingleCaseDetailView: View {
 		}
 		.background(.antiflashwhite)
 		.sheet(isPresented: $isEditCaseTapped) {
-			NewCaseAddAndEditCaseView(receiptNumber: caseEntry.receiptNo, nickName: caseEntry.name, caseEntryvm: caseEntryvm)
+			NewCaseAddAndEditCaseView(receiptNumber: singleCaseDetail.data.receiptNo, nickName: singleCaseDetail.name, caseEntryvm: caseEntryvm)
 		}
 	}
 }
