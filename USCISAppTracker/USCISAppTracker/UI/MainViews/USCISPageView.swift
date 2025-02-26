@@ -11,7 +11,7 @@ struct USCISPageView: View {
 	@Environment(\.isAddPage) var isAddPage
 	
 	@State private var notificationBellTapped: Bool?
-	@State var caseEntryvm: CaseEntryViewModel = CaseEntryViewModel()
+	@State var casevm: CaseViewModel = CaseViewModel()
 
 	
     var body: some View {
@@ -23,7 +23,7 @@ struct USCISPageView: View {
 
 					ScrollView{
 						// MARK: All Cases
-						AllCasesView(caseEntryvm: caseEntryvm)
+						AllCasesView(casevm: casevm)
 						
 						// MARK: News
 						NewsView()
@@ -39,7 +39,7 @@ struct USCISPageView: View {
         }
 		.onAppear {
 			Task {
-				await caseEntryvm.fetchAllCases()
+				await casevm.fetchCases()
 			}
 		}
     }

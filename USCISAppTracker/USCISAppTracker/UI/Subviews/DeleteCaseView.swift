@@ -12,7 +12,7 @@ struct DeleteCaseView: View {
 	@State private var showDeleteAlert: Bool = false
 
 	let caseEntry: FetchedCase
-	let caseEntryvm: CaseEntryViewModel
+	let casevm: CaseViewModel
 	let receiptNum: String	
 	
     var body: some View {

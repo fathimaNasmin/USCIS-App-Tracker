@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct SingleCaseView: View {
-	let singleCase:FetchedCase
+	let singleCase: FetchedCase
 	
     var body: some View {
 		VStack {

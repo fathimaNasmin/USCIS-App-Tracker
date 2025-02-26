@@ -15,7 +15,7 @@ struct SingleCaseDetailView: View {
 
 	let singleBoxDivision: CGFloat = 4
 	let singleCaseDetail: FetchedCase
-	let caseEntryvm: CaseEntryViewModel
+	let casevm: CaseViewModel
 	
 	var body: some View {
 		GeometryReader { geo in
@@ -129,7 +129,7 @@ struct SingleCaseDetailView: View {
 						CaseHistoryStatusView(caseStatusHistories: singleCaseDetail.data.history)
 					}
 					
-					DeleteCaseView(caseEntry: singleCaseDetail, caseEntryvm: caseEntryvm, receiptNum: singleCaseDetail.data.receiptNo)
+					DeleteCaseView(caseEntry: singleCaseDetail, casevm: casevm, receiptNum: singleCaseDetail.data.receiptNo)
 						.padding(.top, 40)
 				}
 				.padding()
@@ -137,7 +137,7 @@ struct SingleCaseDetailView: View {
 		}
 		.background(.antiflashwhite)
 		.sheet(isPresented: $isEditCaseTapped) {
-			NewCaseAddAndEditCaseView(receiptNumber: singleCaseDetail.data.receiptNo, nickName: singleCaseDetail.name, caseEntryvm: caseEntryvm)
+			NewCaseAddAndEditCaseView(receiptNumber: singleCaseDetail.data.receiptNo, nickName: singleCaseDetail.name, casevm: casevm)
 		}
 	}
 }

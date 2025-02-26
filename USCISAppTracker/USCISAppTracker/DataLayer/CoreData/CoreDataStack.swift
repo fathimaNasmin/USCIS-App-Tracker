@@ -13,8 +13,6 @@ class CoreDataStack: ObservableObject {
 	
 	let container: NSPersistentContainer
 	
-	@Published var storedCases: [CaseEntry] = []
-	
 	var context: NSManagedObjectContext {
 		return container.viewContext
 	}
@@ -27,8 +25,6 @@ class CoreDataStack: ObservableObject {
 				print("Error loading core data: \(error)")
 			}
 		}
-		
-		storedCases = loadStoredCases()
 	}
 	
 	
@@ -92,7 +88,6 @@ class CoreDataStack: ObservableObject {
 	private func fetchLatestData() async {
 		do {
 			try await Task.sleep(nanoseconds: 1 * 1_000_000_000)
-			storedCases = loadStoredCases()
 		}catch{
 			print("Error while retrieving data: \(error.localizedDescription)")
 		}
@@ -103,7 +98,7 @@ class CoreDataStack: ObservableObject {
 	func saveContext() async {
 		do {
 			try context.save()
-			await fetchLatestData()
+//			await fetchLatestData()
 		} catch {
 			print("Error on saving: \(error.localizedDescription)")
 		}
