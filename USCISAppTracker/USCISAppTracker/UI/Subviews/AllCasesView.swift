@@ -12,7 +12,7 @@ struct AllCasesView: View {
 	@State private var isAddNewCaseTabTapped: Bool = false
 	@State var selectedCase: FetchedCase?
 	
-	let caseEntryvm: CaseEntryViewModel
+	let casevm: CaseViewModel
 	
     var body: some View {
 		
@@ -29,7 +29,7 @@ struct AllCasesView: View {
 							}
 							.environment(\.isAddPage, true)
 						
-						ForEach(caseEntryvm.casesData) { _case in
+						ForEach(casevm.USCISCase) { _case in
 							SingleCaseView(singleCase: _case)
 								.onTapGesture {
 									selectedCase = _case
@@ -46,13 +46,13 @@ struct AllCasesView: View {
 				.clipShape(RoundedRectangle(cornerRadius: 20))
 				.shadow(color: .gray.opacity(0.3), radius: 10, x: 0, y: 4)
 				.sheet(isPresented: $isAddNewCaseTabTapped) {
-					NewCaseAddAndEditCaseView(caseEntryvm: caseEntryvm)
+					NewCaseAddAndEditCaseView(casevm: casevm)
 				}
 			}
 			.padding()
 			.padding(.horizontal, 7)
 			.navigationDestination(item: $selectedCase) { caseDetail in
-				SingleCaseDetailView(singleCaseDetail: caseDetail, caseEntryvm: caseEntryvm)
+				SingleCaseDetailView(singleCaseDetail: caseDetail, casevm: casevm)
 					.toolbar(.hidden, for: .navigationBar)
 					.transition(.move(edge: .trailing)) // Moves from right
 					.environment(\.isAddPage, false) // changing the environment value to false

@@ -21,7 +21,7 @@ struct NewCaseAddAndEditCaseView: View {
 	@State private var oldReceiptNo: String = ""
 	@State private var oldName: String = ""
 	
-	let caseEntryvm: CaseEntryViewModel
+	let casevm: CaseViewModel
 	
 	private var isAddFieldValid: Bool {
 		isReceiptNumberValid && isNameValid

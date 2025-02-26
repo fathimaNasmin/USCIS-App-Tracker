@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct CaseService {
+struct CaseAPIService {
 	
 	/// A Private Function to get the token
 	private func getAccessToken() async -> String? {
