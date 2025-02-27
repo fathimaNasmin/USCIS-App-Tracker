@@ -6,7 +6,6 @@
 //
 
 import Foundation
-import CoreData
 
 final class DataManager {
 	static let shared = DataManager()
@@ -16,7 +15,13 @@ final class DataManager {
 	var caseEntries: [CaseEntry] = []
 	
 	init() {
+		loadCaseEntries()
+	}
+	
+	/// Function that loads data to the caseEntries
+	func loadCaseEntries() {
 		caseEntries = CoreDataStack.shared.loadStoredCases()
+		print("CaseEntries: \(caseEntries)")
 	}
 	
 	/// Function that fetches the real data from server and store it in an array of type FetchedCase
@@ -38,7 +43,7 @@ final class DataManager {
 						}
 						return nil
 					}catch {
-						print("Error on fetching case from data manager: \(error.localizedDescription)")
+						print("Error on fetching case from data manager: \(error)")
 						return nil
 					}
 				}

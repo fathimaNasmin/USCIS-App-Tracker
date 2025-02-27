@@ -46,7 +46,7 @@ struct AllCasesView: View {
 				.clipShape(RoundedRectangle(cornerRadius: 20))
 				.shadow(color: .gray.opacity(0.3), radius: 10, x: 0, y: 4)
 				.sheet(isPresented: $isAddNewCaseTabTapped) {
-					NewCaseAddAndEditCaseView(casevm: casevm)
+					NewCaseAddAndEditCaseView(currentCase: nil, casevm: casevm)
 				}
 			}
 			.padding()

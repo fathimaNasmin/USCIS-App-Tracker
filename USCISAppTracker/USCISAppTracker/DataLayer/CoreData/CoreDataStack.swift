@@ -8,7 +8,7 @@
 import Foundation
 import CoreData
 
-class CoreDataStack: ObservableObject {
+class CoreDataStack {
 	static let shared = CoreDataStack()
 	
 	let container: NSPersistentContainer
@@ -44,22 +44,24 @@ class CoreDataStack: ObservableObject {
 	/// Function to add a new case to the core data
 	func save(_ caseEntry: CaseEntry) async {
 		let newCase = CaseEntity(context: context)
-		
-		newCase.name = caseEntry.name
+		newCase.id = UUID()
+		newCase.name = caseEntry.name.capitalized
 		newCase.receiptNo = caseEntry.receiptNo
 		
 		await saveContext()
 	}
 	
 	/// Function for updating the data in coreData.
-	func update(_ caseEntry: CaseEntry) async {
+	func update(id: UUID, name: String?, receiptNo: String?) async {
 		let request: NSFetchRequest<CaseEntity> = CaseEntity.fetchRequest()
-		request.predicate = NSPredicate(format:"receiptNo == %@", caseEntry.receiptNo)
+		request.predicate = NSPredicate(format:"id == %@", id as CVarArg)
 		
 		do {
 			let instance = try context.fetch(request).first
-			instance?.name = caseEntry.name
-			instance?.receiptNo = caseEntry.receiptNo
+			print("Updating \(String(describing: instance!.name))")
+			instance?.name = name ?? instance?.name
+			instance?.receiptNo = receiptNo ?? instance?.receiptNo
+			
 			await saveContext()
 			print("Updated")
 		}catch {
@@ -98,7 +100,6 @@ class CoreDataStack: ObservableObject {
 	func saveContext() async {
 		do {
 			try context.save()
-//			await fetchLatestData()
 		} catch {
 			print("Error on saving: \(error.localizedDescription)")
 		}

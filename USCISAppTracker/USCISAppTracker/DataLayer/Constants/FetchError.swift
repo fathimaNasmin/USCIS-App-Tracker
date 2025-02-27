@@ -7,9 +7,20 @@
 
 import Foundation
 
-enum FetchError: Error {
+enum FetchError: Error, LocalizedError {
 	case badResponse
 	case unAuthorized
-	case invalidCredentials
+	case unknown
+	
+	var errorDescription: String? {
+		switch self {
+		case .badResponse:
+			return "Bad response from the server."
+		case .unAuthorized:
+			return "Unauthorized: Provided credentials are invalid"
+		case .unknown:
+			return "An unknown error occurred."
+		}
+	}
 }
 

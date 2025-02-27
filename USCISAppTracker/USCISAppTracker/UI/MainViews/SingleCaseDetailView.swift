@@ -137,7 +137,7 @@ struct SingleCaseDetailView: View {
 		}
 		.background(.antiflashwhite)
 		.sheet(isPresented: $isEditCaseTapped) {
-			NewCaseAddAndEditCaseView(receiptNumber: singleCaseDetail.data.receiptNo, nickName: singleCaseDetail.name, casevm: casevm)
+			NewCaseAddAndEditCaseView(currentCase: singleCaseDetail, casevm: casevm)
 		}
 	}
 }
