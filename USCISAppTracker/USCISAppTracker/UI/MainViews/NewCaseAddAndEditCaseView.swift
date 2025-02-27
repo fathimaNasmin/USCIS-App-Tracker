@@ -21,29 +21,8 @@ struct NewCaseAddAndEditCaseView: View {
 	@State private var oldReceiptNo: String = ""
 	@State private var oldName: String = ""
 	
+	let currentCase: FetchedCase?
 	let casevm: CaseViewModel
-	
-	private var isAddFieldValid: Bool {
-		isReceiptNumberValid && isNameValid
-	}
-	
-	private var isReceiptNumberValid: Bool {
-		receiptNumber.count == 13 && checkReceiptNoPatternValid
-	}
-	
-	private var isNameValid: Bool {
-		!nickName.isEmpty && nickName.count > 3 ? true : false
-	}
-	
-	// Computed Property for checking the Receipt Number Pattern
-	private var checkReceiptNoPatternValid: Bool {
-		do {
-			let regExp = try Regex("[a-zA-Z]{3}[0-9]{10}")
-			return try regExp.wholeMatch(in: receiptNumber) != nil
-		} catch {
-			return false
-		}
-	}
 	
     var body: some View {
 		VStack {
@@ -69,7 +48,7 @@ struct NewCaseAddAndEditCaseView: View {
 			VStack {
 				HStack {
 					// MARK: TextField - Receipt Number
-					TextField("", text: $receiptNumber, prompt: Text("Receipt Number")
+					TextField("", text: isAddPage ? $receiptNumber : $oldReceiptNo, prompt: Text("Receipt Number")
 						.foregroundColor(Color.textGray))
 						.textFieldStyle(RoundedRectangleTextFieldStyle())
 						.textInputAutocapitalization(.characters)
@@ -96,7 +75,7 @@ struct NewCaseAddAndEditCaseView: View {
 				
 				// Receipt Number: Error message
 				HStack {
-					Text(receiptNumber.count != 13 ? "Receipt Number should be exactly 13 characters" : "")
+					Text(receiptNumber.count != casevm.receiptNumberCharacterCount ? "Receipt Number should be exactly \(casevm.receiptNumberCharacterCount) characters" : "")
 						.foregroundColor(.textGray)
 						.captionStyle(10)
 						.fontWeight(.bold)
@@ -107,14 +86,14 @@ struct NewCaseAddAndEditCaseView: View {
 				.padding(.leading, 5)
 				
 				// MARK: TextField - Nick Name
-				TextField("", text: $nickName, prompt: Text("Nick Name").foregroundColor(Color.textGray))
+				TextField("", text: isAddPage ? $nickName : $oldName, prompt: Text("Nick Name").foregroundColor(Color.textGray))
 					.textFieldStyle(RoundedRectangleTextFieldStyle())
 					.padding(.vertical, 10)
 					.autocorrectionDisabled(true)
 				
 				// Nick Name: Error message
 				HStack {
-					Text(nickName.count < 3 ? "Name should have atleast 3 characters" : "")
+					Text(nickName.count < casevm.nameCharacterCount ? "Name should have atleast \(casevm.nameCharacterCount) characters" : "")
 						.foregroundColor(.textGray)
 						.captionStyle(10)
 						.fontWeight(.bold)
@@ -128,12 +107,23 @@ struct NewCaseAddAndEditCaseView: View {
 				Button {
 					print("IsAddPage : \(isAddPage)")
 					if isAddPage {
-						// Call Save Function for adding new case
-					}else {
+						Task {
+							await casevm.saveToDb(name: nickName, receiptNo: receiptNumber)
+						}
+						dismissAddCaseSheet()
+					} else {
 						// Call Save Function for editing existing case
+						print("Edit button tapped...")
+						Task {
+							if let currentCase = currentCase {
+								await casevm.updateToDb(id: currentCase.id, name: nickName, receiptNo: receiptNumber)
+							}
+						}
+						dismissAddCaseSheet()
 					}
 				} label: {
 					Text("Save")
+						.titleStyle(20)
 						.titleStyle(20)
 						.padding()
 						.padding(.vertical, -1)
@@ -143,7 +133,7 @@ struct NewCaseAddAndEditCaseView: View {
 						.clipShape(RoundedRectangle(cornerRadius: 15))
 				}
 				.padding(.vertical, 10)
-				.disabled(!isAddFieldValid)
+				.disabled(!casevm.isAddFieldValid(name: nickName, receiptNo: receiptNumber))
 				.alert(alertMessage, isPresented: $showingAlert) {
 					Button("OK", role: .cancel) { }
 				}
@@ -171,15 +161,12 @@ struct NewCaseAddAndEditCaseView: View {
 
 		}
 		.onAppear {
-			oldReceiptNo = receiptNumber
-			oldName = nickName
+			if !isAddPage {
+				oldReceiptNo = currentCase?.data.receiptNo ?? ""
+				oldName = currentCase?.name ?? ""
+				receiptNumber = oldReceiptNo
+				nickName = oldName
+			}
 		}
     }
 }
-
-//#Preview {
-//	NewCaseAddAndEditCaseView()
-//}
-
-
-

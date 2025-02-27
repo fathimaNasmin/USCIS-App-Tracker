@@ -23,11 +23,25 @@ struct CaseAPIService {
 	
 	/// Function to fetch the case status
 	func fetchCaseStatus(for receiptNo: String) async throws -> Case?{
-		// check token is valid -> true .accesstoken ; false: fetchAccessToken
+		let maxRetries = 3
+		
+		for attempt in 1...maxRetries {
+			do {
+				return try await apiCallForCaseStatus(receiptNo)
+			}catch {
+				print("Attempt \(attempt) failed: \(error.localizedDescription)")
+				if attempt == maxRetries { throw error}
+				try await Task.sleep(nanoseconds: 2_000_000_000)
+			}
+		}
+		return nil
+	}
+	
+	private func apiCallForCaseStatus(_ number: String) async throws -> Case?{
 		if let token = await getAccessToken() {
 			print("Token: \(token)")
 			var url = URL(string: ApiEndpoints.caseStatusEndpoint)!
-			url = url.appendingPathComponent(receiptNo)
+			url = url.appendingPathComponent(number)
 			
 			var request = URLRequest(url: url)
 			request.httpMethod = "GET"

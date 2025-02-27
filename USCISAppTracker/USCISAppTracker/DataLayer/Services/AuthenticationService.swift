@@ -64,7 +64,7 @@ class AuthenticationService{
 		// Handle the response
 		guard let response = response as? HTTPURLResponse, response.statusCode == 200 else {
 			print("Fetch token from authaccesstoken: UnAuthorized")
-			throw FetchError.invalidCredentials
+			throw FetchError.unAuthorized
 		}
 
 		// Decode the response
