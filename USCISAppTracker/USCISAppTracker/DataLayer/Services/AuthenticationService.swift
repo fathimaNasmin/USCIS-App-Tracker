@@ -35,7 +35,7 @@ class AuthenticationService{
 		}
 	}
 	
-	func isTokenValid() -> Bool {
+	func isTokenValid() async -> Bool {
 		if let tokenExpTime = tokenExpiration {
 			return Date() < tokenExpTime
 		}
