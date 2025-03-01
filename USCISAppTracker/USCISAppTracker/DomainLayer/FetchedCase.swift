@@ -7,8 +7,14 @@
 
 import Foundation
 
-struct FetchedCase: Identifiable, Hashable, Equatable {
+class FetchedCase: NSObject, Identifiable {
 	let id: UUID
 	let name: String
 	let data: Case
+	
+	init(id: UUID, name: String, data: Case) {
+		self.id = id
+		self.name = name
+		self.data = data
+	}
 }

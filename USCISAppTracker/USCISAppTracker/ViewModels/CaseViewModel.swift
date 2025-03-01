@@ -13,6 +13,7 @@ import SwiftUI
 
 	@ObservationIgnored let dataManager = DataManager.shared
 	@ObservationIgnored let coreDataStack = CoreDataStack.shared
+	@ObservationIgnored let cache = USCISCaseCache.shared
 	
 	let receiptNumberCharacterCount = 13
 	let nameCharacterCount = 3
@@ -23,6 +24,13 @@ import SwiftUI
 	
 	func fetchCases() async {
 		USCISCase = await dataManager.fetchCaseResults()
+	}
+	
+	/// Function to add fetched cases to cache.
+	func addToCache() {
+		for _case in USCISCase {
+			cache.setCaseDetails(_case)
+		}
 	}
 	
 	/// Function that fetches from local file
@@ -66,13 +74,15 @@ import SwiftUI
 	func reloadLatestData() async {
 		do {
 			try await Task.sleep(nanoseconds: 2 * 1_000_000_000)
-			dataManager.loadCaseEntries()
-			await fetchCases()
+			if let fetchedCaseResult = await dataManager.loadDataFromCache() {
+				USCISCase = fetchedCaseResult
+			}
 		}catch {
 			print("Error on reloading the latest data")
 		}
 
 	}
+	
 	
 	///  Function which checks the form validation
 	func isAddFieldValid(name: String, receiptNo: String) -> Bool {
