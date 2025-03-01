@@ -11,6 +11,7 @@ final class DataManager {
 	static let shared = DataManager()
 	
 	let apiService = CaseAPIService()
+	let cache = USCISCaseCache.shared
 	
 	var caseEntries: [CaseEntry] = []
 	
@@ -57,4 +58,33 @@ final class DataManager {
 			return fetchedCases
 		}
 	}
+	
+	
+	/// Function that fetches all the caseEntries details from cache if available, otherwise call the api 
+	func loadDataFromCache() async -> [FetchedCase]? {
+		var resultArray: [FetchedCase] = []
+		// reload latest cases from core data
+		loadCaseEntries()
+		// reinitialize USCIS case [] from cache
+		for _entry in caseEntries {
+			if let res = cache.getCaseDetails(for: _entry.receiptNo) {
+				resultArray.append(res)
+			} else {
+				// not in cache call for api service
+				do {
+					let apiRes = try await apiService.fetchCaseStatus(for: _entry.receiptNo)
+					if let caseData = apiRes {
+						let newCase = FetchedCase(id: UUID(), name: _entry.name, data: caseData)
+						resultArray.append(newCase)
+						// add to cache
+						cache.setCaseDetails(newCase)
+					}
+				} catch {
+					print("Error from loadDataFromCache: \(error)")
+				}
+			}
+		}
+		return resultArray
+	}
+	
 }
