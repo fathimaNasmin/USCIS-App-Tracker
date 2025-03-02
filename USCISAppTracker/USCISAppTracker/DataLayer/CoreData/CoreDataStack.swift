@@ -71,9 +71,9 @@ class CoreDataStack {
 	}
 	
 	/// Function to delete the data from the core data.
-	func delete(_ caseEntry: CaseEntry) async {
+	func delete(_ receiptNo: String) async {
 		let request: NSFetchRequest<CaseEntity> = CaseEntity.fetchRequest()
-		request.predicate = NSPredicate(format:"receiptNo == %@", caseEntry.receiptNo)
+		request.predicate = NSPredicate(format:"receiptNo == %@", receiptNo)
 		
 		do {
 			let result = try context.fetch(request)

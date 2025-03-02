@@ -33,6 +33,10 @@ struct DeleteCaseView: View {
 			.alert("Are you sure you want to delete this case", isPresented: $showDeleteAlert) {
 				Button("Delete", role: .destructive) {
 					// Call delete function
+					Task {
+						await casevm.deleteFromDb(receiptNumber: receiptNum)
+					}
+					dismiss()
 				}
 				Button("Cancel", role: .cancel) {
 					print("Cancelled")
