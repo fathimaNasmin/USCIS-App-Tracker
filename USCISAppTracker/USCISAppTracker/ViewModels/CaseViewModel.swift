@@ -63,22 +63,23 @@ import SwiftUI
 	}
 	
 	/// Edit button Action: Function that edit/ update the store
-	func updateToDb(id: UUID, name: String?, receiptNo: String?) async {
+	func updateOnDb(id: UUID, name: String, receiptNo: String) async {
 		await coreDataStack.update(id: id, name: name, receiptNo: receiptNo)
+		cache.updateCache(for: receiptNo, name: name)
 		await reloadLatestData()
 		print("Update complete...")
 	}
 	
 	
 	/// Delete button Action: Function that delete the store.
-	func deleteToDb(id: UUID) {
+	func deleteFromDb(id: UUID) {
 		
 	}
 	
 	/// Reload the data
-	func reloadLatestData() async {
+	private func reloadLatestData() async {
 		do {
-			try await Task.sleep(nanoseconds: 2 * 1_000_000_000)
+			try await Task.sleep(nanoseconds: UInt64(0.5) * 1_000_000_000)
 			if let fetchedCaseResult = await dataManager.loadDataFromCache() {
 				USCISCase = fetchedCaseResult
 			}

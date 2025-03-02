@@ -30,4 +30,13 @@ class USCISCaseCache {
 	func removeCaseDetails(for receiptNumber: String) {
 		cache.removeObject(forKey: receiptNumber as NSString)
 	}
+	
+	/// Function to update change in Cache.
+	func updateCache(for receiptNumber: String, name: String) {
+		let data = getCaseDetails(for: receiptNumber)
+		if let result = data {
+			let updatedCase = FetchedCase(id: result.id, name: name, data: result.data)
+			setCaseDetails(updatedCase)
+		}
+	}
 }
