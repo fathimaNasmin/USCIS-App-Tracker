@@ -53,6 +53,7 @@ struct NewCaseAddAndEditCaseView: View {
 						.textFieldStyle(RoundedRectangleTextFieldStyle())
 						.textInputAutocapitalization(.characters)
 						.padding(.vertical, 10)
+						.disabled(isAddPage ? false : true)
 						.overlay(alignment: .trailing) {
 							if isAddPage {
 								HStack {
@@ -86,7 +87,7 @@ struct NewCaseAddAndEditCaseView: View {
 				.padding(.leading, 5)
 				
 				// MARK: TextField - Nick Name
-				TextField("", text: isAddPage ? $nickName : $oldName, prompt: Text("Nick Name").foregroundColor(Color.textGray))
+				TextField("", text: $nickName, prompt: Text("Nick Name").foregroundColor(Color.textGray))
 					.textFieldStyle(RoundedRectangleTextFieldStyle())
 					.padding(.vertical, 10)
 					.autocorrectionDisabled(true)
@@ -116,7 +117,7 @@ struct NewCaseAddAndEditCaseView: View {
 						print("Edit button tapped...")
 						Task {
 							if let currentCase = currentCase {
-								await casevm.updateToDb(id: currentCase.id, name: nickName, receiptNo: receiptNumber)
+								await casevm.updateOnDb(id: currentCase.id, name: nickName, receiptNo: receiptNumber)
 							}
 						}
 						dismissAddCaseSheet()
