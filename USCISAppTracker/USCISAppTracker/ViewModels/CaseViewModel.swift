@@ -72,8 +72,11 @@ import SwiftUI
 	
 	
 	/// Delete button Action: Function that delete the store.
-	func deleteFromDb(id: UUID) {
-		
+	func deleteFromDb(receiptNumber: String) async {
+		await coreDataStack.delete(receiptNumber)
+		// remove from cache
+		cache.removeCaseDetails(for: receiptNumber)
+		await reloadLatestData()
 	}
 	
 	/// Reload the data
