@@ -44,7 +44,7 @@ class CoreDataStack {
 	/// Function to add a new case to the core data
 	func save(_ caseEntry: CaseEntry) async {
 		let newCase = CaseEntity(context: context)
-		newCase.id = UUID()
+		newCase.id = caseEntry.id
 		newCase.name = caseEntry.name.capitalized
 		newCase.receiptNo = caseEntry.receiptNo
 		
@@ -100,6 +100,7 @@ class CoreDataStack {
 	func saveContext() async {
 		do {
 			try context.save()
+			print("Case Saved")
 		} catch {
 			print("Error on saving: \(error.localizedDescription)")
 		}
