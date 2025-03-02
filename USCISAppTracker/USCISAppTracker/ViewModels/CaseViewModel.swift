@@ -22,12 +22,17 @@ import SwiftUI
 		
 	}
 	
+	func loadOnAppear() async {
+		await fetchCases()
+		await addToCache()
+	}
+	
 	func fetchCases() async {
 		USCISCase = await dataManager.fetchCaseResults()
 	}
 	
 	/// Function to add fetched cases to cache.
-	func addToCache() {
+	func addToCache() async {
 		for _case in USCISCase {
 			cache.setCaseDetails(_case)
 		}

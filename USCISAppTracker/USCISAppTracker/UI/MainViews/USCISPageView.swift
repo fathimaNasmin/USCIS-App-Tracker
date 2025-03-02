@@ -39,8 +39,7 @@ struct USCISPageView: View {
         }
 		.onAppear {
 			Task {
-				await casevm.fetchCases()
-				casevm.addToCache()
+				await casevm.loadOnAppear()
 			}
 		}
     }
