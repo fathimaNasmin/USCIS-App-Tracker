@@ -52,7 +52,7 @@ class CoreDataStack {
 	}
 	
 	/// Function for updating the data in coreData.
-	func update(id: UUID, name: String, receiptNo: String) async {
+	func update(name: String, receiptNo: String) async {
 		let request: NSFetchRequest<CaseEntity> = CaseEntity.fetchRequest()
 		request.predicate = NSPredicate(format:"receiptNo == %@", receiptNo)
 		print(name)

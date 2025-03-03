@@ -34,7 +34,7 @@ struct DeleteCaseView: View {
 				Button("Delete", role: .destructive) {
 					// Call delete function
 					Task {
-						await casevm.deleteFromDb(receiptNumber: receiptNum)
+						await casevm.deleteButtonTapped(receiptNumber: receiptNum)
 					}
 					dismiss()
 				}

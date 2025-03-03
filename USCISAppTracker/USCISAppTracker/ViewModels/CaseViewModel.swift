@@ -12,30 +12,26 @@ import SwiftUI
 	var USCISCase: [FetchedCase] = []
 
 	@ObservationIgnored let dataManager = DataManager.shared
-	@ObservationIgnored let coreDataStack = CoreDataStack.shared
-	@ObservationIgnored let cache = USCISCaseCache.shared
 	
 	let receiptNumberCharacterCount = 13
 	let nameCharacterCount = 3
 	
-	init() {
-		
-	}
 	
+	/// An Async function for loading on appear
 	func loadOnAppear() async {
 		await fetchCases()
-		await addToCache()
+		await addAllCasesToCache()
 	}
 	
+	/// Function that fetches cases and assign to a variable which is an Array of FetchedCase
 	func fetchCases() async {
 		USCISCase = await dataManager.fetchCaseResults()
 	}
 	
+	// TODO: move this function to a background task
 	/// Function to add fetched cases to cache.
-	func addToCache() async {
-		for _case in USCISCase {
-			cache.setCaseDetails(_case)
-		}
+	func addAllCasesToCache() async {
+		await dataManager.addToCache(USCISCase)
 	}
 	
 	/// Function that fetches from local file
@@ -55,49 +51,26 @@ import SwiftUI
 	}
 	
 	/// Save Button Action : Function that saves to the store
-	func saveToDb(name: String, receiptNo: String) async {
-		let newCaseEntry = CaseEntry(id: UUID(), name: name, receiptNo: receiptNo)
-		await coreDataStack.save(newCaseEntry)
-		await reloadLatestData()
-		print("Saving complete...")
+	func saveButtonTapped(name: String, receiptNo: String) async {
+		USCISCase = await dataManager.saveToDb(name: name, receiptNo: receiptNo)
 	}
 	
-	/// Edit button Action: Function that edit/ update the store
-	func updateOnDb(id: UUID, name: String, receiptNo: String) async {
-		await coreDataStack.update(id: id, name: name, receiptNo: receiptNo)
-		cache.updateCache(for: receiptNo, name: name)
-		await reloadLatestData()
-		print("Update complete...")
-	}
-	
-	
-	/// Delete button Action: Function that delete the store.
-	func deleteFromDb(receiptNumber: String) async {
-		await coreDataStack.delete(receiptNumber)
-		// remove from cache
-		cache.removeCaseDetails(for: receiptNumber)
-		await reloadLatestData()
-	}
-	
-	/// Reload the data
-	private func reloadLatestData() async {
-		do {
-			try await Task.sleep(nanoseconds: UInt64(0.5) * 1_000_000_000)
-			if let fetchedCaseResult = await dataManager.loadDataFromCache() {
-				USCISCase = fetchedCaseResult
-			}
-		}catch {
-			print("Error on reloading the latest data")
-		}
 
+	/// Edit button Action: Function that edit/ update the store
+	func editButtonTapped(name: String, receiptNo: String) async {
+		USCISCase = await dataManager.updateOnDb(name: name, receiptNo: receiptNo)
 	}
 	
+
+	/// Delete button Action: Function that delete the store.
+	func deleteButtonTapped(receiptNumber: String) async {
+		USCISCase = await dataManager.deleteFromDb(receiptNumber: receiptNumber)
+	}
+
 	
 	///  Function which checks the form validation
 	func isAddFieldValid(name: String, receiptNo: String) -> Bool {
-		print("isAddFieldValid called")
 		let res = isReceiptNumberValid(receiptNo) && isNameValid(name)
-		print(res)
 		return res
 	}
 	
