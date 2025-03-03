@@ -20,7 +20,7 @@ import SwiftUI
 	/// An Async function for loading on appear
 	func loadOnAppear() async {
 		await fetchCases()
-		await addAllCasesToCache()
+		addAllCasesToCache()
 	}
 	
 	/// Function that fetches cases and assign to a variable which is an Array of FetchedCase
@@ -30,8 +30,8 @@ import SwiftUI
 	
 	// TODO: move this function to a background task
 	/// Function to add fetched cases to cache.
-	func addAllCasesToCache() async {
-		await dataManager.addToCache(USCISCase)
+	func addAllCasesToCache() {
+		dataManager.addToCache(USCISCase)
 	}
 	
 	/// Function that fetches from local file

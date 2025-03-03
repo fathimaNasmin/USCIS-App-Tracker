@@ -89,7 +89,7 @@ final class DataManager {
 	}
 	
 	/// Function to add fetched cases to cache.
-	func addToCache(_ allCases: [FetchedCase]) async {
+	func addToCache(_ allCases: [FetchedCase]) {
 		for _case in allCases {
 			cache.setCaseDetails(_case)
 		}
