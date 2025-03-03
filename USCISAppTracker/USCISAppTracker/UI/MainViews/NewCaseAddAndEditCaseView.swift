@@ -109,15 +109,15 @@ struct NewCaseAddAndEditCaseView: View {
 					print("IsAddPage : \(isAddPage)")
 					if isAddPage {
 						Task {
-							await casevm.saveToDb(name: nickName, receiptNo: receiptNumber)
+							await casevm.saveButtonTapped(name: nickName, receiptNo: receiptNumber)
 						}
 						dismissAddCaseSheet()
 					} else {
 						// Call Save Function for editing existing case
 						print("Edit button tapped...")
 						Task {
-							if let currentCase = currentCase {
-								await casevm.updateOnDb(id: currentCase.id, name: nickName, receiptNo: receiptNumber)
+							if currentCase != nil {
+								await casevm.editButtonTapped(name: nickName, receiptNo: receiptNumber)
 							}
 						}
 						dismissAddCaseSheet()

@@ -12,6 +12,7 @@ final class DataManager {
 	
 	let apiService = CaseAPIService()
 	let cache = USCISCaseCache.shared
+	let coreDataStack = CoreDataStack.shared
 	
 	var caseEntries: [CaseEntry] = []
 	
@@ -87,4 +88,47 @@ final class DataManager {
 		return resultArray
 	}
 	
+	/// Function to add fetched cases to cache.
+	func addToCache(_ allCases: [FetchedCase]) async {
+		for _case in allCases {
+			cache.setCaseDetails(_case)
+		}
+	}
+	
+	/// Save Button Action : Function that saves to the store
+	func saveToDb(name: String, receiptNo: String) async -> [FetchedCase] {
+		let newCaseEntry = CaseEntry(id: UUID(), name: name, receiptNo: receiptNo)
+		await coreDataStack.save(newCaseEntry)
+		return await reloadLatestData()
+	}
+	
+	/// Edit button Action: Function that edit/ update the store
+	func updateOnDb(name: String, receiptNo: String) async -> [FetchedCase] {
+		await coreDataStack.update(name: name, receiptNo: receiptNo)
+		cache.updateCache(for: receiptNo, name: name)
+		return await reloadLatestData()
+	}
+	
+
+	/// Delete button Action: Function that delete the store.
+	func deleteFromDb(receiptNumber: String) async -> [FetchedCase] {
+		await coreDataStack.delete(receiptNumber)
+		// remove from cache
+		cache.removeCaseDetails(for: receiptNumber)
+		return await reloadLatestData()
+	}
+	
+	/// Reload the data
+	private func reloadLatestData() async -> [FetchedCase] {
+		do {
+			try await Task.sleep(nanoseconds: UInt64(0.5) * 1_000_000_000)
+			if let fetchedCaseResult = await loadDataFromCache() {
+				return fetchedCaseResult
+			}
+		}catch {
+			print("Error on reloading the latest data")
+			return []
+		}
+		return []
+	}
 }
