@@ -41,7 +41,7 @@ final class DataManager {
 				group.addTask {
 					do {
 						if let responseData = try await self.apiService.fetchCaseStatus(for: caseEntry.receiptNo) {
-							return FetchedCase(id: caseEntry.id, name: caseEntry.name, data: responseData)
+							return FetchedCase(id: caseEntry.id, name: caseEntry.name, data: responseData, dateAdded: caseEntry.dateAdded)
 						}
 						return nil
 					}catch {
@@ -75,7 +75,7 @@ final class DataManager {
 				do {
 					let apiRes = try await apiService.fetchCaseStatus(for: _entry.receiptNo)
 					if let caseData = apiRes {
-						let newCase = FetchedCase(id: UUID(), name: _entry.name, data: caseData)
+						let newCase = FetchedCase(id: UUID(), name: _entry.name, data: caseData, dateAdded: _entry.dateAdded)
 						resultArray.append(newCase)
 						// add to cache
 						cache.setCaseDetails(newCase)
@@ -97,7 +97,7 @@ final class DataManager {
 	
 	/// Save Button Action : Function that saves to the store
 	func saveToDb(name: String, receiptNo: String) async -> [FetchedCase] {
-		let newCaseEntry = CaseEntry(id: UUID(), name: name, receiptNo: receiptNo)
+		let newCaseEntry = CaseEntry(id: UUID(), name: name, receiptNo: receiptNo, dateAdded: Date())
 		await coreDataStack.save(newCaseEntry)
 		return await reloadLatestData()
 	}

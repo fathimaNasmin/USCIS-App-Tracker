@@ -19,6 +19,11 @@ class CoreDataStack {
 	
 	init() {
 		container = NSPersistentContainer(name: "USCISCore")
+		
+		let description = container.persistentStoreDescriptions.first
+		description?.shouldMigrateStoreAutomatically = true
+		description?.shouldInferMappingModelAutomatically = true
+		
 		// to load all data from the container
 		container.loadPersistentStores { (description, error) in
 			if let error = error {
@@ -30,6 +35,10 @@ class CoreDataStack {
 	
 	func loadStoredCases() -> [CaseEntry] {
 		let request: NSFetchRequest<CaseEntity> = CaseEntity.fetchRequest()
+		
+		// Sort by dateAdded in ascending order (oldest first)
+		let sortDescriptor = NSSortDescriptor(key: "dateAdded", ascending: false)
+		request.sortDescriptors = [sortDescriptor]
 		
 		do {
 			let fetchedCases = try context.fetch(request)
@@ -47,6 +56,7 @@ class CoreDataStack {
 		newCase.id = caseEntry.id
 		newCase.name = caseEntry.name.capitalized
 		newCase.receiptNo = caseEntry.receiptNo
+		newCase.dateAdded = Date()
 		
 		await saveContext()
 	}
@@ -106,4 +116,6 @@ class CoreDataStack {
 			print("Error on saving: \(error.localizedDescription)")
 		}
 	}
+	
+	
 }
