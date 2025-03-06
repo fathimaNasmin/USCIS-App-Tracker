@@ -10,10 +10,11 @@ import Foundation
 extension CaseEntity {
 	/// Function to convert CaseEntity(CoreData) to CaseEntry(Swift Model)
 	func toCaseEntry() -> CaseEntry? {
-		guard let id = self.id, let name = self.name, let receiptNo = self.receiptNo else {
+		guard let id = self.id, let name = self.name, let receiptNo = self.receiptNo, let dateAdded = self.dateAdded
+		else {
 			return nil
 		}
 		
-		return CaseEntry(id: id, name: name, receiptNo: receiptNo)
+		return CaseEntry(id: id, name: name, receiptNo: receiptNo, dateAdded: dateAdded)
 	}
 }

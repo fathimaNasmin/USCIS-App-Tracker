@@ -35,7 +35,7 @@ class USCISCaseCache {
 	func updateCache(for receiptNumber: String, name: String) {
 		let data = getCaseDetails(for: receiptNumber)
 		if let result = data {
-			let updatedCase = FetchedCase(id: result.id, name: name, data: result.data)
+			let updatedCase = FetchedCase(id: result.id, name: name, data: result.data, dateAdded: result.dateAdded)
 			setCaseDetails(updatedCase)
 		}
 	}

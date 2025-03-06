@@ -11,4 +11,5 @@ struct CaseEntry: Identifiable, Hashable, Equatable {
 	let id: UUID
 	let name: String
 	let receiptNo: String
+	let dateAdded: Date
 }
