@@ -13,16 +13,14 @@ struct NewCaseAddAndEditCaseView: View {
 	
 	@State var receiptNumber: String = ""
 	@State var nickName: String = ""
-	@State private var alertMessage: String = ""
 	
 	@State private var isInfoButtonTapped: Bool = false
-	@State private var showingAlert: Bool = false
 	
 	@State private var oldReceiptNo: String = ""
 	@State private var oldName: String = ""
 	
 	let currentCase: FetchedCase?
-	let casevm: CaseViewModel
+	@Binding var casevm: CaseViewModel
 	
     var body: some View {
 		VStack {
@@ -109,9 +107,10 @@ struct NewCaseAddAndEditCaseView: View {
 					print("IsAddPage : \(isAddPage)")
 					if isAddPage {
 						Task {
-							await casevm.saveButtonTapped(name: nickName, receiptNo: receiptNumber)
+							if await casevm.saveButtonTapped(name: nickName, receiptNo: receiptNumber) != nil {
+								dismissAddCaseSheet()
+							}
 						}
-						dismissAddCaseSheet()
 					} else {
 						// Call Save Function for editing existing case
 						print("Edit button tapped...")
@@ -135,7 +134,7 @@ struct NewCaseAddAndEditCaseView: View {
 				}
 				.padding(.vertical, 10)
 				.disabled(!casevm.isAddFieldValid(name: nickName, receiptNo: receiptNumber))
-				.alert(alertMessage, isPresented: $showingAlert) {
+				.alert(casevm.alertMessage, isPresented: $casevm.showAlert) {
 					Button("OK", role: .cancel) { }
 				}
 			}

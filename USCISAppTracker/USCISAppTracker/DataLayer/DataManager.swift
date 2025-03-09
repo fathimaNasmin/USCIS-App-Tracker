@@ -96,9 +96,16 @@ final class DataManager {
 	}
 	
 	/// Save Button Action : Function that saves to the store
-	func saveToDb(name: String, receiptNo: String) async -> [FetchedCase] {
+	func saveToDb(name: String, receiptNo: String) async throws -> [FetchedCase] {
 		let newCaseEntry = CaseEntry(id: UUID(), name: name, receiptNo: receiptNo, dateAdded: Date())
-		await coreDataStack.save(newCaseEntry)
+		do {
+			try await coreDataStack.save(newCaseEntry)
+		} catch CoreDataError.duplicateEntry {
+			print("Error: Item already exists in the store.")
+			throw CoreDataError.duplicateEntry
+		}catch {
+			print("Unexpected error: \(error)")
+		}
 		return await reloadLatestData()
 	}
 	

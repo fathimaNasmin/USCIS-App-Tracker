@@ -51,13 +51,24 @@ class CoreDataStack {
 	
 	
 	/// Function to add a new case to the core data
-	func save(_ caseEntry: CaseEntry) async {
+	func save(_ caseEntry: CaseEntry) async throws {
+		// check if already exists or not
+		let request: NSFetchRequest<CaseEntity> = CaseEntity.fetchRequest()
+		request.predicate = NSPredicate(format: "receiptNo == %@", caseEntry.receiptNo)
+		
+		
+		let existingItem = try context.fetch(request)
+		
+		if !existingItem.isEmpty {
+			throw CoreDataError.duplicateEntry
+		}
+		
 		let newCase = CaseEntity(context: context)
 		newCase.id = caseEntry.id
 		newCase.name = caseEntry.name.capitalized
 		newCase.receiptNo = caseEntry.receiptNo
 		newCase.dateAdded = Date()
-		
+
 		await saveContext()
 	}
 	
