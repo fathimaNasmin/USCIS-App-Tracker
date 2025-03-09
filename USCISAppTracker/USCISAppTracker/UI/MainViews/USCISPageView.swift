@@ -23,7 +23,7 @@ struct USCISPageView: View {
 
 					ScrollView{
 						// MARK: All Cases
-						AllCasesView(casevm: casevm)
+						AllCasesView(casevm: $casevm)
 						
 						// MARK: News
 						NewsView()

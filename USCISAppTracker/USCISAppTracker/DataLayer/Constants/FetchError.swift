@@ -24,3 +24,8 @@ enum FetchError: Error, LocalizedError {
 	}
 }
 
+
+enum CoreDataError: Error {
+	case duplicateEntry
+}
+

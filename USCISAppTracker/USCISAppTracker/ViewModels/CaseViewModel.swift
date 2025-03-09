@@ -10,6 +10,8 @@ import SwiftUI
 
 @Observable class CaseViewModel {
 	var USCISCase: [FetchedCase] = []
+	var showAlert: Bool = false
+	var alertMessage: String = ""
 
 	@ObservationIgnored let dataManager = DataManager.shared
 	
@@ -51,8 +53,22 @@ import SwiftUI
 	}
 	
 	/// Save Button Action : Function that saves to the store
-	func saveButtonTapped(name: String, receiptNo: String) async {
-		USCISCase = await dataManager.saveToDb(name: name, receiptNo: receiptNo)
+	func saveButtonTapped(name: String, receiptNo: String) async -> Bool?{
+		do {
+			USCISCase = try await dataManager.saveToDb(name: name, receiptNo: receiptNo)
+			return true
+		} catch CoreDataError.duplicateEntry {
+			DispatchQueue.main.asyncAfter(deadline: .now() + 0.7) {
+				self.alertMessage = "The Receipt Number you entered already exists.Try some other receipt Number."
+				self.showAlert = true
+			}
+		} catch {
+			DispatchQueue.main.async {
+				self.alertMessage = "Something went wrong. Try again later."
+				self.showAlert = true
+			}
+		}
+		return nil
 	}
 	
 

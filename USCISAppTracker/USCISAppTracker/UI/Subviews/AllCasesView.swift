@@ -12,7 +12,7 @@ struct AllCasesView: View {
 	@State private var isAddNewCaseTabTapped: Bool = false
 	@State var selectedCase: FetchedCase?
 	
-	let casevm: CaseViewModel
+	@Binding var casevm: CaseViewModel
 	
     var body: some View {
 		
@@ -46,13 +46,13 @@ struct AllCasesView: View {
 				.clipShape(RoundedRectangle(cornerRadius: 20))
 				.shadow(color: .gray.opacity(0.3), radius: 10, x: 0, y: 4)
 				.sheet(isPresented: $isAddNewCaseTabTapped) {
-					NewCaseAddAndEditCaseView(currentCase: nil, casevm: casevm)
+					NewCaseAddAndEditCaseView(currentCase: nil, casevm: $casevm)
 				}
 			}
 			.padding()
 			.padding(.horizontal, 7)
 			.navigationDestination(item: $selectedCase) { caseDetail in
-				SingleCaseDetailView(singleCaseDetail: caseDetail, casevm: casevm)
+				SingleCaseDetailView(singleCaseDetail: caseDetail, casevm: $casevm)
 					.toolbar(.hidden, for: .navigationBar)
 					.transition(.move(edge: .trailing)) // Moves from right
 					.environment(\.isAddPage, false) // changing the environment value to false
