@@ -117,9 +117,9 @@ struct NewCaseAddAndEditCaseView: View {
 						Task {
 							if currentCase != nil {
 								await casevm.editButtonTapped(name: nickName, receiptNo: receiptNumber)
+								dismissAddCaseSheet()
 							}
 						}
-						dismissAddCaseSheet()
 					}
 				} label: {
 					Text("Save")

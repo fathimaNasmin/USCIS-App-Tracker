@@ -14,7 +14,7 @@ struct SingleCaseDetailView: View {
 	@State private var isEditCaseTapped: Bool = false
 
 	let singleBoxDivision: CGFloat = 4
-	let singleCaseDetail: FetchedCase
+	@Binding var singleCaseDetail: FetchedCase
 	@Binding var casevm: CaseViewModel
 	
 	var body: some View {
