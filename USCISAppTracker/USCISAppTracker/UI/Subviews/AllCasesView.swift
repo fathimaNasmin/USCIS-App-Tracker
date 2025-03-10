@@ -52,10 +52,12 @@ struct AllCasesView: View {
 			.padding()
 			.padding(.horizontal, 7)
 			.navigationDestination(item: $selectedCase) { caseDetail in
-				SingleCaseDetailView(singleCaseDetail: caseDetail, casevm: $casevm)
-					.toolbar(.hidden, for: .navigationBar)
-					.transition(.move(edge: .trailing)) // Moves from right
-					.environment(\.isAddPage, false) // changing the environment value to false
+				if let caseIndex = casevm.USCISCase.firstIndex(where: { $0.id == caseDetail.id }) {
+					SingleCaseDetailView(singleCaseDetail: $casevm.USCISCase[caseIndex], casevm: $casevm)
+						.toolbar(.hidden, for: .navigationBar)
+						.transition(.move(edge: .trailing))
+						.environment(\.isAddPage, false)
+				}
 			}
 
 

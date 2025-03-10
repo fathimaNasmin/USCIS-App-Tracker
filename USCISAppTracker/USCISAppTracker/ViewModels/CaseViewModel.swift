@@ -23,16 +23,22 @@ import SwiftUI
 	func loadOnAppear() async {
 		await fetchCases()
 		addAllCasesToCache()
+		sortByAddedDate()
+	}
+	
+	/// Function to store the result array on date created.
+	private func sortByAddedDate() {
+		USCISCase.sort(by: { $0.dateAdded > $1.dateAdded})
 	}
 	
 	/// Function that fetches cases and assign to a variable which is an Array of FetchedCase
-	func fetchCases() async {
+	private func fetchCases() async {
 		USCISCase = await dataManager.fetchCaseResults()
 	}
 	
 	// TODO: move this function to a background task
 	/// Function to add fetched cases to cache.
-	func addAllCasesToCache() {
+	private func addAllCasesToCache() {
 		dataManager.addToCache(USCISCase)
 	}
 	
@@ -56,6 +62,7 @@ import SwiftUI
 	func saveButtonTapped(name: String, receiptNo: String) async -> Bool?{
 		do {
 			USCISCase = try await dataManager.saveToDb(name: name, receiptNo: receiptNo)
+			sortByAddedDate()
 			return true
 		} catch CoreDataError.duplicateEntry {
 			DispatchQueue.main.asyncAfter(deadline: .now() + 0.7) {
@@ -75,12 +82,14 @@ import SwiftUI
 	/// Edit button Action: Function that edit/ update the store
 	func editButtonTapped(name: String, receiptNo: String) async {
 		USCISCase = await dataManager.updateOnDb(name: name, receiptNo: receiptNo)
+		sortByAddedDate()
 	}
 	
 
 	/// Delete button Action: Function that delete the store.
 	func deleteButtonTapped(receiptNumber: String) async {
 		USCISCase = await dataManager.deleteFromDb(receiptNumber: receiptNumber)
+		sortByAddedDate()
 	}
 
 	
