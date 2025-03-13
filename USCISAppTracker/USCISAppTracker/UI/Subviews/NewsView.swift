@@ -9,6 +9,7 @@ import SwiftUI
 
 struct NewsView: View {
 	@State private var newsId: Int?
+	@Binding var newsvm: NewsViewModel
 	
     var body: some View {
 		NavigationStack {
@@ -17,8 +18,8 @@ struct NewsView: View {
 				HeadingView(headingText: "News")
 				
 				ScrollView {
-					ForEach(1...5, id: \.self) { view in
-						SingleNewsView(selectedNewsId: $newsId)
+					ForEach(newsvm.newsList) { currentNews in
+						SingleNewsView(selectedNewsId: $newsId, singleNews: currentNews)
 							.padding(.bottom, 20)
 					}
 				}
@@ -38,6 +39,3 @@ struct NewsView: View {
     }
 }
 
-#Preview {
-    NewsView()
-}

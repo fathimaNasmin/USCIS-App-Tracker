@@ -9,6 +9,8 @@ import SwiftUI
 
 struct USCISPageView: View {
 	@State private var vm = CaseViewModel()
+	@State private var newsvm = NewsViewModel()
+	
 	@Environment(\.isAddPage) var isAddPage
 	
 	@State private var selectedCase: String?
@@ -34,16 +36,16 @@ struct USCISPageView: View {
 						let _ = print("Update outside")
 
 						// MARK: News
-						NewsView()
+						NewsView(newsvm: $newsvm)
 					}
 				}
 				.navigationDestination(item: $selectedCase) { caseName in
-					if let casedetail = vm.USCISCase {
-						SingleCaseDetailView(singleCase: casedetail)
-							.toolbar(.hidden, for: .navigationBar)
-							.transition(.move(edge: .trailing)) // Moves from right
-							.environment(\.isAddPage, false) // changing the environment value to false
-					}
+//					if let casedetail = vm.USCISCase {
+//						SingleCaseDetailView(singleCase: casedetail)
+//							.toolbar(.hidden, for: .navigationBar)
+//							.transition(.move(edge: .trailing)) // Moves from right
+//							.environment(\.isAddPage, false) // changing the environment value to false
+//					}
 				}
 				.navigationDestination(item: $notificationBellTapped) { caseName in
 					NotificationDetailView()
@@ -55,6 +57,7 @@ struct USCISPageView: View {
         }
 		.onAppear {
 			vm.fetchCaseInfo()
+			newsvm.fetchNews()
 		}
 
     }

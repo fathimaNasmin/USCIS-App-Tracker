@@ -9,6 +9,7 @@ import SwiftUI
 
 struct SingleNewsView: View {
 	@Binding var selectedNewsId: Int?
+	var singleNews: News
 	
 	var body: some View {
 		VStack{
@@ -29,7 +30,7 @@ struct SingleNewsView: View {
 				.frame(maxWidth: .infinity)
 				.foregroundColor(Color.textGray)
 			
-			Text("Lorem ipsum dolor sit amet, con in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.")
+			Text(singleNews.title)
 				.subTitleStyle(18)
 				.fontWeight(.medium)
 				.padding(.bottom, 10)

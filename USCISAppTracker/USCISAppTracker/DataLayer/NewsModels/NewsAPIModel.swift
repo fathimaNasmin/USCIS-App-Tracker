@@ -16,8 +16,12 @@ struct NewsAPIModel: Identifiable {
 }
 
 extension NewsAPIModel {
-	var publishedDate: Date {
-		pubDate.iSODate
+	var publishedDate: Date? {
+		return pubDate.customDate ?? nil
+	}
+	
+	var newsDomainModel: News {
+		return News(id: id, title: title, link: link, description: description, pubDate: publishedDate ?? nil)
 	}
 }
 

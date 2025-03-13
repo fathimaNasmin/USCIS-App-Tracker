@@ -19,6 +19,18 @@ extension String {
 		formatter.dateFormat = "yyyy-MM-dd"
 		return formatter.date(from: self)!
 	}
+	
+	var customDate: Date? {
+		let dateFormatter = DateFormatter()
+		dateFormatter.dateFormat = "E, dd MMM yy HH:mm:ss Z"
+		dateFormatter.locale = Locale(identifier: "en_US_POSIX")
+		
+		// Convert the string to a Date object
+		if let date = dateFormatter.date(from: self) {
+			return date
+		}
+		return nil
+	}
 }
 
 

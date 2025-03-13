@@ -7,15 +7,15 @@
 
 import Foundation
 
-class NewsRssFeed: NSObject, XMLParserDelegate {
-	private var newsItems: [NewsAPIModel] = []
+class NewsParser: NSObject, XMLParserDelegate {
+	private var newsItems: [News] = []
 	private var currentElement = ""
 	private var currentTitle = ""
 	private var currentLink = ""
 	private var currentDescription = ""
 	private var currentPubDate = ""
 	
-	var completionHandler: (([NewsAPIModel]) -> Void)?
+	var completionHandler: (([News]) -> Void)?
 	
 	func parseRssFeed() {
 		guard let url = URL(string: "https://www.uscis.gov/news/rss-feed/23269") else { return }
@@ -36,7 +36,6 @@ class NewsRssFeed: NSObject, XMLParserDelegate {
 	func parser(_ parser: XMLParser, didStartElement elementName: String, namespaceURI: String?, qualifiedName qName: String?, attributes attributeDict: [String : String] = [:]) {
 		
 		currentElement = elementName
-		print("Current Element: \(currentElement)")
 		
 		if currentElement == "item" {
 			currentTitle = ""
@@ -63,7 +62,8 @@ class NewsRssFeed: NSObject, XMLParserDelegate {
 	
 	func parser(_ parser: XMLParser, didEndElement elementName: String, namespaceURI: String?, qualifiedName: String?) {
 		if elementName == "item" {
-			let newsItem = NewsAPIModel(id:UUID(), title: currentTitle, link: currentLink, description: currentDescription, pubDate: currentPubDate)
+			let newsItem = NewsAPIModel(id:UUID(), title: currentTitle, link: currentLink, description: currentDescription, pubDate: currentPubDate).newsDomainModel
+			
 			newsItems.append(newsItem)
 		}
 	}
