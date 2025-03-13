@@ -14,6 +14,7 @@ class NewsParser: NSObject, XMLParserDelegate {
 	private var currentLink = ""
 	private var currentDescription = ""
 	private var currentPubDate = ""
+	private var currentSource = ""
 	
 	var completionHandler: (([News]) -> Void)?
 	
@@ -42,6 +43,7 @@ class NewsParser: NSObject, XMLParserDelegate {
 			currentLink = ""
 			currentDescription = ""
 			currentPubDate = ""
+			currentSource = ""
 		}
 	}
 	
@@ -55,6 +57,8 @@ class NewsParser: NSObject, XMLParserDelegate {
 			currentDescription += string
 		case "pubDate":
 			currentPubDate += string.trimmingCharacters(in: .whitespacesAndNewlines)
+		case "dc:creator" :
+			currentSource += string.trimmingCharacters(in: .whitespacesAndNewlines)
 		default:
 			break
 		}
@@ -62,7 +66,7 @@ class NewsParser: NSObject, XMLParserDelegate {
 	
 	func parser(_ parser: XMLParser, didEndElement elementName: String, namespaceURI: String?, qualifiedName: String?) {
 		if elementName == "item" {
-			let newsItem = NewsAPIModel(id:UUID(), title: currentTitle, link: currentLink, description: currentDescription, pubDate: currentPubDate).newsDomainModel
+			let newsItem = NewsAPIModel(id:UUID(), title: currentTitle, link: currentLink, description: currentDescription, pubDate: currentPubDate, source: currentSource).newsDomainModel
 			
 			newsItems.append(newsItem)
 		}

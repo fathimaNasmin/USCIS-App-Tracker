@@ -13,6 +13,7 @@ struct NewsAPIModel: Identifiable {
 	let link: String
 	let description: String
 	let pubDate: String
+	let source: String
 }
 
 extension NewsAPIModel {
@@ -22,7 +23,7 @@ extension NewsAPIModel {
 	
 	var newsDomainModel: News {
 		let formattedDateString = publishedDate?.formatRelativeDate() ?? nil
-		return News(id: id, title: title, link: link, description: description, pubDate: formattedDateString)
+		return News(id: id, title: title, link: link, description: description, pubDate: formattedDateString, source: source)
 	}
 }
 

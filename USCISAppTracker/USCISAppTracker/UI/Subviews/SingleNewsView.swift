@@ -14,7 +14,7 @@ struct SingleNewsView: View {
 	var body: some View {
 		VStack{
 			HStack {
-				Text("News Source")
+				Text(singleNews.source)
 					.titleStyle(15)
 					.foregroundColor(Color.bluePrimary)
 				
