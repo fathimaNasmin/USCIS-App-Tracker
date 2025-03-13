@@ -19,8 +19,7 @@ struct SingleNewsView: View {
 					.foregroundColor(Color.bluePrimary)
 				
 				Spacer()
-				
-				Text("16th June 2024")
+				Text(singleNews.pubDate ?? "invalid date")
 					.captionStyle(12)
 					.foregroundColor(Color.textGray)
 			}

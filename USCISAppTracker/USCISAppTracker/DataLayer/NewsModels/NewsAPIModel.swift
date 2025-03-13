@@ -21,7 +21,8 @@ extension NewsAPIModel {
 	}
 	
 	var newsDomainModel: News {
-		return News(id: id, title: title, link: link, description: description, pubDate: publishedDate ?? nil)
+		let formattedDateString = publishedDate?.formatRelativeDate() ?? nil
+		return News(id: id, title: title, link: link, description: description, pubDate: formattedDateString)
 	}
 }
 

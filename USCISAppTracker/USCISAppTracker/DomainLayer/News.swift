@@ -12,5 +12,5 @@ struct News: Identifiable {
 	let title: String
 	let link: String
 	let description: String
-	let pubDate: Date?
+	let pubDate: String?
 }

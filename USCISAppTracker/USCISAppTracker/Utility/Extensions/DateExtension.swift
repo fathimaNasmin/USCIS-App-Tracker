@@ -44,4 +44,37 @@ extension Date {
 		return daysDifference
 	}
 	
+	func formatRelativeDate() -> String {
+		let calendar = Calendar.current
+		let now = Date()
+		
+		let components = calendar.dateComponents([.year, .month, .day], from: self, to: now)
+		let dayDifference = calendar.dateComponents([.day], from: self, to: now).day ?? 0
+		
+		if calendar.isDateInToday(self) {
+			let timeInterval = now.timeIntervalSince(self)
+			let minutes = Int(timeInterval) / 60
+			let hours = minutes / 60
+			
+			if minutes < 1 {
+				return "Just now"
+			} else if minutes < 60 {
+				return "\(minutes) minutes ago"
+			} else {
+				return "\(hours) hours ago"
+			}
+		} else if calendar.isDateInYesterday(self) {
+			return "Yesterday"
+		} else if dayDifference < 7 {
+			let formatter = DateFormatter()
+			formatter.dateFormat = "EEEE"
+			return formatter.string(from: self)
+		} else if dayDifference < 3 {
+			return "\(dayDifference) days ago"
+		} else {
+			let formatter = DateFormatter()
+			formatter.dateStyle = .medium
+			return formatter.string(from: self)
+		}
+	}
 }
