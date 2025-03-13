@@ -15,7 +15,22 @@ struct NewsView: View {
 		NavigationStack {
 			VStack {
 				// MARK: Title - News
-				HeadingView(headingText: "News")
+				HStack {
+					HeadingView(headingText: "News")
+					Spacer()
+					
+					Button {
+						print("View all")
+					} label: {
+						Text("View all")
+							.titleStyle(16)
+							.padding(6)
+							.padding(.horizontal, 2)
+							.foregroundColor(.white)
+							.background(.bluePrimary)
+							.clipShape(Capsule())
+					}
+				}
 				
 				ScrollView {
 					ForEach(newsvm.newsList.prefix(3)) { currentNews in
