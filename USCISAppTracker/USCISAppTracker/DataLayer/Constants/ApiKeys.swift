@@ -7,7 +7,7 @@
 
 import Foundation
 
-enum ApiEndpoints {
-	static let authEndpoint = "https://api-int.uscis.gov/oauth/accesstoken"
-	static let caseStatusEndpoint = "https://api-int.uscis.gov/case-status/"
+enum ApiEndpoint {
+	static let auth = "https://api-int.uscis.gov/oauth/accesstoken"
+	static let caseStatus = "https://api-int.uscis.gov/case-status/"
 }

@@ -20,7 +20,7 @@ final class DataManager {
 		loadCaseEntries()
 	}
 	
-	/// Function that loads data to the caseEntries
+	/// Function that loads data to the caseEntries from local storage.
 	func loadCaseEntries() {
 		caseEntries = CoreDataStack.shared.loadStoredCases()
 		print("CaseEntries: \(caseEntries)")

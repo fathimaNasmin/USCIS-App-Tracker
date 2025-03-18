@@ -8,8 +8,7 @@
 import Foundation
 import KeychainSwift
 
-class AuthenticationService{
-	static let shared = AuthenticationService()
+class AuthenticationService {
 	
 	private let keychain = KeychainSwift()
 	
@@ -44,7 +43,7 @@ class AuthenticationService{
 	
 	func fetchAccessToken() async throws {
 		// Define url
-		let url = URL(string: ApiEndpoints.authEndpoint)!
+		let url = URL(string: ApiEndpoint.auth)!
 
 		// Create the request
 		var request = URLRequest(url: url)

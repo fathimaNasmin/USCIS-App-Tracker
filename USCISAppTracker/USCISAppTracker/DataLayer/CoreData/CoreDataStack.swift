@@ -42,7 +42,7 @@ class CoreDataStack {
 		
 		do {
 			let fetchedCases = try context.fetch(request)
-			return fetchedCases.compactMap {$0.toCaseEntry()}
+			return fetchedCases.compactMap {$0.toCaseEntry}
 		} catch {
 			print("Error on fetching data from core: \(error.localizedDescription)")
 			return []
@@ -127,6 +127,4 @@ class CoreDataStack {
 			print("Error on saving: \(error.localizedDescription)")
 		}
 	}
-	
-	
 }
