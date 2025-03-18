@@ -6,40 +6,10 @@
 //
 
 import Foundation
-import KeychainSwift
 
 class AuthenticationService {
 	
-	private let keychain = KeychainSwift()
-	
-	var accessToken: String? {
-		get { keychain.get("access_token") }
-		
-		set { keychain.set(newValue ?? "" , forKey: "access_token") }
-	}
-	
-	var tokenExpiration: Date? {
-		get {
-			if let expirationString = keychain.get("token_expiration"){
-				return DateFormatter().date(from: expirationString)
-			}
-			return nil
-		}
-		
-		set {
-			if let newValue = newValue {
-				let newValueInString = DateFormatter().string(from: newValue)
-				keychain.set(newValueInString, forKey: "token_expiration")
-			}
-		}
-	}
-	
-	func isTokenValid() async -> Bool {
-		if let tokenExpTime = tokenExpiration {
-			return Date() < tokenExpTime
-		}
-		return false
-	}
+	private let tokenService = TokenService.shared
 	
 	func fetchAccessToken() async throws {
 		// Define url
@@ -68,8 +38,8 @@ class AuthenticationService {
 
 		// Decode the response
 		let authorization = try! JSONDecoder().decode(AuthorizationAPIModel.self, from: data).authDomainModel
-		self.accessToken = authorization.accessToken
-		self.tokenExpiration = authorization.futureExpiration
+		tokenService.accessToken = authorization.accessToken
+		tokenService.tokenExpiration = authorization.futureExpiration
 	}
 }
 
