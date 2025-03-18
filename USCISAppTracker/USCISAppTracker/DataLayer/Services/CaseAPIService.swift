@@ -8,16 +8,17 @@
 import Foundation
 
 struct CaseAPIService {
+	let tokenService = TokenService.shared
 	
 	/// A Private Function to get the token
 	private func getAccessToken() async -> String? {
 		let authService = AuthenticationService()
 		
-		if await authService.isTokenValid() {
-			return authService.accessToken
+		if await tokenService.isTokenValid() {
+			return tokenService.accessToken
 		} else {
 			try! await authService.fetchAccessToken()
-			return authService.accessToken
+			return tokenService.accessToken
 		}
 	}
 	
