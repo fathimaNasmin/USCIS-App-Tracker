@@ -17,17 +17,26 @@ struct AuthorizationAPIModel: Codable {
 
 
 extension AuthorizationAPIModel {
-	var issuedAt: Double {
-		Double(issued_at)! / 1000
+	var issuedAt: Double? {
+		if let issuedDate = Double(issued_at) {
+			return issuedDate / 1000
+		}
+		return nil
 	}
 	
-	var expiresIn: Double {
-		Double(expires_in)!
+	var expiresIn: Double? {
+		if let expiresTime = Double(expires_in) {
+			return expiresTime
+		}
+		return nil
 	}
 	
-	var expiresOn: Date {
-		let expirationtime = issuedAt + expiresIn
-		return Date(timeIntervalSince1970: expirationtime)
+	var expiresOn: Date? {
+		if let issuedDate = issuedAt, let expiresTime = expiresIn {
+			let expirationtime = issuedDate + expiresTime
+			return Date(timeIntervalSince1970: expirationtime)
+		}
+		return nil
 	}
 }
 

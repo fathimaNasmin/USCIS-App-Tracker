@@ -7,9 +7,9 @@
 
 import Foundation
 
-extension CaseEntity {
-	/// Function to convert CaseEntity(CoreData) to CaseEntry(Swift Model)
-	func toCaseEntry() -> CaseEntry? {
+extension CaseEntity {	
+	/// Computed Property to convert CaseEntity(CoreData) to CaseEntry(Domain Model)
+	var toCaseEntry: CaseEntry? {
 		guard let id = self.id, let name = self.name, let receiptNo = self.receiptNo, let dateAdded = self.dateAdded
 		else {
 			return nil

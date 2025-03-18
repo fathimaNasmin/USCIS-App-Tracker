@@ -11,7 +11,7 @@ struct CaseAPIService {
 	
 	/// A Private Function to get the token
 	private func getAccessToken() async -> String? {
-		let authService = AuthenticationService.shared
+		let authService = AuthenticationService()
 		
 		if await authService.isTokenValid() {
 			return authService.accessToken
@@ -39,7 +39,7 @@ struct CaseAPIService {
 	
 	private func apiCallForCaseStatus(_ number: String) async throws -> Case?{
 		if let token = await getAccessToken() {
-			var url = URL(string: ApiEndpoints.caseStatusEndpoint)!
+			var url = URL(string: ApiEndpoint.caseStatus)!
 			url = url.appendingPathComponent(number)
 			
 			var request = URLRequest(url: url)
