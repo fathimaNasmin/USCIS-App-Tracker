@@ -7,28 +7,26 @@
 
 import Foundation
 
-class USCISCaseCache {
+final class USCISCaseCache {
 	static let shared = USCISCaseCache()
 	
-	private let cache = NSCache<NSString, FetchedCase>()
+	var cacheDict: [String: FetchedCase] = [:]
 	
 	private init() {}
 	
 	/// Function to add case details to cache
-	func setCaseDetails(_ details: FetchedCase){
-		print("setting values to cache")
-		cache.setObject(details, forKey: details.data.receiptNo as NSString)
+	func setCaseDetails(_ details: FetchedCase) {
+		cacheDict[details.data.receiptNo] = details
 	}
 	
 	/// Function to retriece case details from cache
 	func getCaseDetails(for receiptNumber: String) -> FetchedCase? {
-		print("getting values from cache")
-		return cache.object(forKey: receiptNumber as NSString)
+		return cacheDict[receiptNumber]
 	}
 	
 	/// Function to remove from the cache.
 	func removeCaseDetails(for receiptNumber: String) {
-		cache.removeObject(forKey: receiptNumber as NSString)
+		cacheDict.removeValue(forKey: receiptNumber)
 	}
 	
 	/// Function to update change in Cache.
