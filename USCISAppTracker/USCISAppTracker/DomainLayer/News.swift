@@ -15,3 +15,10 @@ struct News: Identifiable {
 	let pubDate: String?
 	let source: String
 }
+
+extension News {
+	var formattedDateText: String {
+		pubDate ?? "invalid date"
+	}
+
+}

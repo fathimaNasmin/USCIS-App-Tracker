@@ -9,17 +9,17 @@ import SwiftUI
 
 struct SingleNewsView: View {
 	@Binding var selectedNewsId: Int?
-	var singleNews: News
+	var story: News
 	
 	var body: some View {
 		VStack{
 			HStack {
-				Text(singleNews.source)
+				Text(story.source)
 					.titleStyle(15)
 					.foregroundColor(Color.bluePrimary)
 				
 				Spacer()
-				Text(singleNews.pubDate ?? "invalid date")
+				Text(story.formattedDateText)
 					.captionStyle(12)
 					.foregroundColor(Color.textGray)
 			}
@@ -29,7 +29,7 @@ struct SingleNewsView: View {
 				.frame(maxWidth: .infinity)
 				.foregroundColor(Color.textGray)
 			HStack {
-				Text(singleNews.title)
+				Text(story.title)
 					.subTitleStyle(16)
 					.fontWeight(.medium)
 					.padding(.bottom, 5)

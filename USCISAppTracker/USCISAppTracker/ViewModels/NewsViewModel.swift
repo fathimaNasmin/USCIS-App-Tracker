@@ -11,12 +11,9 @@ import Foundation
 	var newsList: [News] = []
 	
 	func fetchNews() {
-		let parser = NewsParser()
-		parser.completionHandler = { news in
+		let parser = NewsParser { news in
 			self.newsList = news
 		}
-		parser.parseRssFeed()
-		
+		parser.parseRSSFeed()
 	}
-	
 }

@@ -44,11 +44,10 @@ extension Date {
 		return daysDifference
 	}
 	
-	func formatRelativeDate() -> String {
+	var formatRelativeDate: String {
 		let calendar = Calendar.current
 		let now = Date()
 		
-		let components = calendar.dateComponents([.year, .month, .day], from: self, to: now)
 		let dayDifference = calendar.dateComponents([.day], from: self, to: now).day ?? 0
 		
 		if calendar.isDateInToday(self) {

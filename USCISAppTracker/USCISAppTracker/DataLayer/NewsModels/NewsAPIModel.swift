@@ -18,11 +18,11 @@ struct NewsAPIModel: Identifiable {
 
 extension NewsAPIModel {
 	var publishedDate: Date? {
-		return pubDate.customDate ?? nil
+		return pubDate.formattedESTDateString ?? nil
 	}
 	
-	var newsDomainModel: News {
-		let formattedDateString = publishedDate?.formatRelativeDate() ?? nil
+	var domainModel: News {
+		let formattedDateString = publishedDate?.formatRelativeDate ?? nil
 		return News(id: id, title: title, link: link, description: description, pubDate: formattedDateString, source: source)
 	}
 }

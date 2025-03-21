@@ -34,7 +34,7 @@ struct NewsView: View {
 				
 				ScrollView {
 					ForEach(newsvm.newsList.prefix(3)) { currentNews in
-						SingleNewsView(selectedNewsId: $newsId, singleNews: currentNews)
+						SingleNewsView(selectedNewsId: $newsId, story: currentNews)
 							.padding(.bottom, 20)
 					}
 				}

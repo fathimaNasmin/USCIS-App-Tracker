@@ -16,9 +16,13 @@ class NewsParser: NSObject, XMLParserDelegate {
 	private var currentPubDate = ""
 	private var currentSource = ""
 	
+	init(completionHandler: ( ([News]) -> Void)? = nil) {
+		self.completionHandler = completionHandler
+	}
+	
 	var completionHandler: (([News]) -> Void)?
 	
-	func parseRssFeed() {
+	func parseRSSFeed() {
 		guard let url = URL(string: "https://www.uscis.gov/news/rss-feed/23269") else { return }
 		
 		let task = URLSession.shared.dataTask(with: url) { data, response, error in
@@ -66,8 +70,7 @@ class NewsParser: NSObject, XMLParserDelegate {
 	
 	func parser(_ parser: XMLParser, didEndElement elementName: String, namespaceURI: String?, qualifiedName: String?) {
 		if elementName == "item" {
-			let newsItem = NewsAPIModel(id:UUID(), title: currentTitle, link: currentLink, description: currentDescription, pubDate: currentPubDate, source: currentSource).newsDomainModel
-			
+			let newsItem = NewsAPIModel(id: UUID(), title: currentTitle, link: currentLink, description: currentDescription, pubDate: currentPubDate, source: currentSource).domainModel
 			newsItems.append(newsItem)
 		}
 	}
