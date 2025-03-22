@@ -67,3 +67,4 @@ fastlane/test_output
 *.pbxproj
 USCISAppTracker/USCISAppTracker.xcodeproj/project.pbxproj
 USCISAppTracker.xcodeproj/project.pbxproj
+**/xcshareddata/swiftpm/Package.resolved
