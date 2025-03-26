@@ -10,11 +10,12 @@ import SwiftUI
 struct AllCasesView: View {
 	@Environment(\.isAddPage) var isAddPage
 	@State private var isAddNewCaseTabTapped: Bool = false
-	@Binding var selectedCase: String?
+	@State var selectedCase: FetchedCase?
 	
-	var oneCase: Case
+	@Binding var casevm: CaseViewModel
 	
     var body: some View {
+		
 			VStack {
 				// MARK: Title - Cases
 				HeadingView(headingText: "Cases")
@@ -25,14 +26,15 @@ struct AllCasesView: View {
 						AddCaseOnTabView()
 							.onTapGesture {
 								isAddNewCaseTabTapped = true
-								print(isAddPage)
 							}
 							.environment(\.isAddPage, true)
 						
-						SingleCaseView(singleCase: oneCase)
-							.onTapGesture {
-								selectedCase = "Processing"
-							}
+						ForEach(casevm.USCISCase) { _case in
+							SingleCaseView(singleCase: _case)
+								.onTapGesture {
+									selectedCase = _case
+								}
+						}
 					}
 					.tabViewStyle(.page)
 					.indexViewStyle(.page(backgroundDisplayMode: .always))
@@ -44,17 +46,23 @@ struct AllCasesView: View {
 				.clipShape(RoundedRectangle(cornerRadius: 20))
 				.shadow(color: .gray.opacity(0.3), radius: 10, x: 0, y: 4)
 				.sheet(isPresented: $isAddNewCaseTabTapped) {
-					NewCaseAddAndEditCaseView()
+					NewCaseAddAndEditCaseView(currentCase: nil, casevm: $casevm)
 				}
 			}
 			.padding()
 			.padding(.horizontal, 7)
+			.navigationDestination(item: $selectedCase) { caseDetail in
+				if let caseIndex = casevm.USCISCase.firstIndex(where: { $0.id == caseDetail.id }) {
+					SingleCaseDetailView(singleCaseDetail: $casevm.USCISCase[caseIndex], casevm: $casevm)
+						.toolbar(.hidden, for: .navigationBar)
+						.transition(.move(edge: .trailing))
+						.environment(\.isAddPage, false)
+				}
+			}
+
+
     }
 }
-
-//#Preview {
-//    AllCasesView()
-//}
 
 struct AddCaseOnTabView: View {
 	var body: some View {

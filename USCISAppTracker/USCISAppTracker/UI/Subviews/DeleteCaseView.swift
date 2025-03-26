@@ -8,7 +8,12 @@
 import SwiftUI
 
 struct DeleteCaseView: View {
+	@Environment(\.dismiss) private var dismiss
 	@State private var showDeleteAlert: Bool = false
+
+	let caseEntry: FetchedCase
+	@Binding var casevm: CaseViewModel
+	let receiptNum: String	
 	
     var body: some View {
 		VStack {
@@ -27,7 +32,11 @@ struct DeleteCaseView: View {
 			}
 			.alert("Are you sure you want to delete this case", isPresented: $showDeleteAlert) {
 				Button("Delete", role: .destructive) {
-					print("Deleted")
+					// Call delete function
+					Task {
+						await casevm.deleteButtonTapped(receiptNumber: receiptNum)
+					}
+					dismiss()
 				}
 				Button("Cancel", role: .cancel) {
 					print("Cancelled")
@@ -38,10 +47,4 @@ struct DeleteCaseView: View {
     }
 }
 
-#Preview {
-    DeleteCaseView()
-}
 
-func message(msg: String) {
-	
-}

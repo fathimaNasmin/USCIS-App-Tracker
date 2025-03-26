@@ -67,4 +67,11 @@ fastlane/test_output
 *.pbxproj
 USCISAppTracker/USCISAppTracker.xcodeproj/project.pbxproj
 USCISAppTracker.xcodeproj/project.pbxproj
+<<<<<<< HEAD
 **/xcshareddata/swiftpm/Package.resolved
+=======
+
+
+#Ignore Secret file
+USCISAppTracker/USCISAppTracker/DataLayer/Constants/Secrets.swift
+>>>>>>> main

@@ -9,8 +9,6 @@ import SwiftUI
 
 @main
 struct USCISAppTrackerApp: App {
-	
-	
     var body: some Scene {
         WindowGroup {
 			USCISPageView()

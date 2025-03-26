@@ -10,12 +10,11 @@ import SwiftUI
 struct USCISPageView: View {
 	@State private var vm = CaseViewModel()
 	@State private var newsvm = NewsViewModel()
-	
 	@Environment(\.isAddPage) var isAddPage
 	
-	@State private var selectedCase: String?
 	@State private var notificationBellTapped: Bool?
-	
+	@State var casevm: CaseViewModel = CaseViewModel()
+
 	
     var body: some View {
 		NavigationStack {
@@ -23,29 +22,14 @@ struct USCISPageView: View {
 				VStack {
 					// MARK: Header
 					HeaderView(notificationBellTapped: $notificationBellTapped)
-					let _ = print("Update Vstack")
 
 					ScrollView{
 						// MARK: All Cases
-						if let normalCase = vm.USCISCase {
-							let _ = print("Update SpyView")
-
-							AllCasesView(selectedCase: $selectedCase, oneCase: normalCase)
-						}
+						AllCasesView(casevm: $casevm)
 						
-						let _ = print("Update outside")
-
 						// MARK: News
 						NewsView(newsvm: $newsvm)
 					}
-				}
-				.navigationDestination(item: $selectedCase) { caseName in
-//					if let casedetail = vm.USCISCase {
-//						SingleCaseDetailView(singleCase: casedetail)
-//							.toolbar(.hidden, for: .navigationBar)
-//							.transition(.move(edge: .trailing)) // Moves from right
-//							.environment(\.isAddPage, false) // changing the environment value to false
-//					}
 				}
 				.navigationDestination(item: $notificationBellTapped) { caseName in
 					NotificationDetailView()
@@ -56,10 +40,10 @@ struct USCISPageView: View {
 			.background(.antiflashwhite)
         }
 		.onAppear {
-			vm.fetchCaseInfo()
-			newsvm.fetchNews()
+			Task {
+				await casevm.loadOnAppear()
+			}
 		}
-
     }
 }
 
