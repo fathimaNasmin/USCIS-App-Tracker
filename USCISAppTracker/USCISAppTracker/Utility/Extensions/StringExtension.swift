@@ -20,8 +20,16 @@ extension String {
 		return formatter.date(from: self)!
 	}
 	
-	var timeEpoch: Date {
-		Date(timeIntervalSince1970: TimeInterval(Double(self)!))
+	var formattedESTDateString: Date? {
+		let dateFormatter = DateFormatter()
+		dateFormatter.dateFormat = "E, dd MMM yy HH:mm:ss Z"
+		dateFormatter.locale = Locale(identifier: "en_US_POSIX")
+		
+		// Convert the string to a Date object
+		if let date = dateFormatter.date(from: self) {
+			return date
+		}
+		return nil
 	}
 }
 

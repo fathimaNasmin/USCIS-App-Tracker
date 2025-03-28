@@ -9,16 +9,32 @@ import SwiftUI
 
 struct NewsView: View {
 	@State private var newsId: Int?
+	@Binding var newsvm: NewsViewModel
 	
     var body: some View {
 		NavigationStack {
 			VStack {
 				// MARK: Title - News
-				HeadingView(headingText: "News")
+				HStack {
+					HeadingView(headingText: "News")
+					Spacer()
+					
+					Button {
+						print("View all")
+					} label: {
+						Text("View all")
+							.titleStyle(16)
+							.padding(6)
+							.padding(.horizontal, 2)
+							.foregroundColor(.white)
+							.background(.bluePrimary)
+							.clipShape(Capsule())
+					}
+				}
 				
 				ScrollView {
-					ForEach(1...5, id: \.self) { view in
-						SingleNewsView(selectedNewsId: $newsId)
+					ForEach(newsvm.newsList.prefix(3)) { currentNews in
+						SingleNewsView(selectedNewsId: $newsId, story: currentNews)
 							.padding(.bottom, 20)
 					}
 				}
@@ -38,6 +54,3 @@ struct NewsView: View {
     }
 }
 
-#Preview {
-    NewsView()
-}

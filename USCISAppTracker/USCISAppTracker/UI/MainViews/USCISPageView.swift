@@ -8,6 +8,8 @@
 import SwiftUI
 
 struct USCISPageView: View {
+	@State private var vm = CaseViewModel()
+	@State private var newsvm = NewsViewModel()
 	@Environment(\.isAddPage) var isAddPage
 	
 	@State private var notificationBellTapped: Bool?
@@ -26,7 +28,7 @@ struct USCISPageView: View {
 						AllCasesView(casevm: $casevm)
 						
 						// MARK: News
-						NewsView()
+						NewsView(newsvm: $newsvm)
 					}
 				}
 				.navigationDestination(item: $notificationBellTapped) { caseName in
