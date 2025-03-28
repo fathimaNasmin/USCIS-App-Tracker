@@ -42,6 +42,7 @@ struct USCISPageView: View {
 		.onAppear {
 			Task {
 				await casevm.loadOnAppear()
+				newsvm.fetchNews()
 			}
 		}
     }
